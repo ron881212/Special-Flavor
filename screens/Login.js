@@ -30,11 +30,17 @@ static navigationOptions = {
     }
   }
 
+  userLogIn = () => {
+    const {email, password} = this.state
+    firebase.auth().signInWithEmailAndPassword(email, password)
+  }
   
   
   render() {
+    // const { foo, bar } = this.state
     // const createUser = firebase.auth.createUserWithEmailAndPassword() 
     // createUser(this.state.email, this.state.password)
+    // signInWithEmailAndPassword(email, password)
     return (
       <SafeAreaView>
       <ImageBackground
@@ -45,7 +51,11 @@ static navigationOptions = {
       <View style={styles.container}>
         <Input
           placeholder='Email'
+          // placeholderTextColor='color'
+          keyboardType='email-address'
+          autoCapitalize='none'
           inputContainerStyle={styles.form}
+          onChangeText={(text) => this.setState({email:text})}
           leftIcon={
             <Icon
               name='mail'
@@ -57,7 +67,11 @@ static navigationOptions = {
         />
         <Input
           placeholder='Password'
+          // placeholderTextColor='color'
+          autoCapitalize='none'
+          secureTextEntry={true}
           inputContainerStyle={styles.form}
+          onChangeText={(text) => this.setState({password:text})}
           leftIcon={
             <Icon
               name='lock'
@@ -70,6 +84,7 @@ static navigationOptions = {
         <View style={styles.container2}>
           <Button
           buttonStyle={styles.buttons}
+          onPress={()=>this.userLogIn()}
           icon={
           <Icon
             name="log-in"
@@ -118,7 +133,7 @@ const styles = StyleSheet.create({
     margin: 10,
     height: 50,
     borderColor: '#d6d7da',
-    backgroundColor: 'rgba(255, 165, 0, 0.4)'
+    backgroundColor: 'rgba(200, 200, 200,0.5)'
   },
   form2: {
     borderRadius: 50,
