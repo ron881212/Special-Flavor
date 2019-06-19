@@ -1,14 +1,10 @@
 import React from 'react'
 import { Text, View, SafeAreaView, StyleSheet } from 'react-native'
-import Banner from '../Components/Banner'
-import Shop from '../Components/Shop'
 
-const AdultScreen = props => {
+const ShopScreen = props => {
   return (
     <SafeAreaView style={styles.container}>
-      <Banner />
-      <Shop />
-      <Text>Adults!</Text>
+      <Text>Welcome to the shopping cart!</Text>
     </SafeAreaView>
   )
 }
@@ -21,4 +17,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default AdultScreen
+export default ShopScreen

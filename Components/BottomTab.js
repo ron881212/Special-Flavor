@@ -1,12 +1,17 @@
 import React from 'react'
 import { Text, View } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { createBottomTabNavigator, createAppContainer } from 'react-navigation'
+import { 
+  createBottomTabNavigator, 
+  createAppContainer,
+  createStackNavigator
+} from 'react-navigation'
 
 import FlavorScreen from '../screens/Flavors'
 import AdultScreen from '../screens/Adults'
 import MerchScreen from '../screens/Merch'
 import ProfileScreen from '../screens/Profile'
+import ShopScreen from '../screens/Shopping'
 
 class IconWithBadge extends React.Component {
   render() {
@@ -41,7 +46,7 @@ class IconWithBadge extends React.Component {
 
 const HomeIconWithBadge = props => {
   // You should pass down the badgeCount in some other ways like context, redux, mobx or event emitters.
-  return <IconWithBadge {...props} badgeCount={3} />
+  return <IconWithBadge {...props} badgeCount={0} />
 }
 
 const getTabBarIcon = (navigation, focused, tintColor) => {
@@ -63,6 +68,20 @@ const getTabBarIcon = (navigation, focused, tintColor) => {
   return <IconComponent name={iconName} size={25} color={tintColor} />
 }
 
+
+// const Flavors = createStackNavigator({
+//   Flavors: { screen: FlavorScreen },  
+//   Shop: { screen: ShopScreen }
+// })
+// const Adults = createStackNavigator({
+//   Adults: { screen: AdultScreen },
+//   Shop: { screen: ShopScreen }
+// })
+// const Merch = createStackNavigator({
+//   Merch: { screen: MerchScreen },
+//   Shop: { screen: ShopScreen }
+// })
+
 export default createAppContainer(
   createBottomTabNavigator(
     {
@@ -77,7 +96,7 @@ export default createAppContainer(
           getTabBarIcon(navigation, focused, tintColor),
       }),
       tabBarOptions: {
-        activeTintColor: 'tomato',
+        activeTintColor: 'red',
         inactiveTintColor: 'gray',
       },
     }

@@ -32,8 +32,6 @@ class Profile extends React.Component {
     render() {
       return (
         <SafeAreaView style={styles.container}>
-          <Banner />
-          {/* <View >
             <Input
             placeholder='address'
             onChangeText={(text) => this.setState({address:text})}
@@ -50,7 +48,6 @@ class Profile extends React.Component {
             onPress={()=>this.logOut()}
             title='log out'
             />
-          </View> */}
         </SafeAreaView>
       )
     }
@@ -60,7 +57,7 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       alignItems: 'center',
-      justifyContent: 'flex-start',
+      justifyContent: 'space-around',
     },
 })
 
