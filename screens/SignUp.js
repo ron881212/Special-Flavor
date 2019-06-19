@@ -33,20 +33,24 @@ static navigationOptions = {
     }
     //123abc is the password
     userSignUp = () => {
-        const { setEmail, setPassword, confirmPassword, setUserName } = this.state  
-        if(setPassword === confirmPassword){
-        this.userInfo = firebase.firestore().collection('userInfo').doc(setUserName)
-        firebase.firestore().runTransaction(async transaction => {
-            const doc = await transaction.get(this.userInfo);
-            // if it does not exist set the population to one
-            if (!doc.exists) {
-              transaction.set(this.userInfo, { userName: setUserName })
-            }
-        })
-        firebase.auth().createUserWithEmailAndPassword(setEmail, setPassword) 
-        }
+      const { setEmail, setPassword, confirmPassword, setUserName } = this.state  
+      if(setPassword === confirmPassword){
+        firebase.auth().createUserWithEmailAndPassword(setEmail, setPassword)
+        .then(success => {
+          if(success){
+            this.userInfo = firebase.firestore().collection('userInfo').doc(setUserName)
+            firebase.firestore().runTransaction(async transaction => {
+                const doc = await transaction.get(this.userInfo);
+                // if it does not exist set the population to one
+                if (!doc.exists) {
+                  transaction.set(this.userInfo, { userName: setUserName })
+                }
+            })
+          }
+        }) 
+      }
     }
-  
+
     render(){
     // const { foo, bar } = this.state
     // const createUser = firebase.auth.createUserWithEmailAndPassword() 
