@@ -15,7 +15,7 @@ class MyAvatar extends React.Component {
     return(
         <View style={styles.avatar}>
             {/* Add onClick that takes us to the profileScreen */}
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Profile')}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('MyProfile')}>
             <Avatar
             rounded
             size={60}

@@ -1,8 +1,14 @@
 import React from 'react' 
-import { View, Text, StyleSheet, TextInput, SafeAreaView } from 'react-native' 
+import { View, 
+  Text, 
+  StyleSheet, 
+  TextInput, 
+  SafeAreaView
+} from 'react-native' 
 import firebase from 'react-native-firebase' 
 import { Button, Input } from 'react-native-elements'
-import Banner from '../Components/Banner'
+import { Avatar } from 'react-native-elements'
+import { withNavigation } from 'react-navigation'
 
 class Profile extends React.Component {
   constructor(){
@@ -12,6 +18,11 @@ class Profile extends React.Component {
       order: null
     }
   }
+static navigationOptions =  {
+  title: 'Profile',
+  // headerLeft: null,
+  // gesturesEnabled: false,
+}
 
   logOut(){
     firebase.auth().signOut()
@@ -32,22 +43,32 @@ class Profile extends React.Component {
     render() {
       return (
         <SafeAreaView style={styles.container}>
-            <Input
-            placeholder='address'
-            onChangeText={(text) => this.setState({address:text})}
+            <Avatar
+              rounded
+              size='xlarge'
+              source={require('../images/testImg.jpeg')}
             />
-            <Input
-            placeholder='order'
-            onChangeText={(text) => this.setState({order:text})}
+            <Text>
+            Name: Ronald Glover
+            </Text>
+            <Text>
+            Phone: 215-555-1017
+            </Text>
+            <Text>
+            Address: 6935 N 15 Street
+            </Text>
+            <View style={styles.container2}>
+          <Button 
+            title='Edit'
+            onPress={()=>this.props.navigation.navigate('Edit')}
+            style={styles.buttons}
             />
           <Button 
-            onPress={()=>this.data()}
-            title='database'
-            />
-          <Button 
+            title='Log Out'
             onPress={()=>this.logOut()}
-            title='log out'
+            style={styles.buttons}
             />
+            </View>
         </SafeAreaView>
       )
     }
@@ -58,7 +79,16 @@ const styles = StyleSheet.create({
       flex: 1,
       alignItems: 'center',
       justifyContent: 'space-around',
+      backgroundColor: 'whitesmoke'
+    },
+    container2: {
+      flexDirection: 'row'
+    },
+    buttons: {
+      margin: 10,
+      height: 50,
+      width: 155
     },
 })
 
-export default Profile;
+export default withNavigation(Profile)

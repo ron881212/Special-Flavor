@@ -1,0 +1,110 @@
+import React from 'react' 
+import { 
+    View, 
+    Text, 
+    StyleSheet, 
+    TextInput, 
+    SafeAreaView, 
+    TouchableOpacity
+} from 'react-native' 
+import firebase from 'react-native-firebase' 
+import { Button, Input } from 'react-native-elements'
+import { Avatar } from 'react-native-elements'
+import { withNavigation } from 'react-navigation'
+
+class EditProfile extends React.Component {
+  constructor(){
+    super()
+    this.state = {
+      user: null,  
+      name: null,
+      phone: null,
+      address: null
+    }
+  }
+static navigationOptions =  {
+  title: 'Edit Profile',
+  // headerLeft: null,
+  // gesturesEnabled: false,
+}
+
+  logOut(){
+    firebase.auth().signOut()
+  }
+
+  data = () => {
+    const { name, phone, address, user } = this.state
+    const email = firebase.auth().currentUser.email
+    // // this is an atempt to use display name as a doc in firestore
+    // // or use email
+    this.userInfo = firebase.firestore().collection('userInfo').doc(email)
+    firebase.firestore().runTransaction(async transaction => {
+        const doc = await transaction.get(this.userInfo);
+        // if it does not exist set the population to one
+        if (doc.exists) {
+          transaction.update(this.userInfo, 
+              { Name: name, Phone: phone, Address: address }
+          )
+        }
+    })
+    // alert(firebase.auth().currentUser.email)
+  }
+  
+    render() {
+      return (
+        <SafeAreaView style={styles.container}>
+            <TouchableOpacity>
+            <Avatar
+              rounded
+              showEditButton
+              size='xlarge'
+              source={require('../images/testImg.jpeg')}
+            />
+            </TouchableOpacity>
+            <Input
+            placeholder='Name'
+            onChangeText={(nameText) => this.setState({name: nameText})}
+            />
+            <Input
+            placeholder='Phone'
+            onChangeText={(phoneText) => this.setState({phone: phoneText})}
+            />
+            <Input
+            placeholder='Address'
+            onChangeText={(addressText) => this.setState({address: addressText})}
+            />
+            <View style={styles.container2}>
+          <Button 
+            title='Submit'
+            onPress={()=>this.data()}
+            style={styles.buttons}
+            />
+          <Button 
+            title='Log Out'
+            onPress={()=>this.logOut()}
+            style={styles.buttons}
+            />
+            </View>
+        </SafeAreaView>
+      )
+    }
+}
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'space-around',
+      backgroundColor: 'whitesmoke'
+    },
+    container2: {
+      flexDirection: 'row'
+    },
+    buttons: {
+      margin: 10,
+      height: 50,
+      width: 155
+    },
+})
+
+export default withNavigation(EditProfile)

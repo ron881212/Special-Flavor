@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, View } from 'react-native'
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import Ionicons from 'react-native-vector-icons/Feather'
 import { 
   createBottomTabNavigator, 
   createAppContainer,
@@ -12,6 +12,7 @@ import AdultScreen from '../screens/Adults'
 import MerchScreen from '../screens/Merch'
 import ProfileScreen from '../screens/Profile'
 import ShopScreen from '../screens/Shopping'
+import EditProfile from '../screens/EditProfile'
 
 class IconWithBadge extends React.Component {
   render() {
@@ -54,14 +55,14 @@ const getTabBarIcon = (navigation, focused, tintColor) => {
   let IconComponent = Ionicons
   let iconName
   if (routeName === 'Flavors') {
-    iconName = `ios-information-circle`
+    iconName = `book`
     IconComponent = HomeIconWithBadge
   } else if (routeName === 'Adults') {
-    iconName = `ios-options`
+    iconName = `inbox`
   } else if (routeName === 'Merch') {
-    iconName = `ios-options`
+    iconName = `gift`
   } else if (routeName === 'Profile') {
-    iconName = `ios-options`
+    iconName = `user-plus`
   }
 
   // You can return any component that you like here!
@@ -69,10 +70,16 @@ const getTabBarIcon = (navigation, focused, tintColor) => {
 }
 
 
-// const Flavors = createStackNavigator({
-//   Flavors: { screen: FlavorScreen },  
-//   Shop: { screen: ShopScreen }
-// })
+const Profile = createStackNavigator(
+  {
+    MyProfile: { screen: ProfileScreen },  
+    Edit: { screen: EditProfile },
+    Shop: { screen: ShopScreen }
+  },
+    { 
+      initialRouteName: 'MyProfile'
+    },
+)
 // const Adults = createStackNavigator({
 //   Adults: { screen: AdultScreen },
 //   Shop: { screen: ShopScreen }
@@ -88,7 +95,7 @@ export default createAppContainer(
       Flavors: { screen: FlavorScreen },
       Adults: { screen: AdultScreen },
       Merch: { screen: MerchScreen },
-      Profile: { screen: ProfileScreen },
+      Profile,
     },
     {
       defaultNavigationOptions: ({ navigation }) => ({
@@ -96,7 +103,7 @@ export default createAppContainer(
           getTabBarIcon(navigation, focused, tintColor),
       }),
       tabBarOptions: {
-        activeTintColor: 'red',
+        activeTintColor: 'purple',
         inactiveTintColor: 'gray',
       },
     }

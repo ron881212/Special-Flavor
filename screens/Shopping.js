@@ -1,12 +1,21 @@
 import React from 'react'
-import { Text, View, SafeAreaView, StyleSheet } from 'react-native'
+import { Text, View, SafeAreaView, StyleSheet, Button } from 'react-native'
+import { withNavigation } from 'react-navigation'
 
-const ShopScreen = props => {
+class ShopScreen extends React.Component {
+static navigationOptions =  {
+    title: 'Shopping Cart',
+    headerLeft: null,
+    gesturesEnabled: false,
+  }
+
+render(){
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <Text>Welcome to the shopping cart!</Text>
-    </SafeAreaView>
+    </View>
   )
+  }
 }
 
 const styles = StyleSheet.create({
@@ -17,4 +26,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default ShopScreen
+export default withNavigation(ShopScreen)

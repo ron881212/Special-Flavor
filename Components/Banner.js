@@ -24,10 +24,11 @@ const Banner = props => {
 const styles = StyleSheet.create({
     banner: {
         width: '100%',
-        flex: 1,
+        flex: 1
     },
     backgroundStyle: {
         position: 'absolute',
+        top: 0,
         width: '100%', 
         height: '25%', 
         backgroundColor:'purple'

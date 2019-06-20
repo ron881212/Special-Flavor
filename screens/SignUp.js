@@ -44,6 +44,8 @@ static navigationOptions = {
                 // if it does not exist set the population to one
                 if (!doc.exists) {
                   transaction.set(this.userInfo, { userName: setUserName })
+                  // this is a test feature
+                  // firebase.auth().currentUser.displayName = setUserName
                 }
             })
           }
