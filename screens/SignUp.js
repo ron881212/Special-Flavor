@@ -38,14 +38,14 @@ static navigationOptions = {
         firebase.auth().createUserWithEmailAndPassword(setEmail, setPassword)
         .then(success => {
           if(success){
-            this.userInfo = firebase.firestore().collection('userInfo').doc(setUserName)
+            email = firebase.auth().currentUser.email
+            this.userInfo = firebase.firestore().collection('Users').doc(email)
             firebase.firestore().runTransaction(async transaction => {
                 const doc = await transaction.get(this.userInfo);
                 // if it does not exist set the population to one
                 if (!doc.exists) {
                   transaction.set(this.userInfo, { userName: setUserName })
                   // this is a test feature
-                  // firebase.auth().currentUser.displayName = setUserName
                 }
             })
           }

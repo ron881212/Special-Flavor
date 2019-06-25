@@ -32,24 +32,30 @@ static navigationOptions =  {
     firebase.auth().signOut()
   }
 
+  ProfilePage(){
+    this.props.navigation.navigate('MyProfile')
+  }
+
   data = () => {
     const { name, phone, address, user } = this.state
     const email = firebase.auth().currentUser.email
     // // this is an atempt to use display name as a doc in firestore
     // // or use email
-    this.userInfo = firebase.firestore().collection('userInfo').doc(email)
+    this.userInfo = firebase.firestore().collection('Users').doc(email)
     firebase.firestore().runTransaction(async transaction => {
-        const doc = await transaction.get(this.userInfo);
+        const doc = await transaction.get(this.userInfo)
         // if it does not exist set the population to one
         if (doc.exists) {
           transaction.update(this.userInfo, 
               { Name: name, Phone: phone, Address: address }
           )
+          this.ProfilePage()
         }
     })
     // alert(firebase.auth().currentUser.email)
+    // use context
   }
-  
+
     render() {
       return (
         <SafeAreaView style={styles.container}>

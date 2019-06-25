@@ -14,9 +14,12 @@ class Profile extends React.Component {
   constructor(){
     super()
     this.state = {
-      address: null,
-      order: null
+      name: null,
+      phone: null,
+      address: null
     }
+    const email = firebase.auth().currentUser.email    
+    this.ref = firebase.firestore().collection('Users').doc(email)
   }
 static navigationOptions =  {
   title: 'Profile',
@@ -24,23 +27,27 @@ static navigationOptions =  {
   // gesturesEnabled: false,
 }
 
+  componentDidMount() {
+    this.ref.onSnapshot(userInfo => {
+      this.setState({
+        name: userInfo._data.Name,
+        phone: userInfo._data.Phone,
+        address: userInfo._data.Address
+      })
+    })
+  }
+
+  componentWillUpdate(newProps, newState){
+    console.log('newProps', newProps)
+    console.log('newState', newState)
+    
+  }
   logOut(){
     firebase.auth().signOut()
   }
 
-  data = () => {
-    const { address, order } = this.state
-    // use context to maintain doc name to keep user info seperate
-    this.userInfo = firebase.firestore().collection('userInfo').doc('My Unique Name')
-      firebase.firestore().runTransaction(async transaction => {
-          const doc = await transaction.get(this.userInfo);
-          // if it does not exist set the population to one
-          if (doc.exists) {
-            transaction.update(this.userInfo, { adresses: address, orders: order })
-          }
-      })
-  }
-    render() {
+    render() {   
+ 
       return (
         <SafeAreaView style={styles.container}>
             <Avatar
@@ -48,15 +55,15 @@ static navigationOptions =  {
               size='xlarge'
               source={require('../images/testImg.jpeg')}
             />
-            <Text>
-            Name: Ronald Glover
-            </Text>
-            <Text>
-            Phone: 215-555-1017
-            </Text>
-            <Text>
-            Address: 6935 N 15 Street
-            </Text>
+              <Text>
+              Name: {this.state.name}
+              </Text>
+              <Text>
+              Phone: {this.state.phone}
+              </Text>
+              <Text>
+              Address: {this.state.address}
+              </Text>
             <View style={styles.container2}>
           <Button 
             title='Edit'

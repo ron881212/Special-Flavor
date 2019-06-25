@@ -23,14 +23,11 @@ const Banner = props => {
 // banner needs to be absolute and start at the top with a fixed height and width
 const styles = StyleSheet.create({
     banner: {
-        width: '100%',
-        flex: 1
+        flex: 1,
+        width: '100%'
     },
     backgroundStyle: {
-        position: 'absolute',
-        top: 0,
-        width: '100%', 
-        height: '25%', 
+        flex: 1,
         backgroundColor:'purple'
     }
 })

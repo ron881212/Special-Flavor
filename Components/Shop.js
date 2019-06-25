@@ -6,8 +6,10 @@ import {
     StyleSheet,
     TouchableOpacity
 } from 'react-native'
-import { Icon } from 'react-native-elements'
+import { Icon, withBadge } from 'react-native-elements'
 import { withNavigation } from 'react-navigation'
+
+const Shop = withBadge(1)(Icon)
 
 class ShoppingCart extends React.Component {
     render(){
@@ -15,11 +17,12 @@ class ShoppingCart extends React.Component {
         <View style={styles.cart}>
             {/* Add onClick that takes us to the shopScreen */}
             <TouchableOpacity onPress={() => this.props.navigation.navigate('Shop')}>
-            <Icon
+            <Shop
                 name='shopping-bag'
                 type='feather'
                 color='#517fa4'
                 reverse={true}
+                containerStyle={{position: 'absolute', top: -7, right: -20}}
             />    
             </TouchableOpacity>          
         </View>
@@ -31,7 +34,7 @@ const styles = StyleSheet.create({
     cart: {
         position: 'absolute',
         top: 75,
-        right: 15,
+        right: 25,
     },
 })
 

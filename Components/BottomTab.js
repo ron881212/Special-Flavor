@@ -89,7 +89,7 @@ const Profile = createStackNavigator(
 //   Shop: { screen: ShopScreen }
 // })
 
-export default createAppContainer(
+const Nav = createAppContainer(
   createBottomTabNavigator(
     {
       Flavors: { screen: FlavorScreen },
@@ -109,3 +109,11 @@ export default createAppContainer(
     }
   )
 )
+
+class BottomNav extends React.Component {
+  render() {
+    return <Nav />
+  }
+}
+
+export default BottomNav
