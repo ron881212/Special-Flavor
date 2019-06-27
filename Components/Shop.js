@@ -16,7 +16,8 @@ class ShoppingCart extends React.Component {
     return(
         <View style={styles.cart}>
             {/* Add onClick that takes us to the shopScreen */}
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Shop')}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Shop')
+            }>
             <Shop
                 name='shopping-bag'
                 type='feather'

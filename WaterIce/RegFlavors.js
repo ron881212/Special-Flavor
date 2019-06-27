@@ -30,16 +30,17 @@ const RegFlavors = props => {
         console.log('====================================')
     }
 
-    const ShowFlavors = newFlavors.map((flavor, i) => 
-        <ItemCard 
-        // title={flavor}
-        // index={i}
-        />
-    )
+    // const ShowFlavors = newFlavors.map((flavor, i) => 
+    //     <ItemCard 
+    //     title={flavor}
+    //     index={i}
+    //     />
+    // )
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
-        {ShowFlavors}
+        {/* {ShowFlavors} */}
+        <ItemCard />
       </ScrollView> 
     )
 }
