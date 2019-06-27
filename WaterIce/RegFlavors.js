@@ -17,7 +17,7 @@ const RegFlavors = props => {
 
     useEffect(() => {
         start()
-    }, [ShowFlavors])
+    }, [])
 
     const start = async () => {
         const getFlavors = await firebase.firestore().collection('Flavors').get()
@@ -33,7 +33,7 @@ const RegFlavors = props => {
     const ShowFlavors = newFlavors.map((flavor, i) => 
         <ItemCard 
         // title={flavor}
-        index={i}
+        // index={i}
         />
     )
 

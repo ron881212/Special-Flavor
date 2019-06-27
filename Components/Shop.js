@@ -9,7 +9,7 @@ import {
 import { Icon, withBadge } from 'react-native-elements'
 import { withNavigation } from 'react-navigation'
 
-const Shop = withBadge(1)(Icon)
+const Shop = withBadge(2)(Icon)
 
 class ShoppingCart extends React.Component {
     render(){

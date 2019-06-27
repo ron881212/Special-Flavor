@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "294763033244",
+    "firebase_url": "https://special-flavors.firebaseio.com",
+    "project_id": "special-flavors",
+    "storage_bucket": "special-flavors.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:294763033244:android:bf0aa80ff519b987",
+        "android_client_info": {
+          "package_name": "com.flavors"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "294763033244-kgqrecrv77509vfdik2jtkira1parmqh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2AtqueVDZURxtrB1C2OQe5PR7OWv3anE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "294763033244-kgqrecrv77509vfdik2jtkira1parmqh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "294763033244-rkts5jhasm3pr7h6kbt9u6f4f8dk2bm9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.Special.Flavors"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

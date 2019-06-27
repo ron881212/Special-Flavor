@@ -14,6 +14,9 @@ import com.facebook.soloader.SoLoader;
 import java.util.Arrays;
 import java.util.List;
 
+import io.invertase.firebase.auth.RNFirebaseAuthPackage; 
+import io.invertase.firebase.firestore.RNFirebaseFirestorePackage;
+
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
@@ -28,7 +31,9 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new VectorIconsPackage(),
             new RNFirebasePackage(),
-            new RNGestureHandlerPackage()
+            new RNGestureHandlerPackage(),
+            new RNFirebaseAuthPackage(),
+            new RNFirebaseFirestorePackage()
       );
     }
 
