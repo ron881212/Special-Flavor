@@ -8,6 +8,7 @@ import {
 } from 'react-native'
 import firebase from 'react-native-firebase' 
 import { Card, ListItem, Button, Icon, Image } from 'react-native-elements'
+import ItemCard from '../Components/ItemCard'
 
 const RegFlavors = props => {
     
@@ -16,7 +17,7 @@ const RegFlavors = props => {
 
     useEffect(() => {
         start()
-    }, [])
+    }, [ShowFlavors])
 
     const start = async () => {
         const getFlavors = await firebase.firestore().collection('Flavors').get()
@@ -29,31 +30,16 @@ const RegFlavors = props => {
         console.log('====================================')
     }
 
+    const ShowFlavors = newFlavors.map((flavor, i) => 
+        <ItemCard 
+        // title={flavor}
+        index={i}
+        />
+    )
+
     return (
       <ScrollView contentContainerStyle={styles.container}>
-        { newFlavors.map((flavor, i) => (
-        <Card
-            key={i}
-            title='BlackBerry'
-            image={{uri: 'https://www.seriouseats.com/2018/05/20180529-blackberry-ice-cream-vicky-wasik-17-1500x1125.jpg'}}>
-            <Text style={{marginBottom: 10}}>
-                I'm African-American, I'm African
-                I'm black as the heart of a fuckin' Aryan
-                I'm black as the name of Tyrone and Dareous
-            </Text>
-            <Button
-              icon={<Icon 
-                name='shopping-cart' 
-                color='#ffffff' />}
-              backgroundColor='#03A9F4'
-              buttonStyle={{
-                  borderRadius: 0, 
-                  marginLeft: 0, 
-                  marginRight: 0, 
-                  marginBottom: 0}}
-              title=' Add to Shopping Cart' />
-        </Card>
-        ))}
+        {ShowFlavors}
       </ScrollView> 
     )
 }
@@ -62,7 +48,13 @@ const styles = StyleSheet.create({
     container: {
       position: 'relative',
       padding: 0
-    }
+    },
+    container2: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        backgroundColor: 'whitesmoke'
+    },
 })
 
 export default RegFlavors;
