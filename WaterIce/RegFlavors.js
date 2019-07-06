@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { 
-    Text, 
+    FlatList, 
     View, 
     SafeAreaView, 
     StyleSheet, 
@@ -11,9 +11,10 @@ import { Card, ListItem, Button, Icon, Image } from 'react-native-elements'
 import ItemCard from '../Components/ItemCard'
 
 const RegFlavors = props => {
-    
+
     const [flavors, setFlavors] = useState([])
-    const [newFlavors, setNewFlavors] = useState([])
+    const [searchFlavors, setSearchFlavors] = useState([])
+    const [isSearching, setIsSearching] = useState(false)
 
     useEffect(() => {
         start()
@@ -22,39 +23,62 @@ const RegFlavors = props => {
     const start = async () => {
         const getFlavors = await firebase.firestore().collection('Flavors').get()
         getFlavors.docs.forEach( doc => {
-            setFlavors(flavors.push(doc.id))
-            setNewFlavors(newFlavors.concat([flavors]))
+            setFlavors([...flavors, flavors.push({
+                names: doc.id,
+                image: doc._data.image,
+                details: doc._data.description
+        })])
+            // console.log(doc._data.image)
         })
         console.log('====================================')
         console.log(flavors)
         console.log('====================================')
     }
 
-    // const ShowFlavors = newFlavors.map((flavor, i) => 
-    //     <ItemCard 
-    //     title={flavor}
-    //     index={i}
-    //     />
-    // )
+    // const regSearchFlavors = () => {
+
+
+    // }
 
     return (
+    !isSearching ?
+
       <ScrollView contentContainerStyle={styles.container}>
-        {/* {ShowFlavors} */}
-        <ItemCard />
-      </ScrollView> 
+        {/* import itemCard to Searchbar put searched items into a card;
+            searchFlavors ? newFlatlist : original Flatlist; // okay
+            grab searchbar component use props for onchangetext and vaule;
+            move state and updateSearch to this component;
+
+        */}
+        <FlatList
+            data={flavors}
+            keyExtractor={(flavors,i) => i}
+            // numColumns='2'
+            // columnWrapperStyle={styles.card}
+            renderItem={({item}) => 
+            <ItemCard
+                name={item.names}
+                pic={{uri: item.image}}
+                discription={item.details || null}
+                // iconName={}
+            />
+            }
+        />
+      </ScrollView> : null
     )
 }
 
+// card Not in use.  This is for changing the columns
 const styles = StyleSheet.create({
     container: {
       position: 'relative',
-      padding: 0
+      alignItems: 'center',
+      justifyContent: 'center',
     },
-    container2: {
+    card: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'space-around',
-        backgroundColor: 'whitesmoke'
+        justifyContent: 'center',
     },
 })
 

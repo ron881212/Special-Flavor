@@ -19,7 +19,7 @@ class ShoppingCart extends React.Component {
             <TouchableOpacity onPress={() => this.props.navigation.navigate('Shop')
             }>
             <Shop
-                name='shopping-bag'
+                name='shopping-cart'
                 type='feather'
                 color='#517fa4'
                 reverse={true}

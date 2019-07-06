@@ -10,29 +10,47 @@ import firebase from 'react-native-firebase'
 import { Card, ListItem, Button, Icon, Image } from 'react-native-elements'
 
 const ItemCard = props => {
+
+    const [newIcon, setIcon] = useState(false)
+    const [cartTitle, setCartTitle] = useState(false)
+
+    const Added = () => {
+        setIcon(!newIcon)
+        setCartTitle(!cartTitle)
+    }
+
     return(
+        <View>
         <Card
-            key={props.index}
-            title='Black Berry'
-            image={{uri: 'https://www.seriouseats.com/2018/05/20180529-blackberry-ice-cream-vicky-wasik-17-1500x1125.jpg'}}>
-            <Text style={{marginBottom: 10}}>
-                I'm African-American, I'm African
-                I'm black as the heart of a fuckin' Aryan
-                I'm black as the name of Tyrone and Dareous
+            title={props.name}
+            image={props.pic}
+            containerStyle={styles.card}
+            >
+            <Text style={{marginBottom: 10, textAlign: 'center'}}>
+                {props.discription}
             </Text>
             <Button
               icon={<Icon 
-                name='shopping-cart' 
-                color='#ffffff' />}
+                name={(newIcon === false) ? 'shopping-bag' : 'check-square'} 
+                color='#ffffff' 
+                type='feather'/>}
               backgroundColor='#03A9F4'
               buttonStyle={{
                   borderRadius: 0, 
                   marginLeft: 0, 
                   marginRight: 0, 
                   marginBottom: 0}}
-              title=' Add to Shopping Cart' />
+              title={(cartTitle === false) ? ' Add To Cart' : ' Added!'}
+              onPress={Added} />
         </Card>
+        </View>
     )
 }
+
+const styles = StyleSheet.create({
+    card: {
+        width: 350
+    },
+})
 
 export default ItemCard

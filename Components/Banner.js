@@ -4,18 +4,18 @@ import {
     View,
     StyleSheet, 
     ImageBackground,
+    Image,
     ScrollView
 } from 'react-native';
 
 const Banner = props => {
     return (
         <View style={styles.banner}>
-        <ImageBackground
+        <Image
         source={require('../images/SpecialFlavorsLogo.png')} 
         style={styles.backgroundStyle}
-        imageStyle={{height: '100%'}}
         >
-        </ImageBackground>
+        </Image>
         </View>
     )
 }
@@ -24,11 +24,12 @@ const Banner = props => {
 const styles = StyleSheet.create({
     banner: {
         flex: 1,
-        width: '100%'
     },
     backgroundStyle: {
         flex: 1,
-        backgroundColor:'purple'
+        backgroundColor:'purple',
+        position: 'relative',
+        alignItems: 'center',
     }
 })
 
