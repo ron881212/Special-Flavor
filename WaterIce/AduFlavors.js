@@ -15,10 +15,7 @@ const AduFlavors = props => {
             title='Blue Print'
             image={{uri: 'https://forgottencocktails.com/wp-content/uploads/sites/2/2018/01/rosemaryblue.jpg'}}>
             <Text style={{marginBottom: 10}}>
-                You see me drinking alkene
-                By any means I gave you a design
-                I even titled it I put it on my part of the shine
-                Keep shit going every morning I try
+                Would be text from the database
             </Text>
             <Button
               icon={<Icon 

@@ -13,7 +13,7 @@ import ItemCard from '../Components/ItemCard'
 const RegFlavors = props => {
 
     const [flavors, setFlavors] = useState([])
-    const [searchFlavors, setSearchFlavors] = useState([])
+    const [regSearchFlavors, setRegSearchFlavors] = useState([])
     const [isSearching, setIsSearching] = useState(false)
 
     useEffect(() => {

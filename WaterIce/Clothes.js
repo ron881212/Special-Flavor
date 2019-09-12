@@ -15,10 +15,7 @@ const Clothes = props => {
             title='Supreme Red Hoodie'
             image={{uri: 'https://www.kicksgo.net/Supreme-Red-White-Sleeve-Logo-Blue-Hoodie/a820_ds_t8h6bo.jpg'}}>
             <Text style={{marginBottom: 10}}>
-                Two-door coupe
-                Hoppin' out like Jack-in-the-Box, nigga
-                I'm gon' shoot
-                If this thirty's all that I got, nigga
+            Would be text from the database
             </Text>
             <Button
               icon={<Icon 

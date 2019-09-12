@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { 
     Text, 
     View, 
@@ -10,7 +10,6 @@ import firebase from 'react-native-firebase'
 import { Card, ListItem, Button, Icon, Image } from 'react-native-elements'
 
 const ItemCard = props => {
-
     const [newIcon, setIcon] = useState(false)
     const [cartTitle, setCartTitle] = useState(false)
 
@@ -40,7 +39,7 @@ const ItemCard = props => {
                   marginLeft: 0, 
                   marginRight: 0, 
                   marginBottom: 0}}
-              title={(cartTitle === false) ? ' Add To Cart' : ' Added!'}
+              title={(cartTitle === false) ? ' Add To Cart' : ' Added!' }
               onPress={Added} />
         </Card>
         </View>
