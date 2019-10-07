@@ -1,9 +1,12 @@
 import React from 'react' 
-import { View, Text, StyleSheet, TextInput } from 'react-native' 
 import firebase from 'react-native-firebase' 
 import Login from './screens/Login' 
 import BottomTab from './Components/BottomTab'
-import { Button, Input } from 'react-native-elements'
+// import { createStore } from 'redux';
+// import { Provider } from 'react-redux'
+// import reducers from './redux/reducers'
+
+// const store = createStore(reducers)
 
 class App extends React.Component {
 
@@ -37,7 +40,9 @@ class App extends React.Component {
     }
 
     return (
+      // <Provider store={store}>
         <BottomTab />
+      // </Provider>
     ) 
   }
 }
