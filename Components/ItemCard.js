@@ -40,6 +40,7 @@ const ItemCard = props => {
                   marginRight: 0, 
                   marginBottom: 0}}
               title={(cartTitle === false) ? ' Add To Cart' : ' Added!' }
+              // onpress should be a function that takes ()=> { Added,this.props.added } so I can move the payload
               onPress={Added} />
         </Card>
         </View>

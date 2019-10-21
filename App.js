@@ -2,11 +2,9 @@ import React from 'react'
 import firebase from 'react-native-firebase' 
 import Login from './screens/Login' 
 import BottomTab from './Components/BottomTab'
-// import { createStore } from 'redux';
-// import { Provider } from 'react-redux'
-// import reducers from './redux/reducers'
-
-// const store = createStore(reducers)
+import store from './store'
+import { Provider } from 'react-redux'
+// import ShoppingCart from './Components/Shop'
 
 class App extends React.Component {
 
@@ -40,9 +38,9 @@ class App extends React.Component {
     }
 
     return (
-      // <Provider store={store}>
+      <Provider store={store}>
         <BottomTab />
-      // </Provider>
+      </Provider>
     ) 
   }
 }

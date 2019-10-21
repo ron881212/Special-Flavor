@@ -8,11 +8,13 @@ import {
 } from 'react-native'
 import { Icon, withBadge } from 'react-native-elements'
 import { withNavigation } from 'react-navigation'
-
-const Shop = withBadge(2)(Icon)
+import { connect } from 'react-redux'
 
 class ShoppingCart extends React.Component {
     render(){
+
+    const Shop = withBadge(this.props.cartItems.length)(Icon)
+
     return(
         <View style={styles.cart}>
             {/* Add onClick that takes us to the shopScreen */}
@@ -31,6 +33,12 @@ class ShoppingCart extends React.Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+        cartItems: state
+    }
+}
+
 const styles = StyleSheet.create({
     cart: {
         position: 'absolute',
@@ -39,4 +47,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default withNavigation(ShoppingCart)
+export default connect(mapStateToProps)(withNavigation(ShoppingCart))

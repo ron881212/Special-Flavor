@@ -9,6 +9,7 @@ import {
 import firebase from 'react-native-firebase' 
 import { Card, ListItem, Button, Icon, Image } from 'react-native-elements'
 import ItemCard from '../Components/ItemCard'
+import { connect } from 'react-redux'
 
 const RegFlavors = props => {
 
@@ -61,11 +62,19 @@ const RegFlavors = props => {
                 pic={{uri: item.image}}
                 discription={item.details || null}
                 // iconName={}
+                //onPress here!
             />
             }
         />
       </ScrollView> : null
     )
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return{
+        addItemToCart:(product) => dispatch({type:'ADD_TO_CART',
+        payload:product})
+    }
 }
 
 // card Not in use.  This is for changing the columns
@@ -82,4 +91,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default RegFlavors;
+export default connect(null, mapDispatchToProps)(RegFlavors)

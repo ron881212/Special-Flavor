@@ -6,7 +6,7 @@ import {
   createAppContainer,
   createStackNavigator
 } from 'react-navigation'
-
+import shoppingCart from '../Components/Shop'
 import FlavorScreen from '../screens/Flavors'
 import AdultScreen from '../screens/Adults'
 import MerchScreen from '../screens/Merch'
@@ -101,6 +101,7 @@ const Nav = createAppContainer(
       defaultNavigationOptions: ({ navigation }) => ({
         tabBarIcon: ({ focused, tintColor }) =>
           getTabBarIcon(navigation, focused, tintColor),
+        // headerRight: (<shoppingCart />)
       }),
       tabBarOptions: {
         activeTintColor: 'purple',
