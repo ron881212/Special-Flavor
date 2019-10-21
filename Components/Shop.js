@@ -13,7 +13,8 @@ import { connect } from 'react-redux'
 class ShoppingCart extends React.Component {
     render(){
 
-    const Shop = withBadge(this.props.cartItems.length)(Icon)
+    // I would rather have no show of badge when cart is empty
+    const Shop = withBadge(this.props.cartItems.length || null)(Icon)
 
     return(
         <View style={styles.cart}>

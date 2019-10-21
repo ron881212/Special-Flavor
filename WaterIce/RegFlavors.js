@@ -62,7 +62,7 @@ const RegFlavors = props => {
                 pic={{uri: item.image}}
                 discription={item.details || null}
                 // iconName={}
-                //onPress here!
+                toCart={props.addItemToCart}
             />
             }
         />

@@ -40,8 +40,8 @@ const ItemCard = props => {
                   marginRight: 0, 
                   marginBottom: 0}}
               title={(cartTitle === false) ? ' Add To Cart' : ' Added!' }
-              // onpress should be a function that takes ()=> { Added,this.props.added } so I can move the payload
-              onPress={Added} />
+              // onpress replace props.name with an object that contains all waterIce info
+              onPress={ () => {props.toCart(props.name), Added() }} />
         </Card>
         </View>
     )
