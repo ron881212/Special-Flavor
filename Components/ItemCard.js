@@ -4,7 +4,8 @@ import {
     View, 
     SafeAreaView, 
     StyleSheet, 
-    ScrollView 
+    ScrollView,
+    Dimensions
 } from 'react-native'
 import firebase from 'react-native-firebase' 
 import { Card, ListItem, Button, Icon, Image } from 'react-native-elements'
@@ -21,11 +22,13 @@ const ItemCard = props => {
     return(
         <View>
         <Card
-            title={props.name}
+            // title name font needs to be smaller
+            // title={props.name}
+            // all images need a fixed size
             image={props.pic}
             containerStyle={styles.card}
             >
-            <Text style={{marginBottom: 10, textAlign: 'center'}}>
+            <Text style={{marginBottom: 10, textAlign: 'center', fontSize: 12}}>
                 {props.discription}
             </Text>
             <Button
@@ -34,6 +37,7 @@ const ItemCard = props => {
                 color='#ffffff' 
                 type='feather'/>}
               backgroundColor='#03A9F4'
+              // all buttons need a fixed size
               buttonStyle={{
                   borderRadius: 0, 
                   marginLeft: 0, 
@@ -49,7 +53,12 @@ const ItemCard = props => {
 
 const styles = StyleSheet.create({
     card: {
-        width: 350
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        width: '95%',
+        height: 'auto'
     },
 })
 

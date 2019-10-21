@@ -4,7 +4,8 @@ import {
     View, 
     SafeAreaView, 
     StyleSheet, 
-    ScrollView 
+    ScrollView,
+    Dimensions
 } from 'react-native'
 import firebase from 'react-native-firebase' 
 import { Card, ListItem, Button, Icon, Image } from 'react-native-elements'
@@ -29,22 +30,19 @@ const RegFlavors = props => {
                 image: doc._data.image,
                 details: doc._data.description
         })])
-            // console.log(doc._data.image)
+           
         })
         console.log('====================================')
         console.log(flavors)
         console.log('====================================')
     }
 
-    // const regSearchFlavors = () => {
-
-
-    // }
-
     return (
     !isSearching ?
 
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView 
+      contentContainerStyle={styles.container}
+      >
         {/* import itemCard to Searchbar put searched items into a card;
             searchFlavors ? newFlatlist : original Flatlist; // okay
             grab searchbar component use props for onchangetext and vaule;
@@ -53,20 +51,23 @@ const RegFlavors = props => {
         */}
         <FlatList
             data={flavors}
-            keyExtractor={(flavors,i) => i}
-            // numColumns='2'
-            // columnWrapperStyle={styles.card}
+            keyExtractor={(item, index) => index.toString()}
+            numColumns='2'
+            // columnWrapperStyle={styles.container}
             renderItem={({item}) => 
             <ItemCard
                 name={item.names}
                 pic={{uri: item.image}}
                 discription={item.details || null}
-                // iconName={}
                 toCart={props.addItemToCart}
             />
             }
         />
-      </ScrollView> : null
+      </ScrollView>
+
+      :
+
+      null
     )
 }
 
@@ -77,17 +78,21 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-// card Not in use.  This is for changing the columns
+// the styling is being handled in the ItemCard file
 const styles = StyleSheet.create({
     container: {
       position: 'relative',
       alignItems: 'center',
       justifyContent: 'center',
+      paddingBottom: 175
     },
     card: {
         flex: 1,
+        flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
+        width: '100%',
+        height: 'auto'
     },
 })
 
