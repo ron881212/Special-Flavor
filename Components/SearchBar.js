@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
         
     },
     text: {
-        color: 'purple', 
+        color: 'black', 
         // lightTheme: true
     }
 })

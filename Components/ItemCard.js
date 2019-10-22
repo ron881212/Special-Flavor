@@ -23,9 +23,11 @@ const ItemCard = props => {
         <View>
         <Card
             // title name font needs to be smaller
-            // title={props.name}
+            title={props.name}
+            titleStyle={styles.title}
             // all images need a fixed size
             image={props.pic}
+            imageWrapperStyle={styles.image}
             containerStyle={styles.card}
             >
             <Text style={{marginBottom: 10, textAlign: 'center', fontSize: 12}}>
@@ -51,15 +53,26 @@ const ItemCard = props => {
     )
 }
 
+const cardWidth = Dimensions.get('window').width / 2.4
+
 const styles = StyleSheet.create({
     card: {
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'flex-start',
-        width: '95%',
-        height: 'auto'
+        justifyContent: 'center',
+        width: cardWidth,
+        // height: 'auto'
     },
+    title: {
+        display: 'flex',
+        fontSize: 13,
+        justifyContent: 'center',
+    },
+    image: {
+        display: 'flex',
+        justifyContent: 'center',
+    }
 })
 
 export default ItemCard
