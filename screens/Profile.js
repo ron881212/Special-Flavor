@@ -37,11 +37,6 @@ static navigationOptions =  {
     })
   }
 
-  componentWillUpdate(newProps, newState){
-    console.log('newProps', newProps)
-    console.log('newState', newState)
-    
-  }
   logOut(){
     firebase.auth().signOut()
   }

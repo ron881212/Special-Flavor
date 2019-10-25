@@ -39,8 +39,7 @@ static navigationOptions =  {
   data = () => {
     const { name, phone, address, user } = this.state
     const email = firebase.auth().currentUser.email
-    // // this is an atempt to use display name as a doc in firestore
-    // // or use email
+    // // this is an successful atempt to use user email as a doc in firestore
     this.userInfo = firebase.firestore().collection('Users').doc(email)
     firebase.firestore().runTransaction(async transaction => {
         const doc = await transaction.get(this.userInfo)
@@ -49,11 +48,9 @@ static navigationOptions =  {
           transaction.update(this.userInfo, 
               { Name: name, Phone: phone, Address: address }
           )
-          this.ProfilePage()
         }
-    })
-    // alert(firebase.auth().currentUser.email)
-    // use context
+      })
+      this.ProfilePage()
   }
 
     render() {

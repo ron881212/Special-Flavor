@@ -23,8 +23,6 @@ class IconWithBadge extends React.Component {
         {badgeCount > 0 && (
           <View
             style={{
-              // /If you're using react-native < 0.57 overflow outside of the parent
-              // will not work on Android, see https://git.io/fhLJ8
               position: 'absolute',
               right: -6,
               top: -3,
@@ -54,10 +52,10 @@ const getTabBarIcon = (navigation, focused, tintColor) => {
   const { routeName } = navigation.state
   let IconComponent = Ionicons
   let iconName
-  if (routeName === 'Flavors') {
+  if (routeName === 'Water Ice') {
     iconName = `book`
     IconComponent = HomeIconWithBadge
-  } else if (routeName === 'Adults') {
+  } else if (routeName === 'Snacks') {
     iconName = `inbox`
   } else if (routeName === 'Merch') {
     iconName = `gift`
@@ -80,20 +78,12 @@ const Profile = createStackNavigator(
       initialRouteName: 'MyProfile'
     },
 )
-// const Adults = createStackNavigator({
-//   Adults: { screen: AdultScreen },
-//   Shop: { screen: ShopScreen }
-// })
-// const Merch = createStackNavigator({
-//   Merch: { screen: MerchScreen },
-//   Shop: { screen: ShopScreen }
-// })
 
 const Nav = createAppContainer(
   createBottomTabNavigator(
     {
-      Flavors: { screen: FlavorScreen },
-      Adults: { screen: AdultScreen },
+      'Water Ice': { screen: FlavorScreen },
+      Snacks: { screen: AdultScreen },
       Merch: { screen: MerchScreen },
       Profile,
     },
@@ -101,7 +91,6 @@ const Nav = createAppContainer(
       defaultNavigationOptions: ({ navigation }) => ({
         tabBarIcon: ({ focused, tintColor }) =>
           getTabBarIcon(navigation, focused, tintColor),
-        // headerRight: (<shoppingCart />)
       }),
       tabBarOptions: {
         activeTintColor: 'purple',

@@ -1,6 +1,6 @@
 import React from 'react'
-import { Text, View, SafeAreaView, StyleSheet, Dimensions } from 'react-native'
-import { Card, Button, Divider, Avatar, ListItem, ButtonGroup } from 'react-native-elements'
+import { Text, View, SafeAreaView, StyleSheet, Dimensions, ScrollView } from 'react-native'
+import { Card, Button, Divider, Avatar, ListItem, ButtonGroup, Slider } from 'react-native-elements'
 import { withNavigation } from 'react-navigation'
 import RegFlavors from '../WaterIce/RegFlavors'
 import { connect } from 'react-redux'
@@ -14,7 +14,8 @@ class ShopScreen extends React.Component {
   constructor () {
     super()
     this.state = {
-      selectedIndex: 2
+      selectedIndex: 2,
+      value: 1
     }
     this.updateIndex = this.updateIndex.bind(this)
   }
@@ -24,11 +25,12 @@ class ShopScreen extends React.Component {
 render(){
   const total = '$0.00'
   const payment = '     Cash'
-  const img = 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg'
+  const img = 'https://cdn2.stylecraze.com/wp-content/uploads/2013/08/591_13-Best-Benefits-Of-Black-Cherries-For-Skin-Hair-And-Health_iStock-827654834.jpg'
   const buttons = ['Sm', 'Md', 'Lg']
   const { selectedIndex } = this.state
 
   return (
+    <ScrollView style={styles.scrollContainer}>
     <View style={styles.container}>
       {this.props.cartItems.length > -1 ? 
       // here is where I put my custom component that renders shopping cart items with info like price/size, picture, name etc.
@@ -42,23 +44,39 @@ render(){
       <View style={styles.section}><Text style={styles.sectionText}>        Your Payment</Text></View>
       <Card containerStyle={styles.card}><Text>{`Payment* ${payment}`}</Text></Card>
 
-      <Card containerStyle={styles.card}>
+      <Card containerStyle={styles.cartCard} >
         <ListItem
           leftAvatar={{
             source: { uri: img }
           }}
           title="Black Cherry"
           subtitle="Water Ice"
-          chevron
         />
         <ButtonGroup
           onPress={this.updateIndex}
           selectedIndex={selectedIndex}
           buttons={buttons}
+          selectedButtonStyle={{backgroundColor:'#03A9F4'}}
           containerStyle={{height: 25, width: 200}}
         />
+        <View style={styles.slider}>
+          <Slider
+            value={this.state.value}
+            onValueChange={value => this.setState({ value })}
+            minimumValue={1}
+            maximumValue={10}
+            thumbTintColor='#03A9F4'
+            minimumTrackTintColor='#03A9F4'
+            step={1}
+          />
+          <Text style={{height:20}}>Quantity: {this.state.value}</Text>
+        </View>
       </Card>
-      
+
+      <Card containerStyle={styles.card} style={{display:'flex',flexDirection:'column'}}>
+        <Text>Tip*</Text>
+        <Text>{total}</Text>
+      </Card>
 
 
       <Button 
@@ -70,7 +88,7 @@ render(){
         onPress={this.props.removeItem}
         // this will remove cart items
         title = "X"
-        buttonStyle={{marginTop:50, backgroundColor:'#d9534f'}}
+        buttonStyle={{marginTop:20, backgroundColor:'#d9534f'}}
         // this below is where we map the cart items
         // {this.props.cartItems}
       />
@@ -80,6 +98,7 @@ render(){
       :<Text>Welcome to the shopping cart</Text>
       }
     </View>
+    </ScrollView>
   )
   }
 }
@@ -105,19 +124,35 @@ const styles = StyleSheet.create({
     backgroundColor: '#e8e8e8',
     justifyContent: 'flex-start',
   },
+  scrollContainer: {
+    position: 'relative',
+    backgroundColor: '#e8e8e8',
+  },
   section: {
     marginTop: 25,
     width: sectionWidth,
     height: 25,
     backgroundColor: '#dcdcdc',
-    // alignItems: 'stretch'
   },
   sectionText: {
     fontWeight: 'bold',
+    marginTop: 3
   },
   card: {
     display: 'flex',
     flexDirection: 'column',
+    borderRadius: 5,
+    borderColor: 'white',
+    width: sectionWidth / 1.1,
+    shadowColor: 'rgba(0,0,0, .2)',
+    shadowOffset: { height: 0, width: 0 },
+    shadowOpacity: 0, //default is 1
+    shadowRadius: 0
+  },
+  cartCard: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: 200,
     borderRadius: 5,
     borderColor: 'white',
     width: sectionWidth / 1.1,
@@ -131,6 +166,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#5cb85c',
     width: sectionWidth / 1.1,
     marginTop: 25
+  },
+  slider: {
+    flex: 1, 
+    alignItems: 'stretch', 
+    justifyContent: 'center',
+    marginTop: 35
   }
 })
 
