@@ -23,8 +23,8 @@ const AduFlavors = props => {
   }, [])
 
   const first = async () => {
-    // put items in firebase under collection AduFlavors
-      const getAduFlavors = await firebase.firestore().collection('AduFlavors').get()
+    // put items in firebase under collection Adults
+      const getAduFlavors = await firebase.firestore().collection('Adults').get()
       getAduFlavors.docs.forEach( doc => {
         setAduFlavors([...aduFlavors, aduFlavors.push({
               names: doc.id,
@@ -33,9 +33,9 @@ const AduFlavors = props => {
       })])
 
       })
-      console.log('====================================')
-      console.log(aduFlavors)
-      console.log('====================================')
+      // console.log('====================================')
+      // console.log(aduFlavors)
+      // console.log('====================================')
   }
 
     return (
