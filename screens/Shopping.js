@@ -1,9 +1,10 @@
 import React from 'react'
 import { Text, View, SafeAreaView, StyleSheet, Dimensions, ScrollView } from 'react-native'
-import { Card, Button, Divider, Avatar, ListItem, ButtonGroup, Slider } from 'react-native-elements'
+import { Card, Button, Input, Overlay, ListItem, ButtonGroup, Slider, Icon } from 'react-native-elements'
 import { withNavigation } from 'react-navigation'
 import RegFlavors from '../WaterIce/RegFlavors'
 import { connect } from 'react-redux'
+import firebase from 'react-native-firebase' 
 
 class ShopScreen extends React.Component {
   static navigationOptions =  {
@@ -15,9 +16,24 @@ class ShopScreen extends React.Component {
     super()
     this.state = {
       selectedIndex: 2,
-      value: 1
+      value: 1,
+      name: null,
+      phone: null,
+      address: null,
+      instructions: null
     }
     this.updateIndex = this.updateIndex.bind(this)
+    const email = firebase.auth().currentUser.email    
+    this.ref = firebase.firestore().collection('Users').doc(email)
+  }
+  componentDidMount() {
+    this.ref.onSnapshot(userInfo => {
+      this.setState({
+        name: userInfo._data.Name,
+        phone: userInfo._data.Phone,
+        address: userInfo._data.Address
+      })
+    })
   }
   updateIndex (selectedIndex) {
     this.setState({selectedIndex})
@@ -38,11 +54,41 @@ render(){
       <>
       {/* center this text by align center */}
       <View style={styles.section}><Text style={styles.sectionText}>        Your Infomation</Text></View>
-      <Card containerStyle={styles.card}><Text>Contact info</Text></Card>
-      <Card containerStyle={styles.card}><Text>Deliver to*</Text></Card>
-      <Card containerStyle={styles.card}><Text>Ordering instructions</Text></Card>
+
+      <Card containerStyle={styles.card}>
+        <Text>Contact info*</Text>
+        <Text>{this.state.name}</Text>
+        <Text>{this.state.phone}</Text>
+      </Card>
+
+      <Card containerStyle={styles.card}>
+        <Text>Deliver to*</Text>
+        <Text>{this.state.address}</Text>
+      </Card>
+
+      <Card containerStyle={styles.card}>
+        <Text>Ordering instructions</Text>
+        <Input 
+          placeholder='your order instructions'
+          onChangeText={(custom) => this.setState({instructions: custom})}
+        />
+      </Card>
+
       <View style={styles.section}><Text style={styles.sectionText}>        Your Payment</Text></View>
-      <Card containerStyle={styles.card}><Text>{`Payment* ${payment}`}</Text></Card>
+
+      <Card containerStyle={styles.card}>
+        <ListItem
+          chevron
+          title="Payment Options* "
+          
+          badge={{ 
+            value: payment, 
+            textStyle: { color: 'white', fontSize:15, right:10 },
+            badgeStyle: {backgroundColor:'#03A9F4', height:25 }
+
+          }}
+        />
+      </Card>
 
       <Card containerStyle={styles.cartCard} >
         <ListItem
@@ -63,7 +109,7 @@ render(){
           <Slider
             value={this.state.value}
             onValueChange={value => this.setState({ value })}
-            minimumValue={1}
+            minimumValue={0}
             maximumValue={10}
             thumbTintColor='#03A9F4'
             minimumTrackTintColor='#03A9F4'
@@ -147,7 +193,7 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(0,0,0, .2)',
     shadowOffset: { height: 0, width: 0 },
     shadowOpacity: 0, //default is 1
-    shadowRadius: 0
+    shadowRadius: 0,
   },
   cartCard: {
     display: 'flex',

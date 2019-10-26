@@ -42,7 +42,7 @@ static navigationOptions =  {
   }
 
     render() {   
- 
+
       return (
         <SafeAreaView style={styles.container}>
             <Avatar

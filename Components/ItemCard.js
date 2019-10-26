@@ -17,6 +17,7 @@ const ItemCard = props => {
     const Added = () => {
         setIcon(!newIcon)
         setCartTitle(!cartTitle)
+        
     }
 
     return(
@@ -41,13 +42,18 @@ const ItemCard = props => {
               backgroundColor='#03A9F4'
               // all buttons need a fixed size
               buttonStyle={{
-                  borderRadius: 0, 
-                  marginLeft: 0, 
-                  marginRight: 0, 
-                  marginBottom: 0}}
+                borderRadius: 0, 
+                marginLeft: 0, 
+                marginRight: 0, 
+                marginBottom: 0}}
               title={(cartTitle === false) ? ' Add To Cart' : ' Added!' }
               // onpress replace props.name with an object that contains all waterIce info
-              onPress={ () => {props.toCart(props.name), Added() }} />
+              onPress={ !cartTitle ?
+                () => {props.toCart(props.name, props.item, props.pic), Added()}
+                :
+                () => {props.remove(props.name, props.item, props.pic), Added()}
+              }
+            />
         </Card>
         </View>
     )

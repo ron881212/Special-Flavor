@@ -56,9 +56,11 @@ const RegFlavors = props => {
             // columnWrapperStyle={styles.container}
             renderItem={({item}) => 
             <ItemCard
+                item="Water Ice"
                 name={item.names}
                 pic={{uri: item.image}}
                 discription={item.details || null}
+                remove={props.removeItem}
                 toCart={props.addItemToCart}
             />
             }
@@ -71,12 +73,12 @@ const RegFlavors = props => {
     )
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return{
-        addItemToCart:(product) => dispatch({type:'ADD_TO_CART',
-        payload:product})
-    }
-}
+const mapDispatchToProps = (dispatch) => ({
+    addItemToCart:(product) => dispatch({type:'ADD_TO_CART',
+    payload:product}),
+    removeItem: (product) => dispatch({type: 'REMOVE_FROM_CART', 
+    payload: product})
+})
 
 // the styling is being handled in the ItemCard file
 const styles = StyleSheet.create({
