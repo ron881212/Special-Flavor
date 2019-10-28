@@ -8,6 +8,7 @@ import {
     Dimensions
 } from 'react-native'
 import firebase from 'react-native-firebase' 
+import { connect } from 'react-redux'
 import { Card, ListItem, Button, Icon, Image } from 'react-native-elements'
 
 const ItemCard = props => {
@@ -16,8 +17,16 @@ const ItemCard = props => {
 
     const Added = () => {
         setIcon(!newIcon)
-        setCartTitle(!cartTitle)
-        
+        setCartTitle(!cartTitle)  
+    }
+
+    // let index = 0
+
+    let allCartItems = {
+        name: props.name,
+        item: props.item,
+        pic: props.pic,
+        id: props.itemId
     }
 
     return(
@@ -40,7 +49,6 @@ const ItemCard = props => {
                 color='#ffffff' 
                 type='feather'/>}
               backgroundColor='#03A9F4'
-              // all buttons need a fixed size
               buttonStyle={{
                 borderRadius: 0, 
                 marginLeft: 0, 
@@ -49,14 +57,20 @@ const ItemCard = props => {
               title={(cartTitle === false) ? ' Add To Cart' : ' Added!' }
               // onpress replace props.name with an object that contains all waterIce info
               onPress={ !cartTitle ?
-                () => {props.toCart(props.name, props.item, props.pic), Added()}
+                () => {props.toCart(allCartItems), Added()}
                 :
-                () => {props.remove(props.name, props.item, props.pic), Added()}
+                () => {props.remove(allCartItems), Added()}
               }
             />
         </Card>
         </View>
     )
+}
+
+const mapStateToProps = (state) => {
+    return {
+        cartItems: state
+    }
 }
 
 const cardWidth = Dimensions.get('window').width / 2.4
@@ -81,4 +95,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default ItemCard
+export default connect(mapStateToProps)(ItemCard)

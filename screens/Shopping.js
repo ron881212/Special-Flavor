@@ -1,10 +1,12 @@
 import React from 'react'
 import { Text, View, SafeAreaView, StyleSheet, Dimensions, ScrollView } from 'react-native'
-import { Card, Button, Input, Overlay, ListItem, ButtonGroup, Slider, Icon } from 'react-native-elements'
+import { Card, Button, Input, Overlay, ListItem, Slider, Icon } from 'react-native-elements'
 import { withNavigation } from 'react-navigation'
 import RegFlavors from '../WaterIce/RegFlavors'
 import { connect } from 'react-redux'
 import firebase from 'react-native-firebase' 
+import CartButtonGroup from '../Components/CartButtonGroup'
+import Swipeout from 'react-native-swipeout'
 
 class ShopScreen extends React.Component {
   static navigationOptions =  {
@@ -15,14 +17,12 @@ class ShopScreen extends React.Component {
   constructor () {
     super()
     this.state = {
-      selectedIndex: 2,
       value: 1,
       name: null,
       phone: null,
       address: null,
       instructions: null
     }
-    this.updateIndex = this.updateIndex.bind(this)
     const email = firebase.auth().currentUser.email    
     this.ref = firebase.firestore().collection('Users').doc(email)
   }
@@ -34,21 +34,23 @@ class ShopScreen extends React.Component {
         address: userInfo._data.Address
       })
     })
-  }
-  updateIndex (selectedIndex) {
-    this.setState({selectedIndex})
+    // console.log(this.props)
   }
 render(){
   const total = '$0.00'
   const payment = '     Cash'
-  const img = 'https://cdn2.stylecraze.com/wp-content/uploads/2013/08/591_13-Best-Benefits-Of-Black-Cherries-For-Skin-Hair-And-Health_iStock-827654834.jpg'
-  const buttons = ['Sm', 'Md', 'Lg']
-  const { selectedIndex } = this.state
+  const swipeoutBtns = [
+    {
+      text: 'Remove',
+      backgroundColor: '#d9534f',
+      // onPress: this.props.removeItem()
+    }
+  ]
 
   return (
     <ScrollView style={styles.scrollContainer}>
     <View style={styles.container}>
-      {this.props.cartItems.length > -1 ? 
+      {this.props.cartItems.length > 0 ? 
       // here is where I put my custom component that renders shopping cart items with info like price/size, picture, name etc.
       //might have to use a flatlist or map over all items in cart
       <>
@@ -89,35 +91,23 @@ render(){
           }}
         />
       </Card>
-
-      <Card containerStyle={styles.cartCard} >
+      
+      {this.props.cartItems.map(flavor => (
+        <Swipeout backgroundColor="#e8e8e8" right={ swipeoutBtns } autoClose={true}>
+      <Card containerStyle={styles.cartCard}>
+      
         <ListItem
           leftAvatar={{
-            source: { uri: img }
+            source: flavor.item.pic 
           }}
-          title="Black Cherry"
-          subtitle="Water Ice"
+          title={flavor.item.name}
+          subtitle={flavor.item.item}
         />
-        <ButtonGroup
-          onPress={this.updateIndex}
-          selectedIndex={selectedIndex}
-          buttons={buttons}
-          selectedButtonStyle={{backgroundColor:'#03A9F4'}}
-          containerStyle={{height: 25, width: 200}}
-        />
-        <View style={styles.slider}>
-          <Slider
-            value={this.state.value}
-            onValueChange={value => this.setState({ value })}
-            minimumValue={0}
-            maximumValue={10}
-            thumbTintColor='#03A9F4'
-            minimumTrackTintColor='#03A9F4'
-            step={1}
-          />
-          <Text style={{height:20}}>Quantity: {this.state.value}</Text>
-        </View>
+        <CartButtonGroup />
       </Card>
+        </Swipeout>
+      
+      ))}
 
       <Card containerStyle={styles.card} style={{display:'flex',flexDirection:'column'}}>
         <Text>Tip*</Text>
@@ -212,12 +202,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#5cb85c',
     width: sectionWidth / 1.1,
     marginTop: 25
-  },
-  slider: {
-    flex: 1, 
-    alignItems: 'stretch', 
-    justifyContent: 'center',
-    marginTop: 35
   }
 })
 

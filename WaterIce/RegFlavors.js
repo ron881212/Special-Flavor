@@ -20,7 +20,7 @@ const RegFlavors = props => {
 
     useEffect(() => {
         start()
-    }, [])
+    },[])
 
     const start = async () => {
         const getFlavors = await firebase.firestore().collection('Flavors').get()
@@ -32,11 +32,17 @@ const RegFlavors = props => {
         })])
            
         })
-        console.log('====================================')
-        console.log(flavors)
-        console.log('====================================')
+        // console.log('====================================')
+        // console.log(props.cartItems)
+        // console.log('====================================')
     }
 
+    // const setId = (cartId = props.cartItems.id) => {
+    //     return cartId
+    // }
+
+    let index = 0
+    
     return (
     !isSearching ?
 
@@ -53,7 +59,6 @@ const RegFlavors = props => {
             data={flavors}
             keyExtractor={(item, index) => index.toString()}
             numColumns='2'
-            // columnWrapperStyle={styles.container}
             renderItem={({item}) => 
             <ItemCard
                 item="Water Ice"
@@ -62,6 +67,7 @@ const RegFlavors = props => {
                 discription={item.details || null}
                 remove={props.removeItem}
                 toCart={props.addItemToCart}
+                itemId={index++}
             />
             }
         />
@@ -74,11 +80,19 @@ const RegFlavors = props => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    addItemToCart:(product) => dispatch({type:'ADD_TO_CART',
-    payload:product}),
-    removeItem: (product) => dispatch({type: 'REMOVE_FROM_CART', 
-    payload: product})
+    removeItem: (product) => dispatch({
+        type: 'REMOVE_FROM_CART', 
+        payload: product}),
+    addItemToCart:(product) => dispatch({
+        type:'ADD_TO_CART',
+        payload:product})
 })
+
+const mapStateToProps = (state) => {
+    return {
+        cartItems: state
+    }
+}
 
 // the styling is being handled in the ItemCard file
 const styles = StyleSheet.create({
@@ -98,4 +112,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default connect(null, mapDispatchToProps)(RegFlavors)
+export default connect(mapStateToProps, mapDispatchToProps)(RegFlavors)
