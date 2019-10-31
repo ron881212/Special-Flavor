@@ -1,6 +1,8 @@
 import React from 'react'
 import { Text, View } from 'react-native'
 import { ButtonGroup, Slider, Button } from 'react-native-elements'
+import { connect } from 'react-redux'
+import TotalButton from './TotalButton'
 
 class CartButtonGroup extends React.Component {
 constructor () {
@@ -14,6 +16,10 @@ constructor () {
     this.updateIndex = this.updateIndex.bind(this)
     this.updateTotal = this.updateTotal.bind(this)
   }
+
+//   componentDidMount() {
+//     this.props.addToTotal((this.state.price * this.state.value))
+//   }
   
   updateIndex (selectedIndex) {
     this.setState({selectedIndex})
@@ -29,7 +35,9 @@ constructor () {
   }
   updateTotal () {
     this.setState({total: (this.state.price * this.state.value)})
-  }
+    // this.props.addToTotal((this.state.price * this.state.value))
+    console.log(this.props.cartTotal)
+}
   
   render () {
     const buttons = ['Pint', 'Gallon']
@@ -63,4 +71,18 @@ constructor () {
   }
 }
 
-export default CartButtonGroup
+// try to name state something else
+const mapStateToProps = (state) => {
+    return {
+        cartTotal: state
+    }
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  removeItem: (product) => dispatch({type: 'REMOVE_FROM_CART', payload: product}),
+  addToTotal: (price) => dispatch({type: 'ADD_TO_TOTAL', payload: price}),
+  subFromTotal: (price) => dispatch({type: 'REMOVE_TO_TOTAL', payload: price})
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(CartButtonGroup)
+

@@ -6,28 +6,34 @@ import {
     StyleSheet,
     TouchableOpacity
 } from 'react-native'
-import { Icon, withBadge } from 'react-native-elements'
+import { Icon, withBadge, Badge } from 'react-native-elements'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
-
 class ShoppingCart extends React.Component {
     render(){
 
     // I would rather have no show of badge when cart is empty
-    const Shop = withBadge(this.props.cartItems.length || null)(Icon)
+    // const Shop = withBadge(this.props.cartItems.length || null)(Icon)
 
     return(
         <View style={styles.cart}>
             {/* Add onClick that takes us to the shopScreen */}
             <TouchableOpacity onPress={() => this.props.navigation.navigate('Shop')
             }>
-            <Shop
+            <Icon
                 name='shopping-cart'
                 type='feather'
                 color='#517fa4'
                 reverse={true}
                 containerStyle={{position: 'absolute', top: -7, right: -20}}
             />    
+            {this.props.cartItems.length > 0 ? 
+
+            <Badge 
+                value={this.props.cartItems.length} 
+                status="error"
+                badgeStyle={{top:0,left:15}}
+            /> : null }
             </TouchableOpacity>          
         </View>
     )

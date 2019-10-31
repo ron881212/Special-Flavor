@@ -34,18 +34,19 @@ class ShopScreen extends React.Component {
         address: userInfo._data.Address
       })
     })
-    // console.log(this.props)
   }
 render(){
   const total = '$0.00'
   const payment = '     Cash'
-  const swipeoutBtns = [
+  const swipeoutBtns = (item) => {
+  return [
     {
       text: 'Remove',
       backgroundColor: '#d9534f',
-      // onPress: this.props.removeItem()
+      onPress: ()=> this.props.removeItem(item)
     }
   ]
+  }
 
   return (
     <ScrollView style={styles.scrollContainer}>
@@ -87,46 +88,39 @@ render(){
             value: payment, 
             textStyle: { color: 'white', fontSize:15, right:10 },
             badgeStyle: {backgroundColor:'#03A9F4', height:25 }
-
           }}
         />
       </Card>
       
       {this.props.cartItems.map(flavor => (
-        <Swipeout backgroundColor="#e8e8e8" right={ swipeoutBtns } autoClose={true}>
-      <Card containerStyle={styles.cartCard}>
-      
-        <ListItem
-          leftAvatar={{
-            source: flavor.item.pic 
-          }}
-          title={flavor.item.name}
-          subtitle={flavor.item.item}
-        />
-        <CartButtonGroup />
-      </Card>
+        <Swipeout backgroundColor="#e8e8e8" 
+          right={swipeoutBtns(flavor.item)} 
+          autoClose={true} 
+          key={flavor.item.id}>
+          <Card containerStyle={styles.cartCard} key={flavor.item.id}>
+            <ListItem
+              key={flavor.item.id}
+              leftAvatar={{
+                source: flavor.item.pic  
+              }}
+              title={flavor.item.name}
+              subtitle={flavor.item.item}
+            />
+            <CartButtonGroup />
+          </Card>
         </Swipeout>
-      
       ))}
 
       <Card containerStyle={styles.card} style={{display:'flex',flexDirection:'column'}}>
         <Text>Tip*</Text>
         <Text>{total}</Text>
       </Card>
-
-
+      
+      {/* Grand Total needs to be in this button.  This needs to be a seperate component to += total */}
       <Button 
-        title={`Place your order: ${total}`}
+        title={`Place your order: ${this.props.cartItems.total || null}`}
         buttonStyle={styles.payment}
-      />
-
-      <Button 
-        onPress={this.props.removeItem}
-        // this will remove cart items
-        title = "X"
-        buttonStyle={{marginTop:20, backgroundColor:'#d9534f'}}
-        // this below is where we map the cart items
-        // {this.props.cartItems}
+        onPress={()=> this.props.addToTotal({total:5})}
       />
       </>
       
@@ -147,11 +141,11 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-      removeItem: (product) => dispatch({type: 'REMOVE_FROM_CART', payload: product})
-  }
-}
+const mapDispatchToProps = (dispatch) => ({
+  removeItem: (product) => dispatch({type: 'REMOVE_FROM_CART', payload: product}),
+  addToTotal: (price) => dispatch({type: 'ADD_TO_TOTAL', payload: price})
+
+})
 
 const styles = StyleSheet.create({
   container: {
@@ -201,7 +195,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     backgroundColor: '#5cb85c',
     width: sectionWidth / 1.1,
-    marginTop: 25
+    margin: 30
   }
 })
 
