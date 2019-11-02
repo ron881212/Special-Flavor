@@ -3,7 +3,7 @@ import firebase from 'react-native-firebase'
 import Login from './screens/Login' 
 import BottomTab from './Components/BottomTab'
 import { Provider } from 'react-redux'
-import { storeA } from './store'
+import store from './store'
 
 class App extends React.Component {
 
@@ -37,7 +37,7 @@ class App extends React.Component {
     }
 
     return (
-      <Provider store={storeA}>
+      <Provider store={store}>
           <BottomTab />
       </Provider>
     ) 

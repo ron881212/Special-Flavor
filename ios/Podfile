@@ -12,8 +12,17 @@ target 'Flavors' do
   pod 'Firebase/Database', '~> 5.20.1'
   pod 'Firebase/Firestore', '~> 5.20.1'
 
+  # pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
+  # pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler/'
+  # pod 'RNVectorIcons.', :path => '../node_modules/react-native-vector-icons'
 
-  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+  # pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
+  # pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
+
+  # pod 'RNScreens', :path => '../node_modules/react-native-screens'
+
+  # pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
 
 end
 

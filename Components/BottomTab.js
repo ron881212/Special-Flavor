@@ -1,11 +1,9 @@
 import React from 'react'
 import { Text, View } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Feather'
-import { 
-  createBottomTabNavigator, 
-  createAppContainer,
-  createStackNavigator
-} from 'react-navigation'
+import { createAppContainer } from 'react-navigation'
+import { createBottomTabNavigator } from 'react-navigation-tabs'
+import { createStackNavigator } from 'react-navigation-stack'
 import shoppingCart from '../Components/Shop'
 import FlavorScreen from '../screens/Flavors'
 import AdultScreen from '../screens/Adults'
