@@ -3,8 +3,12 @@ import firebase from 'react-native-firebase'
 import Login from './screens/Login' 
 import BottomTab from './Components/BottomTab'
 import { Provider } from 'react-redux'
-import store from './store'
+import cartItems from "./reducers/cartItems"
+import cartTotal from "./reducers/cartTotal"
+import { createStore, combineReducers } from 'redux'
 
+const rootReducer = combineReducers({cartItems, cartTotal})
+const store = createStore(rootReducer)
 class App extends React.Component {
 
   constructor() {

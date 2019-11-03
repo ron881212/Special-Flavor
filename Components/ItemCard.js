@@ -57,9 +57,9 @@ const ItemCard = props => {
               title={(cartTitle === false) ? ' Add To Cart' : ' Added!' }
               // onpress replace props.name with an object that contains all waterIce info
               onPress={ !cartTitle ?
-                () => {props.toCart(allCartItems), Added()}
+                () => {props.toCart(allCartItems), props.addPrice(props.price), Added()}
                 :
-                () => {props.remove(allCartItems), Added()}
+                () => {props.remove(allCartItems), props.subPrice(props.price), Added()}
               }
             />
         </Card>
@@ -72,6 +72,14 @@ const mapStateToProps = (state) => {
         cartItems: state
     }
 }
+
+// const mapDispatchToProps = (dispatch) => ({
+//     addItemToCart:(product) => dispatch({type:'ADD_TO_CART',
+//     payload:product}),
+//     removeItem: (product) => dispatch({type: 'REMOVE_FROM_CART',       payload: product}),
+//     addToTotal: (price) => dispatch({type: 'ADD_TO_TOTAL', payload: price}),
+//     subFromTotal: (price) => dispatch({type: 'REMOVE_TO_TOTAL', payload: price})
+// })
 
 const cardWidth = Dimensions.get('window').width / 2.4
 

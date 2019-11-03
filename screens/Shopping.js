@@ -38,12 +38,18 @@ class ShopScreen extends React.Component {
 render(){
   const total = '$0.00'
   const payment = '     Cash'
+  // we need this to be the total
+  let priceCard = 5
   const swipeoutBtns = (item) => {
   return [
     {
       text: 'Remove',
       backgroundColor: '#d9534f',
-      onPress: ()=> this.props.removeItem(item)
+      onPress: ()=> {
+        this.props.removeItem(item)
+        // this will take the total of the card from the total of the order button
+        this.props.subFromTotal(priceCard)
+      }
     }
   ]
   }
@@ -51,7 +57,7 @@ render(){
   return (
     <ScrollView style={styles.scrollContainer}>
     <View style={styles.container}>
-      {this.props.cartItems.length > 0 ? 
+      {Object.keys(this.props.store.cartItems).length > 0 ? 
       // here is where I put my custom component that renders shopping cart items with info like price/size, picture, name etc.
       //might have to use a flatlist or map over all items in cart
       <>
@@ -92,7 +98,7 @@ render(){
         />
       </Card>
       
-      {this.props.cartItems.map(flavor => (
+      {this.props.store.cartItems.map(flavor => (
         <Swipeout backgroundColor="#e8e8e8" 
           right={swipeoutBtns(flavor.item)} 
           autoClose={true} 
@@ -118,9 +124,9 @@ render(){
       
       {/* Grand Total needs to be in this button.  This needs to be a seperate component to += total */}
       <Button 
-        title={`Place your order: ${this.props.cartItems.total || null}`}
+        title={`Place your order: ${this.props.store.cartTotal.total || total}`}
         buttonStyle={styles.payment}
-        onPress={()=> this.props.addToTotal({total:5})}
+        onPress={()=> console.log(this.props.store.cartTotal.total)}
       />
       </>
       
@@ -135,16 +141,17 @@ render(){
 
 const sectionWidth = Dimensions.get('window').width
 
-const mapStateToProps = (state) => {
+const mapStoreToProps = (store) => {
   return {
-      cartItems: state
+    store: store
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
   removeItem: (product) => dispatch({type: 'REMOVE_FROM_CART', payload: product}),
-  addToTotal: (price) => dispatch({type: 'ADD_TO_TOTAL', payload: price})
-
+  addToTotal: (price) => dispatch({type: 'ADD_TO_TOTAL', payload: price}),  
+  subFromTotal: (price) => dispatch({type: 'REMOVE_TO_TOTAL', payload: price})
+  
 })
 
 const styles = StyleSheet.create({
@@ -199,4 +206,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(ShopScreen)) 
+export default connect(mapStoreToProps, mapDispatchToProps)(withNavigation(ShopScreen)) 

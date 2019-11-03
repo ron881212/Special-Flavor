@@ -18,7 +18,9 @@ class ShoppingCart extends React.Component {
     return(
         <View style={styles.cart}>
             {/* Add onClick that takes us to the shopScreen */}
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Shop')
+            <TouchableOpacity onPress={() => 
+            this.props.navigation.navigate('Shop')
+            // console.log(Object.keys(this.props.store.cartItems).length)
             }>
             <Icon
                 name='shopping-cart'
@@ -27,10 +29,10 @@ class ShoppingCart extends React.Component {
                 reverse={true}
                 containerStyle={{position: 'absolute', top: -7, right: -20}}
             />    
-            {this.props.cartItems.length > 0 ? 
+            {Object.keys(this.props.store.cartItems).length > 0 ? 
 
             <Badge 
-                value={this.props.cartItems.length} 
+                value={Object.keys(this.props.store.cartItems).length} 
                 status="error"
                 badgeStyle={{top:0,left:15}}
             /> : null }
@@ -40,9 +42,9 @@ class ShoppingCart extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStoreToProps = (store) => {
     return {
-        cartItems: state
+        store: store
     }
 }
 
@@ -54,4 +56,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default connect(mapStateToProps)(withNavigation(ShoppingCart))
+export default connect(mapStoreToProps)(withNavigation(ShoppingCart))

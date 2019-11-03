@@ -68,6 +68,9 @@ const RegFlavors = props => {
                 remove={props.removeItem}
                 toCart={props.addItemToCart}
                 itemId={index++}
+                addPrice={props.addToTotal}
+                subPrice={props.subFromTotal}
+                price={5}
             />
             }
         />
@@ -80,12 +83,10 @@ const RegFlavors = props => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    removeItem: (product) => dispatch({
-        type: 'REMOVE_FROM_CART', 
-        payload: product}),
-    addItemToCart:(product) => dispatch({
-        type:'ADD_TO_CART',
-        payload:product})
+    removeItem: (product) => dispatch({type: 'REMOVE_FROM_CART',payload: product}),
+    addItemToCart:(product) => dispatch({type:'ADD_TO_CART',payload:product}),   
+    addToTotal: (price) => dispatch({type: 'ADD_TO_TOTAL', payload: price}),  
+    subFromTotal: (price) => dispatch({type: 'REMOVE_TO_TOTAL', payload: price})
 })
 
 const mapStateToProps = (state) => {

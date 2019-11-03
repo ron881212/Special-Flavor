@@ -17,9 +17,9 @@ constructor () {
     this.updateTotal = this.updateTotal.bind(this)
   }
 
-//   componentDidMount() {
-//     this.props.addToTotal((this.state.price * this.state.value))
-//   }
+  // componentDidMount() {
+  //   this.props.store.addToTotal((this.state.price * this.state.value))
+  // }
   
   updateIndex (selectedIndex) {
     this.setState({selectedIndex})
@@ -35,9 +35,10 @@ constructor () {
   }
   updateTotal () {
     this.setState({total: (this.state.price * this.state.value)})
-    // this.props.addToTotal((this.state.price * this.state.value))
-    console.log(this.props.cartTotal)
-}
+    this.props.addToTotal(this.state.total)
+    console.log(this.props.store.cartTotal.total)
+    // console.log(this.props.store.cartTotal)
+  }
   
   render () {
     const buttons = ['Pint', 'Gallon']
@@ -72,9 +73,9 @@ constructor () {
 }
 
 // try to name state something else
-const mapStateToProps = (state) => {
+const mapStoreToProps = (store) => {
     return {
-        cartTotal: state
+      store: store
     }
 }
 
@@ -84,5 +85,5 @@ const mapDispatchToProps = (dispatch) => ({
   subFromTotal: (price) => dispatch({type: 'REMOVE_TO_TOTAL', payload: price})
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(CartButtonGroup)
+export default connect(mapStoreToProps, mapDispatchToProps)(CartButtonGroup)
 

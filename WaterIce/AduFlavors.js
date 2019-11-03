@@ -11,6 +11,7 @@ import firebase from 'react-native-firebase'
 import { Card, ListItem, Button, Icon, Image } from 'react-native-elements'
 import ItemCard from '../Components/ItemCard'
 import { connect } from 'react-redux'
+// import cartItems from '../reducers/cartItems'
 
 const AduFlavors = props => {
 
@@ -36,6 +37,7 @@ const AduFlavors = props => {
       // console.log('====================================')
       // console.log(aduFlavors)
       // console.log('====================================')
+
   }
 
     return (
@@ -44,6 +46,7 @@ const AduFlavors = props => {
       <ScrollView 
       contentContainerStyle={styles.container}
       >
+
         {/* import itemCard to Searchbar put searched items into a card;
             searchFlavors ? newFlatlist : original Flatlist; // okay
             grab searchbar component use props for onchangetext and vaule;
@@ -61,9 +64,12 @@ const AduFlavors = props => {
                 pic={{uri: item.image}}
                 discription={item.details || null}
                 toCart={props.addItemToCart}
+                remove={props.removeItem}
             />
             }
         />
+
+        
       </ScrollView>
 
       :
@@ -71,14 +77,19 @@ const AduFlavors = props => {
       null
     )   
 }
-
-const mapDispatchToProps = (dispatch) => {
-  return{
-      addItemToCart:(product) => dispatch({type:'ADD_TO_CART',
-      payload:product})
+const mapStoreToProps = (store) => {
+  return {
+      cartItems: store
   }
 }
-
+const mapDispatchToProps = (dispatch) => {
+  return {
+      addItemToCart:(product) => dispatch({type:'ADD_TO_CART',
+      payload:product}),
+      removeItem: (product) => dispatch({type: 'REMOVE_FROM_CART',     payload: product})
+  }
+}
+// console.log(props.addItemToCart)
 // the styling is being handled in the ItemCard file
 const styles = StyleSheet.create({
   container: {
@@ -97,4 +108,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default connect(null, mapDispatchToProps)(AduFlavors)
+export default connect(mapStoreToProps, mapDispatchToProps)(AduFlavors)
