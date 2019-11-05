@@ -55,8 +55,8 @@ const getTabBarIcon = (navigation, focused, tintColor) => {
     IconComponent = HomeIconWithBadge
   } else if (routeName === 'Snacks') {
     iconName = `inbox`
-  } else if (routeName === 'Merch') {
-    iconName = `gift`
+  } else if (routeName === 'Boards') {
+    iconName = `message-square`
   } else if (routeName === 'Profile') {
     iconName = `user-plus`
   }
@@ -82,7 +82,7 @@ const Nav = createAppContainer(
     {
       'Water Ice': { screen: FlavorScreen },
       Snacks: { screen: AdultScreen },
-      Merch: { screen: MerchScreen },
+      Boards: { screen: MerchScreen },
       Profile,
     },
     {

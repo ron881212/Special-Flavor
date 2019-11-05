@@ -68,9 +68,6 @@ const RegFlavors = props => {
                 remove={props.removeItem}
                 toCart={props.addItemToCart}
                 itemId={index++}
-                addPrice={props.addToTotal}
-                subPrice={props.subFromTotal}
-                price={5}
             />
             }
         />

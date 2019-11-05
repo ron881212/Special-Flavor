@@ -4,6 +4,8 @@ import { ButtonGroup, Slider, Button } from 'react-native-elements'
 import { connect } from 'react-redux'
 import TotalButton from './TotalButton'
 
+// var array = require('lodash/array')
+// var object = require('lodash/fp/object')
 class CartButtonGroup extends React.Component {
 constructor () {
     super()
@@ -15,29 +17,58 @@ constructor () {
     }
     this.updateIndex = this.updateIndex.bind(this)
     this.updateTotal = this.updateTotal.bind(this)
+    this.updateGrandTotal = this.updateGrandTotal.bind(this)
   }
 
-  // componentDidMount() {
-  //   this.props.store.addToTotal((this.state.price * this.state.value))
-  // }
+  componentDidMount() {
+    this.updateGrandTotal()
+  }
   
   updateIndex (selectedIndex) {
     this.setState({selectedIndex})
     if(selectedIndex == 0) {
-        this.setState({price: 5})
-        this.setState({total: (5 * this.state.value)})
+      this.setState({price: 5})
+      this.setState({total: (5 * this.state.value)})
+      for(let i = 0; i < this.props.store.cartItems.length; i++){
+        if(this.props.store.cartItems[i].item.id == this.props.itemID){
+          return this.props.store.cartItems[i].item.price = (5 * this.state.value)
+        }
+      }
     }
     if(selectedIndex == 1) {
-        this.setState({price: 30})
-        this.setState({total: (30 * this.state.value)})
+      this.setState({price: 30})
+      this.setState({total: (30 * this.state.value)})
+      for(let i = 0; i < this.props.store.cartItems.length; i++){
+        if(this.props.store.cartItems[i].item.id == this.props.itemID){
+          return this.props.store.cartItems[i].item.price = (30 * this.state.value)
+        }
+      }
     } 
-    // this.setState({total: (this.state.price * this.state.value)})
   }
   updateTotal () {
+    this.updateGrandTotal()
     this.setState({total: (this.state.price * this.state.value)})
-    this.props.addToTotal(this.state.total)
     console.log(this.props.store.cartTotal.total)
+    for(let i = 0; i < this.props.store.cartItems.length; i++){
+      if(this.props.store.cartItems[i].item.id == this.props.itemID){
+        return this.props.store.cartItems[i].item.price = (this.state.price * this.state.value)
+      }
+    }
+    // this.props.itemPrice = (this.state.price * this.state.value)
+    // this.props.addToTotalCart()
+    // console.log(this.props.itemPrice)
+    // console.log(this.props.addToTotalCart)
+    // console.log(this.props.store.cartItems)
     // console.log(this.props.store.cartTotal)
+  }
+  updateGrandTotal(){
+    nowTotal = 0
+    for(let i = 0; i < this.props.store.cartItems.length; i++){
+      nowTotal += this.props.store.cartItems[i].item.price
+    }
+    console.log(nowTotal)
+    this.props.addToTotal(nowTotal)
+    // this.setState({total:nowTotal})
   }
   
   render () {
@@ -53,7 +84,7 @@ constructor () {
         selectedButtonStyle={{backgroundColor:'#03A9F4'}}
         containerStyle={{height: 25, width: 200}}
       />
-      <Text>price: {this.state.price}      total: {this.state.total}</Text>
+      <Text>price: {'$' + this.state.price + '.00'}      total: {'$' + this.state.total + '.00'}</Text>
       <View style={{flex: 1, alignItems: 'stretch',justifyContent: 'center',marginTop: 35}}>
         <Slider
           value={this.state.value}
@@ -81,8 +112,8 @@ const mapStoreToProps = (store) => {
 
 const mapDispatchToProps = (dispatch) => ({
   removeItem: (product) => dispatch({type: 'REMOVE_FROM_CART', payload: product}),
-  addToTotal: (price) => dispatch({type: 'ADD_TO_TOTAL', payload: price}),
-  subFromTotal: (price) => dispatch({type: 'REMOVE_TO_TOTAL', payload: price})
+  addToTotal: (product) => dispatch({type: 'ADD_TO_TOTAL', payload: product}),
+  addToTotalCart: (product, id) => dispatch({type: 'ADD_TOTAL_TO_CART', payload: product, id: id})
 })
 
 export default connect(mapStoreToProps, mapDispatchToProps)(CartButtonGroup)

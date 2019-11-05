@@ -26,7 +26,8 @@ const ItemCard = props => {
         name: props.name,
         item: props.item,
         pic: props.pic,
-        id: props.itemId
+        id: props.itemId,
+        price: 5
     }
 
     return(
@@ -57,9 +58,17 @@ const ItemCard = props => {
               title={(cartTitle === false) ? ' Add To Cart' : ' Added!' }
               // onpress replace props.name with an object that contains all waterIce info
               onPress={ !cartTitle ?
-                () => {props.toCart(allCartItems), props.addPrice(props.price), Added()}
+                () => {
+                    props.toCart(allCartItems), 
+                    console.log(props.store.cartItems)
+                    Added()
+                }
                 :
-                () => {props.remove(allCartItems), props.subPrice(props.price), Added()}
+                () => {
+                    props.remove(allCartItems), 
+                    console.log(props.store.cartItems)
+                    Added()
+                }
               }
             />
         </Card>
@@ -67,9 +76,9 @@ const ItemCard = props => {
     )
 }
 
-const mapStateToProps = (state) => {
+const mapStoreToProps = (store) => {
     return {
-        cartItems: state
+        store: store
     }
 }
 
@@ -103,4 +112,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default connect(mapStateToProps)(ItemCard)
+export default connect(mapStoreToProps)(ItemCard)

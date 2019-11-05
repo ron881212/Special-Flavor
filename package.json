@@ -10,6 +10,7 @@
     "postinstall": "jetifier -r"
   },
   "dependencies": {
+    "lodash": "^4.17.15",
     "react": "16.8.3",
     "react-native": "0.59.9",
     "react-native-elements": "^1.1.0",

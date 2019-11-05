@@ -25,8 +25,9 @@ const AduFlavors = props => {
 
   const first = async () => {
     // put items in firebase under collection Adults
-      const getAduFlavors = await firebase.firestore().collection('Adults').get()
+      const getAduFlavors = await firebase.firestore().collection('Snacks').get()
       getAduFlavors.docs.forEach( doc => {
+        console.log(doc)
         setAduFlavors([...aduFlavors, aduFlavors.push({
               names: doc.id,
               image: doc._data.image,

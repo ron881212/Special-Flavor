@@ -1,18 +1,13 @@
-let initialState = {
-    total: 0
-}
 
-const cartTotal = (state = initialState, action)=>{
+const cartTotal = (state = {}, action)=>{
     switch (action.type) {
         case 'ADD_TO_TOTAL':
             return {
-                total: action.payload += state.total
+                total: action.payload
                 // console.log(action.payload.total)
-            } 
-        case 'REMOVE_TO_TOTAL':
-            return {
-                total: state.total -= action.payload
             }
+        case 'REMOVE_TO_TOTAL':
+            return state.filter(cartItem => cartItem.total.id !== action.payload.id)
     }
     return state
 }

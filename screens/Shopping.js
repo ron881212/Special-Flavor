@@ -20,11 +20,13 @@ class ShopScreen extends React.Component {
       value: 1,
       name: null,
       phone: null,
+      total: null,
       address: null,
       instructions: null
     }
-    const email = firebase.auth().currentUser.email    
+    const email = firebase.auth().currentUser.email 
     this.ref = firebase.firestore().collection('Users').doc(email)
+    this.updateGrandTotal = this.updateGrandTotal.bind(this)
   }
   componentDidMount() {
     this.ref.onSnapshot(userInfo => {
@@ -34,24 +36,36 @@ class ShopScreen extends React.Component {
         address: userInfo._data.Address
       })
     })
+    this.updateGrandTotal()
   }
+
+  // componentWillUpdate() {
+  //   console.log(`component updated`)
+  //   console.log("cartItems length " + this.props.store.cartItems.length)
+  //   this.updateTotal()
+  // }
+
+  updateGrandTotal(){
+    nowTotal = 0
+    for(let i = 0; i < this.props.store.cartItems.length; i++){
+      nowTotal += this.props.store.cartItems[i].item.price
+    }
+    console.log(nowTotal)
+    this.props.addToTotal(nowTotal)
+    // this.setState({total:nowTotal})
+  }
+
 render(){
   const total = '$0.00'
-  const payment = '     Cash'
-  // we need this to be the total
-  let priceCard = 5
+  const payment = 'Cash'
   const swipeoutBtns = (item) => {
-  return [
-    {
+  return [{
       text: 'Remove',
       backgroundColor: '#d9534f',
       onPress: ()=> {
         this.props.removeItem(item)
-        // this will take the total of the card from the total of the order button
-        this.props.subFromTotal(priceCard)
       }
-    }
-  ]
+    }]
   }
 
   return (
@@ -92,8 +106,8 @@ render(){
           
           badge={{ 
             value: payment, 
-            textStyle: { color: 'white', fontSize:15, right:10 },
-            badgeStyle: {backgroundColor:'#03A9F4', height:25 }
+            textStyle: { color: 'white', fontSize:15 },
+            badgeStyle: {backgroundColor:'#03A9F4', height:25, width:50 }
           }}
         />
       </Card>
@@ -112,7 +126,10 @@ render(){
               title={flavor.item.name}
               subtitle={flavor.item.item}
             />
-            <CartButtonGroup />
+            <CartButtonGroup
+              itemID={flavor.item.id}
+              itemPrice={flavor.item.price}
+            />
           </Card>
         </Swipeout>
       ))}
@@ -124,9 +141,9 @@ render(){
       
       {/* Grand Total needs to be in this button.  This needs to be a seperate component to += total */}
       <Button 
-        title={`Place your order: ${this.props.store.cartTotal.total || total}`}
+        title={`Place your order: ${"$" + this.props.store.cartTotal.total + ".00" || total}`}
         buttonStyle={styles.payment}
-        onPress={()=> console.log(this.props.store.cartTotal.total)}
+        onPress={()=> alert("Your order has been placed")}
       />
       </>
       
