@@ -64,6 +64,8 @@ render(){
       backgroundColor: '#d9534f',
       onPress: ()=> {
         this.props.removeItem(item)
+        this.props.subFromTotal(item.price)
+        // console.log(item.price)
       }
     }]
   }
