@@ -31,23 +31,29 @@ constructor () {
       this.setState({total: (5 * this.state.value)})
       for(let i = 0; i < this.props.store.cartItems.length; i++){
         if(this.props.store.cartItems[i].item.id == this.props.itemID){
-          return this.props.store.cartItems[i].item.price = (5 * this.state.value)
+          this.props.store.cartItems[i].item.price = (5 * this.state.value)
+          this.updateGrandTotal()
+          return this.props.store.cartItems[i].item.price
         }
       }
     }
+
     if(selectedIndex == 1) {
       this.setState({price: 30})
       this.setState({total: (30 * this.state.value)})
       for(let i = 0; i < this.props.store.cartItems.length; i++){
         if(this.props.store.cartItems[i].item.id == this.props.itemID){
-          return this.props.store.cartItems[i].item.price = (30 * this.state.value)
+          this.props.store.cartItems[i].item.price = (30 * this.state.value)
+          this.updateGrandTotal()
+          return this.props.store.cartItems[i].item.price 
         }
       }
     } 
   }
+
   updateTotal() {
     this.setState({total: (this.state.price * this.state.value)})
-    console.log(this.props.store.cartTotal.total)
+    // console.log(this.props.store.cartTotal.total)
     for(let i = 0; i < this.props.store.cartItems.length; i++){
       if(this.props.store.cartItems[i].item.id == this.props.itemID){
         this.props.store.cartItems[i].item.price = (this.state.price * this.state.value)
@@ -63,10 +69,9 @@ constructor () {
     for(let i = 0; i < this.props.store.cartItems.length; i++){
       nowTotal += this.props.store.cartItems[i].item.price
     }
-    console.log(nowTotal)
-    console.log('ADD_TO_TOTAL ' + this.props.addToTotal)
+    // console.log(nowTotal)
+    // console.log('ADD_TO_TOTAL ' + this.props.addToTotal)
     this.props.addToTotal(nowTotal)
-    // this.setState({total:nowTotal})
   }
   
   render () {
