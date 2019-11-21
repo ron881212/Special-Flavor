@@ -8,11 +8,16 @@ const cartTotal = (state = [], action)=>{
             }
         case 'REMOVE_TO_TOTAL':
                 state.total -= action.payload
-                console.log(state.total)
+                console.log('REMOVE_TO_TOTAL' + state.total)
                 return {
                     total: state.total
                 }
-            // state.filter(cartItem => cartItem.total.id !== action.payload.id)
+        case 'UPDATE_TOTAL':
+                state.total += action.payload
+                console.log('UPDATE_TOTAL' + state.total)
+                return {
+                    total: state.total
+                }
     }
     return state
 }

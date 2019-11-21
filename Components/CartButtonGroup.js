@@ -45,28 +45,26 @@ constructor () {
       }
     } 
   }
-  updateTotal () {
-    this.updateGrandTotal()
+  updateTotal() {
     this.setState({total: (this.state.price * this.state.value)})
     console.log(this.props.store.cartTotal.total)
     for(let i = 0; i < this.props.store.cartItems.length; i++){
       if(this.props.store.cartItems[i].item.id == this.props.itemID){
-        return this.props.store.cartItems[i].item.price = (this.state.price * this.state.value)
+        this.props.store.cartItems[i].item.price = (this.state.price * this.state.value)
+        this.updateGrandTotal()
+        return this.props.store.cartItems[i].item.price
       }
     }
-    // this.props.itemPrice = (this.state.price * this.state.value)
-    // this.props.addToTotalCart()
-    // console.log(this.props.itemPrice)
-    // console.log(this.props.addToTotalCart)
-    // console.log(this.props.store.cartItems)
-    // console.log(this.props.store.cartTotal)
+
   }
+  
   updateGrandTotal(){
     nowTotal = 0
     for(let i = 0; i < this.props.store.cartItems.length; i++){
       nowTotal += this.props.store.cartItems[i].item.price
     }
     console.log(nowTotal)
+    console.log('ADD_TO_TOTAL ' + this.props.addToTotal)
     this.props.addToTotal(nowTotal)
     // this.setState({total:nowTotal})
   }
