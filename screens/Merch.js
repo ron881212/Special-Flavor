@@ -29,7 +29,6 @@ export default class MerchScreen extends React.Component {
         {
           _id: 1,
           text: 'Hey yall',
-          createdAt: new Date(),
           user: {
             _id: 2,
             name: 'Admin',

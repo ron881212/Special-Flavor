@@ -11,6 +11,7 @@ import firebase from 'react-native-firebase'
 import { Button, Input } from 'react-native-elements'
 import { Avatar } from 'react-native-elements'
 import { withNavigation } from 'react-navigation'
+import ImagePicker from 'react-native-image-picker'
 
 class EditProfile extends React.Component {
   constructor(){
@@ -19,7 +20,8 @@ class EditProfile extends React.Component {
       user: null,  
       name: null,
       phone: null,
-      address: null
+      address: null,
+      avatarSource: null
     }
   }
 static navigationOptions =  {
@@ -53,10 +55,32 @@ static navigationOptions =  {
       this.ProfilePage()
   }
 
+  selectImage = async () => {
+  ImagePicker.showImagePicker({noData:true,mediaType:'photo'}, (response) => {
+    console.log('Response = ', response)
+
+    if (response.didCancel) {
+      console.log('User cancelled image picker')
+    } else if (response.error) {
+      console.log('ImagePicker Error: ', response.error)
+    } else if (response.customButton) {
+      console.log('User tapped custom button: ', response.customButton)
+    } else {
+      // You can also display the image using data:
+      // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+  
+      this.setState({
+        avatarSource: response.uri,
+      })
+    }
+  })
+  }
+
     render() {
       return (
         <SafeAreaView style={styles.container}>
             <TouchableOpacity>
+            {/* This.selectImage here */}
             <Avatar
               rounded
               showEditButton

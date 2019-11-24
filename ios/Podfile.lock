@@ -108,12 +108,22 @@ PODS:
   - nanopb/decode (0.3.9011)
   - nanopb/encode (0.3.9011)
   - Protobuf (3.10.0)
+  - React (0.59.9):
+    - React/Core (= 0.59.9)
+  - react-native-image-picker (1.1.0):
+    - React
+  - React/Core (0.59.9):
+    - yoga (= 0.59.9.React)
+  - yoga (0.59.9.React)
 
 DEPENDENCIES:
   - Firebase/Auth (~> 5.20.1)
   - Firebase/Core (~> 5.20.1)
   - Firebase/Database (~> 5.20.1)
   - Firebase/Firestore (~> 5.20.1)
+  - React (from `../node_modules/react-native`)
+  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
+  - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
   trunk:
@@ -135,6 +145,14 @@ SPEC REPOS:
     - nanopb
     - Protobuf
 
+EXTERNAL SOURCES:
+  React:
+    :path: "../node_modules/react-native"
+  react-native-image-picker:
+    :path: "../node_modules/react-native-image-picker"
+  yoga:
+    :path: "../node_modules/react-native/ReactCommon/yoga"
+
 SPEC CHECKSUMS:
   BoringSSL-GRPC: 2a230d9cd93e7ce39916044f645cebb31f37dde6
   Firebase: 0c8cf33f266410c61ab3e2265cfa412200351d9c
@@ -153,7 +171,10 @@ SPEC CHECKSUMS:
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   Protobuf: a4dc852ad69c027ca2166ed287b856697814375b
+  React: a86b92f00edbe1873a63e4a212c29b7a7ad5224f
+  react-native-image-picker: 7a85cf7b0a53845f03ae52fb4592a2748ded069b
+  yoga: 03ff42a6f223fb88deeaed60249020d80c3091ee
 
-PODFILE CHECKSUM: 70bad9305217f58469f5435ba97a84c4c24601ae
+PODFILE CHECKSUM: 19dd8fb3b7f6d39286169e7a61d48cba927dd272
 
 COCOAPODS: 1.8.4

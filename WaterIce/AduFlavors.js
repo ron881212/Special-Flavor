@@ -41,6 +41,9 @@ const AduFlavors = props => {
 
   }
 
+    let index = 0
+
+
     return (
       !isSearching ?
 
@@ -58,7 +61,6 @@ const AduFlavors = props => {
             data={aduFlavors}
             keyExtractor={(item, index) => index.toString()}
             numColumns='2'
-            // columnWrapperStyle={styles.container}
             renderItem={({item}) => 
             <ItemCard
                 name={item.names}
@@ -66,6 +68,8 @@ const AduFlavors = props => {
                 discription={item.details || null}
                 toCart={props.addItemToCart}
                 remove={props.removeItem}
+                itemId={index++}
+
             />
             }
         />

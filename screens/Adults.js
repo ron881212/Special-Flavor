@@ -4,6 +4,8 @@ import Banner from '../Components/Banner'
 import Shop from '../Components/Shop'
 import MyAvatar from '../Components/Avatar'
 import AduFlavors from '../WaterIce/AduFlavors'
+import Search from '../Components/SearchBar'
+
 
 const AdultScreen = props => {
   return (
@@ -12,6 +14,7 @@ const AdultScreen = props => {
       <Banner />
     </View>
       <Shop />
+      <Search />
       <MyAvatar />
       <View style={styles.cards}>
       <AduFlavors />
