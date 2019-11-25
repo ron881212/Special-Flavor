@@ -106,10 +106,10 @@ const Nav = createAppContainer(
   )
 )
 
-class BottomNav extends React.Component {
+class AdminNav extends React.Component {
   render() {
-    return <Nav />
+    return <Admin />
   }
 }
 
-export default BottomNav
+export default AdminNav

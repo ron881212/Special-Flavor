@@ -19,15 +19,14 @@ class Profile extends React.Component {
       email: null,
       password: null,
       phone: null,
-      address: null
+      address: null,
+      avatar: null
     }
     const email = firebase.auth().currentUser.email    
     this.ref = firebase.firestore().collection('Users').doc(email)
   }
 static navigationOptions =  {
-  title: 'Profile',
-  // headerLeft: null,
-  // gesturesEnabled: false,
+  title: 'Profile'
 }
   // get email and password screen must have a way to change the password 
   // and a way to recover the password
@@ -39,6 +38,7 @@ static navigationOptions =  {
         email: email,
         phone: userInfo._data.Phone,
         address: userInfo._data.Address,
+        avatar: userInfo._data.Avatar,
       })
     })
   }
@@ -51,17 +51,18 @@ static navigationOptions =  {
 
       return (
         <SafeAreaView style={styles.container}>
+        {/* Use own profilePic in database */}
             <Avatar
               rounded
               size='xlarge'
-              source={require('../images/testImg.jpeg')}
+              source={{uri: this.state.avatar}}
             />
-            {/* replace all items with list components that lands user to different edit pages */}
+           
             <View>
 
               {/* NAME */}
               <TouchableOpacity
-              onPress={()=>alert('Edit Name')}
+              onPress={()=>this.props.navigation.navigate('EditName')}
               >
               <Card containerStyle={styles.cards}>
                 <ListItem
@@ -79,14 +80,17 @@ static navigationOptions =  {
 
               {/* EMAIL */}
               <TouchableOpacity
-              // Also call confirmEmail
-              onPress={()=>console.log(firebase.auth().currentUser.updateEmail())}
+              // Also check email == old email and reauthenicate( getProvider() ) 
+              onPress={
+                // ()=>console.log(firebase.auth().currentUser.updateEmail())
+                ()=>this.props.navigation.navigate('ChangeEmail')
+              }
               >
               <Card containerStyle={styles.cards}>
                 <ListItem
                   chevron
                   containerStyle={{margin:0}}
-                  title={'Email: ' + this.state.email}
+                  title={'Change Email '}
                   badge={{ 
                     value: 'Edit', 
                     textStyle: { color: 'white', fontSize:15 },
@@ -98,7 +102,11 @@ static navigationOptions =  {
 
               {/* PASSWORD */}
               <TouchableOpacity
-              onPress={()=>console.log(firebase.auth().currentUser.updatePassword())}
+              // Also call reauthenicate( getProvider() ) 
+              onPress={
+                // ()=>console.log(firebase.auth().currentUser.updatePassword())
+                ()=>this.props.navigation.navigate('ChangePassword')
+              }
               >
               <Card containerStyle={styles.cards}>
                 <ListItem
@@ -106,7 +114,7 @@ static navigationOptions =  {
                   containerStyle={{margin:0}}
                   title={'Change Password'}
                   badge={{ 
-                    value: 'Send', 
+                    value: 'Edit', 
                     textStyle: { color: 'white', fontSize:15 },
                     badgeStyle: {backgroundColor:'#03A9F4', height:25, width:50 }
                   }}
@@ -116,7 +124,7 @@ static navigationOptions =  {
 
               {/* PHONE */}
               <TouchableOpacity
-              onPress={()=>alert('Edit Phone')}
+              onPress={()=>this.props.navigation.navigate('EditPhone')}
               >
               <Card containerStyle={styles.cards}>
                 <ListItem
@@ -133,7 +141,7 @@ static navigationOptions =  {
 
               {/* ADDRESS */}
               <TouchableOpacity
-              onPress={()=>alert('Edit Address')}
+              onPress={()=>this.props.navigation.navigate('EditAddress')}
               >
               <Card containerStyle={styles.cards}>
                 <ListItem
@@ -156,11 +164,6 @@ static navigationOptions =  {
               />
             </View>
             <View style={styles.container2}>
-          {/* <Button 
-            title='Edit'
-            onPress={()=>this.props.navigation.navigate('Edit')}
-            style={styles.buttons}
-            /> */}
             </View>
         </SafeAreaView>
       )

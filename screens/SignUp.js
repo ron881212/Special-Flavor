@@ -19,19 +19,14 @@ static navigationOptions = {
 }
     constructor(){
       super()
-    //   this.userInfo = firebase.firestore().collection('userInfo').doc('personal')
-      // this needs to be grouped with the user
-      // this.userInfo = firebase.firestore().collection('group')
       this.state = {
         setUserName: null,
         setEmail: null,
         setPassword: null,
         confirmPassword: null,
-        // setAddress: null,
-        // setPhone: null
       }
     }
-    //123abc is the password
+    //add sendEmailVerification(ActionCodeSettings actionCodeSettings)
     userSignUp = () => {
       const { setEmail, setPassword, confirmPassword, setUserName } = this.state  
       if(setPassword === confirmPassword){
@@ -42,10 +37,8 @@ static navigationOptions = {
             this.userInfo = firebase.firestore().collection('Users').doc(email)
             firebase.firestore().runTransaction(async transaction => {
                 const doc = await transaction.get(this.userInfo);
-                // if it does not exist set the population to one
                 if (!doc.exists) {
                   transaction.set(this.userInfo, { userName: setUserName })
-                  // this is a test feature
                 }
             })
           }
@@ -54,10 +47,6 @@ static navigationOptions = {
     }
 
     render(){
-    // const { foo, bar } = this.state
-    // const createUser = firebase.auth.createUserWithEmailAndPassword() 
-    // createUser(this.state.email, this.state.password)
-    // signInWithEmailAndPassword(email, password)
       return(
         <SafeAreaView>
           <ImageBackground
@@ -67,7 +56,6 @@ static navigationOptions = {
             <View style={styles.container}>
               <Input
                 placeholder='User Name'
-                // placeholderTextColor='color'
                 inputContainerStyle={styles.form2}
                 onChangeText={(text) => this.setState({setUserName:text})}                
                 leftIcon={
@@ -81,7 +69,6 @@ static navigationOptions = {
               />
               <Input
                 placeholder='Email'
-                // placeholderTextColor='color'
                 keyboardType='email-address'
                 autoCapitalize='none'
                 inputContainerStyle={styles.form2}
@@ -97,7 +84,6 @@ static navigationOptions = {
               />
               <Input
                 placeholder='Password'
-                // placeholderTextColor='color'
                 autoCapitalize='none'
                 secureTextEntry={true}
                 inputContainerStyle={styles.form2}
@@ -113,7 +99,6 @@ static navigationOptions = {
               />
               <Input
                 placeholder='Confirm Password'
-                // placeholderTextColor='color'
                 autoCapitalize='none'
                 secureTextEntry={true}
                 inputContainerStyle={styles.form2}
@@ -164,11 +149,9 @@ static navigationOptions = {
 
 const styles = StyleSheet.create({
     container: {
-      //add gradiant and logo as picture above
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-    //   marginBottom: 60
     },
     container2: {
       flexDirection: 'row'

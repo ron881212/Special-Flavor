@@ -8,9 +8,28 @@ import {
 } from 'react-native'
 import { withNavigation } from 'react-navigation'
 import { Avatar } from 'react-native-elements'
+import firebase from 'react-native-firebase' 
 
 
 class MyAvatar extends React.Component {
+
+    constructor(){
+        super()
+        this.state = {
+          avatar: null
+        }
+        const email = firebase.auth().currentUser.email    
+        this.ref = firebase.firestore().collection('Users').doc(email)
+      }
+
+    componentDidMount() {
+        this.ref.onSnapshot(userInfo => {
+          this.setState({
+            avatar: userInfo._data.Avatar,
+          })
+        })
+    }
+
     render(){
     return(
         <View style={styles.avatar}>
@@ -19,9 +38,7 @@ class MyAvatar extends React.Component {
             <Avatar
             rounded
             size={60}
-            source={
-                require('../images/testImg.jpeg')
-              }
+            source={{uri: this.state.avatar}}
             />
             </TouchableOpacity>
         </View>

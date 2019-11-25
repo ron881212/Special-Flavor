@@ -1,9 +1,7 @@
 import React from 'react' 
 import { 
     View, 
-    Text, 
     StyleSheet, 
-    TextInput, 
     SafeAreaView, 
     TouchableOpacity
 } from 'react-native' 
@@ -13,22 +11,31 @@ import { Avatar } from 'react-native-elements'
 import { withNavigation } from 'react-navigation'
 import ImagePicker from 'react-native-image-picker'
 
-class EditProfile extends React.Component {
+class EditAddress extends React.Component {
+  static navigationOptions =  {
+    title: 'Edit Address'
+  }
+
   constructor(){
     super()
     this.state = {
-      user: null,  
-      name: null,
-      phone: null,
       address: null,
       avatarSource: null
     }
+    const email = firebase.auth().currentUser.email    
+    this.ref = firebase.firestore().collection('Users').doc(email)
   }
-static navigationOptions =  {
-  title: 'Edit Profile',
-  // headerLeft: null,
-  // gesturesEnabled: false,
-}
+  
+  componentDidMount() {
+    const email = firebase.auth().currentUser.email    
+    this.ref = firebase.firestore().collection('Users').doc(email)
+    this.ref.onSnapshot(userInfo => {
+      this.setState({
+        address: userInfo._data.Address,
+        avatarSource: userInfo._data.Avatar,
+      })
+    })
+  }
 
   logOut(){
     firebase.auth().signOut()
@@ -39,7 +46,7 @@ static navigationOptions =  {
   }
 
   data = () => {
-    const { name, phone, address, user } = this.state
+    const { address, avatarSource } = this.state
     const email = firebase.auth().currentUser.email
     // // this is an successful atempt to use user email as a doc in firestore
     this.userInfo = firebase.firestore().collection('Users').doc(email)
@@ -48,7 +55,7 @@ static navigationOptions =  {
         // if it does not exist set the population to one
         if (doc.exists) {
           transaction.update(this.userInfo, 
-              { Name: name, Phone: phone, Address: address }
+              { Address: address, Avatar: avatarSource }
           )
         }
       })
@@ -85,19 +92,12 @@ static navigationOptions =  {
               rounded
               showEditButton
               size='xlarge'
-              source={require('../images/testImg.jpeg')}
+              onPress={this.selectImage}
+              source={{uri: this.state.avatarSource}}
             />
             </TouchableOpacity>
             <Input
-            placeholder='Name'
-            onChangeText={(nameText) => this.setState({name: nameText})}
-            />
-            <Input
-            placeholder='Phone'
-            onChangeText={(phoneText) => this.setState({phone: phoneText})}
-            />
-            <Input
-            placeholder='Address'
+            placeholder={this.state.address}
             onChangeText={(addressText) => this.setState({address: addressText})}
             />
             <View style={styles.container2}>
@@ -134,4 +134,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default withNavigation(EditProfile)
+export default withNavigation(EditAddress)

@@ -2,6 +2,7 @@ import React from 'react'
 import firebase from 'react-native-firebase' 
 import Login from './screens/Login' 
 import BottomTab from './Components/BottomTab'
+import AdminNav from './Components/Admin'
 import { Provider } from 'react-redux'
 import cartItems from "./reducers/cartItems"
 import cartTotal from "./reducers/cartTotal"
@@ -39,6 +40,10 @@ class App extends React.Component {
     if (!this.state.user) {
       return <Login /> 
     }
+    // This will return the admin app
+    // if ('The user is an Admin User') {
+    //   return <AdminNav /> 
+    // }
 
     return (
       <Provider store={store}>

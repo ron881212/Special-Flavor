@@ -15,13 +15,15 @@ export default class MerchScreen extends React.Component {
   }
   state = {
     messages: [],
-    userName: ''
+    userName: '',
+    avatar: null
   }
   
   componentDidMount() {
     this.emailRef.onSnapshot(userInfo => {
       this.setState({
-        userName: userInfo._data.userName || 'anonymous'
+        userName: userInfo._data.userName || 'anonymous',
+        avatar: userInfo._data.Avatar || 'https://placeimg.com/140/140/any'
       })
     })
     this.setState({
@@ -49,7 +51,7 @@ export default class MerchScreen extends React.Component {
       // avatar will be here and is pulled from profile
       name: this.state.userName,
       _id: Fire.shared.uid,
-      avatar: 'https://placeimg.com/140/140/any'
+      avatar: this.state.avatar
     }
   }
 
