@@ -5,7 +5,8 @@ import { View,
   TextInput, 
   SafeAreaView,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView
 } from 'react-native' 
 import firebase from 'react-native-firebase' 
 import { Card, Button, Avatar, ListItem, Input, Icon } from 'react-native-elements'
@@ -31,14 +32,16 @@ static navigationOptions =  {
   // get email and password screen must have a way to change the password 
   // and a way to recover the password
   componentDidMount() {
-    const email = firebase.auth().currentUser.email    
+    const email = firebase.auth().currentUser.email  
+    console.log(email)
+    this.ref = firebase.firestore().collection('Users').doc(email)
     this.ref.onSnapshot(userInfo => {
       this.setState({
         name: userInfo._data.Name,
         email: email,
         phone: userInfo._data.Phone,
         address: userInfo._data.Address,
-        avatar: userInfo._data.Avatar,
+        avatar: userInfo._data.Avatar || 'https://placeimg.com/140/140/any',
       })
     })
   }
@@ -56,9 +59,10 @@ static navigationOptions =  {
               rounded
               size='xlarge'
               source={{uri: this.state.avatar}}
+              containerStyle={styles.avatar}
             />
            
-            <View>
+            <ScrollView>
 
               {/* NAME */}
               <TouchableOpacity
@@ -162,9 +166,7 @@ static navigationOptions =  {
                 onPress={()=>this.logOut()}
                 style={styles.buttons}
               />
-            </View>
-            <View style={styles.container2}>
-            </View>
+            </ScrollView>
         </SafeAreaView>
       )
     }
@@ -181,6 +183,9 @@ const styles = StyleSheet.create({
     },
     container2: {
       flexDirection: 'row'
+    },
+    avatar: {
+      margin:20
     },
     buttons: {
       margin: 10,

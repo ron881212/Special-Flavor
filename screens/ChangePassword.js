@@ -98,7 +98,7 @@ static navigationOptions =  {
             onChangeText={(phoneText) => this.setState({phone: phoneText})}
             /> */}
             <Input
-            placeholder='Address'
+            placeholder='Password'
             onChangeText={(addressText) => this.setState({address: addressText})}
             />
             <View style={styles.container2}>

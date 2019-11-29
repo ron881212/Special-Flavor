@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   Text,
   View,
+  KeyboardAvoidingView
 } from 'react-native'
 import { 
   createAppContainer,
@@ -48,7 +49,7 @@ static navigationOptions = {
       style={{width: '100%', height: '100%', backgroundColor:'black'}}
       imageStyle={{opacity: 0.7}}
       >  
-      <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.container}>
         <Input
           placeholder='Email'
           // placeholderTextColor='color'
@@ -109,7 +110,7 @@ static navigationOptions = {
           title="Sign Up"
           />          
         </View>
-      </View>
+      </KeyboardAvoidingView>
       </ImageBackground>
       </SafeAreaView>
     )

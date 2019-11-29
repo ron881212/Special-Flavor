@@ -13,7 +13,7 @@ import ImagePicker from 'react-native-image-picker'
 
 class ChangeEmail extends React.Component {
   static navigationOptions =  {
-    title: 'Edit Address'
+    title: 'Edit Email'
   }
 
   constructor(){
@@ -21,21 +21,21 @@ class ChangeEmail extends React.Component {
     this.state = {
       oldEmail: null,
       newEmail: null,
-      confirmEmail: null,
       password: null,
-      avatarSource: null
+      confirmEmail: null,
+      avatarSource: null,
+      updated: false
     }
     const email = firebase.auth().currentUser.email  
-    // this.currentUser = firebase.auth().currentUser   
     this.ref = firebase.firestore().collection('Users').doc(email)
   }
   
   componentDidMount() {
     const email = firebase.auth().currentUser.email    
-    this.ref = firebase.firestore().collection('Users').doc(email)
+    // this.ref = firebase.firestore().collection('Users').doc(email)
     this.ref.onSnapshot(userInfo => {
       this.setState({
-        avatarSource: userInfo._data.Avatar,
+        avatarSource: userInfo._data.Avatar || 'https://placeimg.com/140/140/any',
       })
     })
     this.setState({ oldEmail: email })
@@ -48,25 +48,6 @@ class ChangeEmail extends React.Component {
 
   ProfilePage(){
     this.props.navigation.navigate('MyProfile')
-  }
-
-  data = () => {
-    // const reauthenticate = firebase.auth().currentUser.reauthenticateWithCredential
-    const email = firebase.auth().currentUser.email 
-    // var { oldEmail, newEmail, confirmEmail } = this.state
-    const user = firebase.auth().currentUser
-    // console.log(newEmail)
-    if(this.state.newEmail === this.state.confirmEmail && this.state.oldEmail == email){
-        user.updateEmail(this.state.newEmail)
-        .then(alert('email changed'))
-        .catch(err =>
-            console.log(err),
-            alert('You been logged in too long. Log out and log back in.')
-            // alert('all matches')
-        )
-    }
-    else alert('Your email must match')
-    this.ProfilePage()
   }
 
   selectImage = async () => {
@@ -90,6 +71,41 @@ class ChangeEmail extends React.Component {
   })
   }
 
+  reauthenticate = (currentPassword) => {
+    var user = firebase.auth().currentUser;
+    var cred = firebase.auth.EmailAuthProvider.credential(
+        user.email, currentPassword);
+    return user.reauthenticateWithCredential(cred);
+  }
+
+  changeEmail = (currentPassword, newEmail) => {
+    var oldEmail = firebase.auth().currentUser.email
+    const { confirmEmail } = this.state
+    if(confirmEmail == oldEmail){
+        this.reauthenticate(currentPassword).then(() => {
+          var user = firebase.auth().currentUser
+          user.updateEmail(newEmail).then(() => {
+            console.log("Email updated!")
+            const firestore = firebase.firestore()
+            // get the data from 'oldEmail'
+            firestore.collection("Users").doc(oldEmail).get().then(function (doc) {
+                if (doc && doc.exists) {
+                    var data = doc.data()
+                    // saves the data to 'newEmail'
+                    firestore.collection("Users").doc(newEmail).set(data)
+                    .then(()=> {
+                        firebase.firestore().collection("Users").doc(oldEmail).delete()
+                        // .then()
+                    })
+                }
+            })
+          }).catch((error) => { console.log(error) })
+        }).catch((error) => { console.log(error) })
+    // this.props.navigation.navigate('MyProfile')
+    }
+    else alert('You must enter the correct current email or password')
+  }
+
     render() {
       return (
         <SafeAreaView style={styles.container}>
@@ -109,31 +125,32 @@ class ChangeEmail extends React.Component {
             autoCorrect = {false}
             autoCapitalize = 'none'
             placeholder='Current email'
-            // textContentType='emailAddress'
+            textContentType='emailAddress'
             containerStyle={{width:350, marginTop:50}}
-            onChangeText={(text) => this.setState({oldEmail: text})}
+            onChangeText={(text) => this.setState({confirmEmail: text})}
             />
             <Input
             autoCorrect = {false}
             placeholder='New email'
             autoCapitalize = 'none'
             containerStyle={{width:350}}
-            // textContentType='emailAddress'
+            textContentType='emailAddress'
             onChangeText={(text) => this.setState({newEmail: text})}
             />
             <Input
             autoCorrect = {false}
             autoCapitalize = 'none'
-            placeholder='Confirm email'
+            placeholder='Password'
             containerStyle={{width:350}}
-            // textContentType='emailAddress'
-            onChangeText={(text) => this.setState({confirmEmail: text})}
+            secureTextEntry={true}
+            onChangeText={(text) => this.setState({password: text})}
             />
 
             <View style={styles.container2}>
           <Button 
             title='Submit'
-            onPress={()=>this.data()}
+            onPress={()=> this.changeEmail(this.state.password, this.state.newEmail)}
+
             style={styles.buttons}
             />
           <Button 

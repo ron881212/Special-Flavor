@@ -25,11 +25,11 @@ class MyAvatar extends React.Component {
     componentDidMount() {
         this.ref.onSnapshot(userInfo => {
           this.setState({
-            avatar: userInfo._data.Avatar,
+            avatar: userInfo._data.Avatar || 'https://placeimg.com/140/140/any',
           })
         })
     }
-
+    
     render(){
     return(
         <View style={styles.avatar}>
