@@ -23,8 +23,9 @@ class Profile extends React.Component {
       address: null,
       avatar: null
     }
-    const email = firebase.auth().currentUser.email    
-    this.ref = firebase.firestore().collection('Users').doc(email)
+    const email = firebase.auth().currentUser.email  
+    const userID = firebase.auth().currentUser.uid
+    this.ref = firebase.firestore().collection('Users').doc(userID)
   }
 static navigationOptions =  {
   title: 'Profile'
@@ -33,8 +34,8 @@ static navigationOptions =  {
   // and a way to recover the password
   componentDidMount() {
     const email = firebase.auth().currentUser.email  
-    console.log(email)
-    this.ref = firebase.firestore().collection('Users').doc(email)
+    userID = firebase.auth().currentUser.uid
+    this.ref = firebase.firestore().collection('Users').doc(userID)
     this.ref.onSnapshot(userInfo => {
       this.setState({
         name: userInfo._data.Name,

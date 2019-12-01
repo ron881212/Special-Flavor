@@ -40,6 +40,7 @@ class App extends React.Component {
     if (!this.state.user) {
       return <Login /> 
     }
+    
     // This will return the admin app
     // if ('The user is an Admin User') {
     //   return <AdminNav /> 

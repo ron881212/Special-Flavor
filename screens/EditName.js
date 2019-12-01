@@ -22,13 +22,15 @@ class EditName extends React.Component {
       name: null,
       avatarSource: null
     }
-    const email = firebase.auth().currentUser.email    
-    this.ref = firebase.firestore().collection('Users').doc(email)
+    const email = firebase.auth().currentUser.email  
+    userID = firebase.auth().currentUser.uid 
+    this.ref = firebase.firestore().collection('Users').doc(userID)
   }
 
   componentDidMount() {
-    const email = firebase.auth().currentUser.email    
-    this.ref = firebase.firestore().collection('Users').doc(email)
+    const email = firebase.auth().currentUser.email  
+    userID = firebase.auth().currentUser.uid 
+    this.ref = firebase.firestore().collection('Users').doc(userID)
     this.ref.onSnapshot(userInfo => {
       this.setState({
         name: userInfo._data.Name,
@@ -48,8 +50,9 @@ class EditName extends React.Component {
   data = () => {
     const { name, avatarSource } = this.state
     const email = firebase.auth().currentUser.email
+    userID = firebase.auth().currentUser.uid 
     // // this is an successful atempt to use user email as a doc in firestore
-    this.userInfo = firebase.firestore().collection('Users').doc(email)
+    this.userInfo = firebase.firestore().collection('Users').doc(userID)
     firebase.firestore().runTransaction(async transaction => {
         const doc = await transaction.get(this.userInfo)
         // if it does not exist set the population to one

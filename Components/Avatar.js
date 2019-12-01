@@ -18,9 +18,10 @@ class MyAvatar extends React.Component {
         this.state = {
           avatar: null
         }
-        const email = firebase.auth().currentUser.email    
-        this.ref = firebase.firestore().collection('Users').doc(email)
-      }
+        const email = firebase.auth().currentUser.email   
+        const userID = firebase.auth().currentUser.uid
+        this.ref = firebase.firestore().collection('Users').doc(userID)
+    }
 
     componentDidMount() {
         this.ref.onSnapshot(userInfo => {

@@ -34,7 +34,8 @@ static navigationOptions = {
         .then(success => {
           if(success){
             email = firebase.auth().currentUser.email
-            this.userInfo = firebase.firestore().collection('Users').doc(email)
+            userID = firebase.auth().currentUser.uid
+            this.userInfo = firebase.firestore().collection('Users').doc(userID)
             firebase.firestore().runTransaction(async transaction => {
                 const doc = await transaction.get(this.userInfo);
                 if (!doc.exists) {

@@ -10,8 +10,9 @@ import Picture from '../images/IMG_1225.jpeg'
 export default class MerchScreen extends React.Component {
   constructor(){
     super()
-    const email = firebase.auth().currentUser.email    
-    this.emailRef = firebase.firestore().collection('Users').doc(email)
+    const email = firebase.auth().currentUser.email   
+    const userID = firebase.auth().currentUser.uid
+    this.emailRef = firebase.firestore().collection('Users').doc(userID)
   }
   state = {
     messages: [],

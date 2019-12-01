@@ -27,7 +27,8 @@ class ChangeEmail extends React.Component {
       updated: false
     }
     const email = firebase.auth().currentUser.email  
-    this.ref = firebase.firestore().collection('Users').doc(email)
+    const userID = firebase.auth().currentUser.uid
+    this.ref = firebase.firestore().collection('Users').doc(userID)
   }
   
   componentDidMount() {
@@ -86,22 +87,22 @@ class ChangeEmail extends React.Component {
           var user = firebase.auth().currentUser
           user.updateEmail(newEmail).then(() => {
             console.log("Email updated!")
-            const firestore = firebase.firestore()
-            // get the data from 'oldEmail'
-            firestore.collection("Users").doc(oldEmail).get().then(function (doc) {
-                if (doc && doc.exists) {
-                    var data = doc.data()
-                    // saves the data to 'newEmail'
-                    firestore.collection("Users").doc(newEmail).set(data)
-                    .then(()=> {
-                        firebase.firestore().collection("Users").doc(oldEmail).delete()
-                        // .then()
-                    })
-                }
-            })
+        //     const firestore = firebase.firestore()
+        //     // get the data from 'oldEmail'
+        //     firestore.collection("Users").doc(oldEmail).get().then(function (doc) {
+        //         if (doc && doc.exists) {
+        //             var data = doc.data()
+        //             // saves the data to 'newEmail'
+        //             firestore.collection("Users").doc(newEmail).set(data)
+        //             .then(()=> {
+        //                 firebase.firestore().collection("Users").doc(oldEmail).delete()
+        //                 // .then()
+        //             })
+        //         }
+        //     })
           }).catch((error) => { console.log(error) })
         }).catch((error) => { console.log(error) })
-    // this.props.navigation.navigate('MyProfile')
+    this.props.navigation.navigate('MyProfile')
     }
     else alert('You must enter the correct current email or password')
   }

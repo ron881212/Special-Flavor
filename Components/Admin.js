@@ -92,6 +92,7 @@ const Nav = createAppContainer(
       Snacks: { screen: AdultScreen },
       Boards: { screen: MerchScreen },
       Profile,
+      Users: { screen: MerchScreen },
     },
     {
       defaultNavigationOptions: ({ navigation }) => ({
