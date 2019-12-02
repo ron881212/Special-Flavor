@@ -27,7 +27,8 @@ const ItemCard = props => {
         item: props.item,
         pic: props.pic,
         id: props.itemId,
-        price: 5
+        pintPrice: props.pintPrice,
+        gallonPrice: props.gallonPrice
     }
 
     return(

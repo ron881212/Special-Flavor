@@ -1,9 +1,7 @@
 import React from 'react' 
 import { 
     View, 
-    Text, 
     StyleSheet, 
-    TextInput, 
     SafeAreaView, 
     TouchableOpacity
 } from 'react-native' 
@@ -13,22 +11,30 @@ import { Avatar } from 'react-native-elements'
 import { withNavigation } from 'react-navigation'
 import ImagePicker from 'react-native-image-picker'
 
-class ChangePassword extends React.Component {
+class ChangeEmail extends React.Component {
+  static navigationOptions =  {
+    title: 'Edit Email'
+  }
+
   constructor(){
     super()
     this.state = {
-      user: null,  
-      name: null,
-      phone: null,
-      address: null,
-      avatarSource: null
+      currentPassword: null,
+      newPassword: null,
+      confirmPassword: null,
+      avatarSource: null,
     }
+    const userID = firebase.auth().currentUser.uid
+    this.ref = firebase.firestore().collection('Users').doc(userID)
   }
-static navigationOptions =  {
-  title: 'Change Password',
-  // headerLeft: null,
-  // gesturesEnabled: false,
-}
+  
+  componentDidMount() {
+    this.ref.onSnapshot(userInfo => {
+      this.setState({
+        avatarSource: userInfo._data.Avatar || 'https://placeimg.com/140/140/any',
+      })
+    })
+  }
 
   logOut(){
     firebase.auth().signOut()
@@ -36,23 +42,6 @@ static navigationOptions =  {
 
   ProfilePage(){
     this.props.navigation.navigate('MyProfile')
-  }
-
-  data = () => {
-    const { name, phone, address, user } = this.state
-    const email = firebase.auth().currentUser.email
-    // // this is an successful atempt to use user email as a doc in firestore
-    this.userInfo = firebase.firestore().collection('Users').doc(email)
-    firebase.firestore().runTransaction(async transaction => {
-        const doc = await transaction.get(this.userInfo)
-        // if it does not exist set the population to one
-        if (doc.exists) {
-          transaction.update(this.userInfo, 
-              { Name: name, Phone: phone, Address: address }
-          )
-        }
-      })
-      this.ProfilePage()
   }
 
   selectImage = async () => {
@@ -76,35 +65,74 @@ static navigationOptions =  {
   })
   }
 
+  reauthenticate = (currentPassword) => {
+    var user = firebase.auth().currentUser;
+    var cred = firebase.auth.EmailAuthProvider.credential(
+        user.email, currentPassword)
+    return user.reauthenticateWithCredential(cred)
+  }
+
+  changePassword = (currentPassword, newPassword) => {
+    var { confirmPassword} = this.state
+    if(confirmPassword == newPassword){
+      this.reauthenticate(currentPassword).then(() => {
+        var user = firebase.auth().currentUser
+        var { newPassword } = this.state
+        console.log('This is the password ' + newPassword)
+        user.updatePassword(newPassword).then(() => {
+          console.log("Password updated!")
+
+        }).catch((error) => { console.log(error) })
+      }).catch((error) => { console.log(error) })
+      this.props.navigation.navigate('MyProfile')
+    }
+    else alert('Your passwords must match')
+  }
+
     render() {
       return (
         <SafeAreaView style={styles.container}>
+
             <TouchableOpacity>
-            {/* This.selectImage here */}
             <Avatar
               rounded
               showEditButton
               size='xlarge'
               onPress={this.selectImage}
+              containerStyle={{marginTop:100}}
               source={{uri: this.state.avatarSource}}
             />
             </TouchableOpacity>
-            {/* <Input
-            placeholder='Name'
-            onChangeText={(nameText) => this.setState({name: nameText})}
+
+            <Input
+            autoCorrect = {false}
+            autoCapitalize = 'none'
+            placeholder='Current password'
+            containerStyle={{width:350, marginTop:50}}
+            secureTextEntry={true}
+            onChangeText={(text) => this.setState({currentPassword: text})}
             />
             <Input
-            placeholder='Phone'
-            onChangeText={(phoneText) => this.setState({phone: phoneText})}
-            /> */}
-            <Input
-            placeholder='Password'
-            onChangeText={(addressText) => this.setState({address: addressText})}
+            autoCorrect = {false}
+            autoCapitalize = 'none'
+            placeholder='New Password'
+            containerStyle={{width:350}}
+            secureTextEntry={true}
+            onChangeText={(text) => this.setState({newPassword: text})}
             />
+            <Input
+            autoCorrect = {false}
+            autoCapitalize = 'none'
+            placeholder='Confirm Password'
+            containerStyle={{width:350}}
+            secureTextEntry={true}
+            onChangeText={(text) => this.setState({confirmPassword: text})}
+            />
+
             <View style={styles.container2}>
           <Button 
             title='Submit'
-            onPress={()=>this.data()}
+            onPress={()=> this.changePassword(this.state.currentPassword, this.state.newPassword)}
             style={styles.buttons}
             />
           <Button 
@@ -122,7 +150,6 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       alignItems: 'center',
-      justifyContent: 'space-around',
       backgroundColor: 'whitesmoke'
     },
     container2: {
@@ -135,4 +162,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default withNavigation(ChangePassword)
+export default withNavigation(ChangeEmail)

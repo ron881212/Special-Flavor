@@ -25,7 +25,8 @@ class ShopScreen extends React.Component {
       instructions: null
     }
     const email = firebase.auth().currentUser.email 
-    this.ref = firebase.firestore().collection('Users').doc(email)
+    const uid = firebase.auth().currentUser.uid 
+    this.ref = firebase.firestore().collection('Users').doc(uid)
     this.updateGrandTotal = this.updateGrandTotal.bind(this)
   }
   componentDidMount() {
