@@ -61,6 +61,7 @@ const ItemCard = props => {
               onPress={ !cartTitle ?
                 () => {
                     props.toCart(allCartItems), 
+                    console.log(allCartItems)
                     console.log(props.store.cartItems)
                     Added()
                 }

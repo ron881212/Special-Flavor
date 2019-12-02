@@ -146,7 +146,10 @@ render(){
       <Button 
         title={`Place your order: ${"$" + this.props.store.cartTotal.total + ".00" || total}`}
         buttonStyle={styles.payment}
-        onPress={()=> alert("Your order has been placed")}
+        onPress={()=> 
+        // alert("Your order has been placed")
+        console.log(this.props.store.cartTotal)
+        }
       />
       </>
       

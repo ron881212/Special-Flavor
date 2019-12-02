@@ -15,8 +15,8 @@ import { connect } from 'react-redux'
 const RegFlavors = props => {
 
     const [flavors, setFlavors] = useState([])
-    const [pintPrice, setPintPrice] = useState([])
-    const [gallonPrice, setGallonPrice] = useState([])
+    const [pintPrice, setPintPrice] = useState()
+    const [gallonPrice, setGallonPrice] = useState()
     const [regSearchFlavors, setRegSearchFlavors] = useState([])
     const [isSearching, setIsSearching] = useState(false)
 
@@ -26,26 +26,27 @@ const RegFlavors = props => {
 
     const start = async () => {
         const getFlavors = await firebase.firestore().collection('Flavors').get()
-        setPintPrice( await firebase.firestore().collection('FlavorSizes').get()
-        .then(console.log(pintPrice))) 
+        const prices = await firebase.firestore().collection('FlavorSizes').get()
+        
         getFlavors.docs.forEach( doc => {
             setFlavors([...flavors, flavors.push({
                 names: doc.id,
                 image: doc._data.image,
                 details: doc._data.description,
-                // pintPrice: 5,
-                // gallonPrice:30
             })])
+        })
+        
+        prices.docs.forEach( doc => {
+            setPintPrice(doc._data.sizeRegular)
+            setGallonPrice(doc._data.sizeBucket)
+            
+            // console.log(doc._data.sizeBucket)
         })
         
         // console.log('====================================')
         // console.log(props.cartItems)
         // console.log('====================================')
     }
-
-    // const setId = (cartId = props.cartItems.id) => {
-    //     return cartId
-    // }
 
     let index = 0
     
@@ -73,8 +74,8 @@ const RegFlavors = props => {
                 discription={item.details || null}
                 remove={props.removeItem}
                 toCart={props.addItemToCart}
-                // pintPrice={}
-                // gallonPrice={}
+                pintPrice={pintPrice}
+                gallonPrice={gallonPrice}
                 itemId={index++}
             />
             }
