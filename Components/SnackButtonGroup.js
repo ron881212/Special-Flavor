@@ -4,8 +4,8 @@ import { ButtonGroup, Slider, Button } from 'react-native-elements'
 import { connect } from 'react-redux'
 import firebase from 'react-native-firebase' 
 
-class CartButtonGroup extends React.Component {
-  constructor () {
+class SnackButtonGroup extends React.Component {
+constructor () {
     super()
     this.state = {
       selectedIndex: 0,
@@ -16,7 +16,6 @@ class CartButtonGroup extends React.Component {
       normal: null,
       large: null,
     }
-    this.setPrice = this.setPrice.bind(this)
     this.updateIndex = this.updateIndex.bind(this)
     this.updateTotal = this.updateTotal.bind(this)
     this.updateGrandTotal = this.updateGrandTotal.bind(this)
@@ -24,18 +23,10 @@ class CartButtonGroup extends React.Component {
 
   componentDidMount() {
     this.updateGrandTotal()
-    this.setPrice()
-  }
-
-  setPrice = async () => {
-    const prices = await firebase.firestore().collection('FlavorSizes').get()
-    prices.docs.forEach( doc => {
-      this.setState({price: doc._data.sizeRegular})
-      this.setState({total: doc._data.sizeRegular})
-      this.setState({gallon: doc._data.sizeBucket})
-      this.setState({normal: doc._data.sizeNormal})
-      this.setState({large: doc._data.sizeLarge})
-    })
+    this.setState({price: this.props.pintPrice})
+    this.setState({total: this.props.pintPrice})
+    this.setState({normal: this.props.pintPrice})
+    this.setState({large: this.props.gallonPrice})
   }
 
   updateIndex (selectedIndex) {
@@ -53,12 +44,11 @@ class CartButtonGroup extends React.Component {
     }
 
     if(selectedIndex == 1) {
-      console.log(this.props.store.cartItems)
       this.setState({price: this.state.large})
-      this.setState({total: (this.state.gallon * this.state.value)})
+      this.setState({total: (this.state.large * this.state.value)})
       for(let i = 0; i < this.props.store.cartItems.length; i++){
         if(this.props.store.cartItems[i].item.id == this.props.itemID){
-          this.props.store.cartItems[i].item.pintPrice = (this.state.gallon * this.state.value)
+          this.props.store.cartItems[i].item.pintPrice = (this.state.large * this.state.value)
           this.updateGrandTotal()
           return this.props.store.cartItems[i].item.pintPrice 
         }
@@ -80,7 +70,7 @@ class CartButtonGroup extends React.Component {
   }
   
   updateGrandTotal(){
-    nowTotal = 0
+    let nowTotal = 0
     for(let i = 0; i < this.props.store.cartItems.length; i++){
       nowTotal += this.props.store.cartItems[i].item.pintPrice
     }
@@ -134,5 +124,5 @@ const mapDispatchToProps = (dispatch) => ({
   addToTotalCart: (product, id) => dispatch({type: 'ADD_TOTAL_TO_CART', payload: product, id: id})
 })
 
-export default connect(mapStoreToProps, mapDispatchToProps)(CartButtonGroup)
+export default connect(mapStoreToProps, mapDispatchToProps)(SnackButtonGroup)
 

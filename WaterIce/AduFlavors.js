@@ -31,7 +31,9 @@ const AduFlavors = props => {
         setAduFlavors([...aduFlavors, aduFlavors.push({
               names: doc.id,
               image: doc._data.image,
-              details: doc._data.description
+              details: doc._data.description,
+              pint: doc._data.price,
+              gallon: doc._data.priceTwo,
       })])
 
       })
@@ -69,7 +71,8 @@ const AduFlavors = props => {
                 toCart={props.addItemToCart}
                 remove={props.removeItem}
                 itemId={index++}
-
+                pintPrice={item.pint}
+                gallonPrice={item.gallon}
             />
             }
         />

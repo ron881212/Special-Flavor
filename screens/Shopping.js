@@ -6,6 +6,7 @@ import RegFlavors from '../WaterIce/RegFlavors'
 import { connect } from 'react-redux'
 import firebase from 'react-native-firebase' 
 import CartButtonGroup from '../Components/CartButtonGroup'
+import SnackButtonGroup from '../Components/SnackButtonGroup'
 import Swipeout from 'react-native-swipeout'
 
 class ShopScreen extends React.Component {
@@ -47,11 +48,11 @@ class ShopScreen extends React.Component {
   // }
 
   updateGrandTotal(){
-    nowTotal = 0
+    let nowTotal = 0
     for(let i = 0; i < this.props.store.cartItems.length; i++){
       nowTotal += this.props.store.cartItems[i].item.price
     }
-    console.log(nowTotal)
+    // console.log(nowTotal)
     this.props.addToTotal(nowTotal)
     // this.setState({total:nowTotal})
   }
@@ -65,7 +66,7 @@ render(){
       backgroundColor: '#d9534f',
       onPress: ()=> {
         this.props.removeItem(item)
-        this.props.subFromTotal(item.price)
+        this.props.subFromTotal(item.pintPrice)
         // console.log(item.price)
       }
     }]
@@ -129,10 +130,17 @@ render(){
               title={flavor.item.name}
               subtitle={flavor.item.item}
             />
-            <CartButtonGroup
+            {flavor.item.item == 'Water Ice' ? 
+              <CartButtonGroup
               itemID={flavor.item.id}
               itemPrice={flavor.item.price}
-            />
+              />
+            : 
+              <SnackButtonGroup
+              itemID={flavor.item.id}
+              pintPrice={flavor.item.pintPrice}
+              gallonPrice={flavor.item.gallonPrice}
+              />}
           </Card>
         </Swipeout>
       ))}
