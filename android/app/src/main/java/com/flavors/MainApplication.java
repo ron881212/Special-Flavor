@@ -20,6 +20,7 @@ import java.util.List;
 
 import io.invertase.firebase.auth.RNFirebaseAuthPackage; 
 import io.invertase.firebase.firestore.RNFirebaseFirestorePackage;
+import io.invertase.firebase.database.RNFirebaseDatabasePackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -41,7 +42,8 @@ public class MainApplication extends Application implements ReactApplication {
             new RNGestureHandlerPackage(),
             new RNFirebasePackage(),
             new RNFirebaseAuthPackage(),
-            new RNFirebaseFirestorePackage()
+            new RNFirebaseFirestorePackage(),
+            new RNFirebaseDatabasePackage()
       );
     }
 
