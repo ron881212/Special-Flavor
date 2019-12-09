@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, SafeAreaView, StyleSheet } from 'react-native'
+import { Text, View, SafeAreaView, StyleSheet, Platform } from 'react-native'
 import Banner from '../Components/Banner'
 import Shop from '../Components/Shop'
 import MyAvatar from '../Components/Avatar'
@@ -32,14 +32,14 @@ const styles = StyleSheet.create({
   cards: {
     flex: 1,
     position: 'relative',
-    top: 200,
+    top: 160,
     width: '100%',
     justifyContent: 'space-between',
   },
   banner: {
     flex: 1,
     position: 'absolute',
-    top: 40,
+    // top: 40,
     alignItems: 'center',
     // width: '100%',
     height: 200,  

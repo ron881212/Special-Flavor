@@ -4,7 +4,8 @@ import {
     View, 
     SafeAreaView, 
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    Platform
 } from 'react-native'
 import { withNavigation } from 'react-navigation'
 import { Avatar } from 'react-native-elements'
@@ -50,7 +51,7 @@ class MyAvatar extends React.Component {
 const styles = StyleSheet.create({
     avatar: {
         position: 'absolute',
-        top: 75,
+        top: Platform.OS === 'ios' ? 75 : 35,
         left: 15,
     },
 })

@@ -1,12 +1,18 @@
 import React from 'react'
-import { Text, View, SafeAreaView, StyleSheet } from 'react-native'
+import { Platform, View, SafeAreaView, StyleSheet } from 'react-native'
 import Banner from '../Components/Banner'
 import Shop from '../Components/Shop'
 import MyAvatar from '../Components/Avatar'
 import RegFlavors from '../WaterIce/RegFlavors'
 import Search from '../Components/SearchBar'
 
+const ComponentView = Platform.select({
+  ios: () => require('SafeAreaView'),
+  android: () => require('View'),
+})()
+
 const FlavorScreen = props => {
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.banner}>
@@ -38,7 +44,7 @@ const styles = StyleSheet.create({
     banner: {
       flex: 1,
       position: 'absolute',
-      top: 40,
+      // top: 40,
       alignItems: 'center',
       // width: '100%',
       height: 200,  
