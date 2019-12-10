@@ -17,13 +17,15 @@ const FlavorScreen = props => {
     <SafeAreaView style={styles.container}>
       <View style={styles.banner}>
         <Banner />
+        <View style={styles.bar}>
+          <Search />
+        </View>
       </View>
-        <Shop />
-        <Search />
-        <MyAvatar />
         <View style={styles.cards}>
           <RegFlavors />
         </View>
+        <Shop />
+        <MyAvatar />
     </SafeAreaView>
   )
 }
@@ -37,17 +39,21 @@ const styles = StyleSheet.create({
     cards: {
       flex: 1,
       position: 'relative',
-      top: 160,
-      width: '100%',
+      top: -150,
+      // width: '100%',
+      // top: -170,
+      // height: 400,
       justifyContent: 'space-between',
     },
     banner: {
       flex: 1,
-      position: 'absolute',
-      // top: 40,
+      padding:0,
+      margin:0,
       alignItems: 'center',
-      // width: '100%',
-      height: 200,  
+    },
+    bar: {
+      position: 'relative',
+      top: -65
     },
 })
 

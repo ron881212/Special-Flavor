@@ -39,9 +39,9 @@ export default class Search extends React.Component {
 const styles = StyleSheet.create({
     bar: {
         width: 350,
-        top: 130,
         borderRadius: 50, 
         padding: 0,
+        margin:0
     },
     search: {
         borderRadius: 50, 

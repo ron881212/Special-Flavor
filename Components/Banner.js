@@ -5,31 +5,37 @@ import {
     StyleSheet, 
     ImageBackground,
     Image,
-    ScrollView
+    ScrollView,
+    Dimensions
 } from 'react-native';
 
 const Banner = props => {
     return (
-        <View style={styles.banner}>
+        // <View style={styles.banner}>
         <Image
-        source={require('../images/SpecialFlavorsLogo.png')} 
+        source={require('../images/SpecialFlavorsBanner3.png')} 
         style={styles.backgroundStyle}
-        >
-        </Image>
-        </View>
+        />
+        // </Image>
+        // </View>
     )
 }
 // create stylesheet here.
 // banner needs to be absolute and start at the top with a fixed height and width
+
+const sectionWidth = Dimensions.get('window').width
+
 const styles = StyleSheet.create({
     banner: {
         flex: 1,
     },
     backgroundStyle: {
-        flex: 1,
         backgroundColor:'purple',
-        position: 'relative',
-        alignItems: 'center',
+        width: sectionWidth,
+        resizeMode: 'contain',
+        margin:0,
+        padding:0
+        
     }
 })
 

@@ -22,7 +22,7 @@ class ShoppingCart extends React.Component {
                 type='feather'
                 color='#517fa4'
                 reverse={true}
-                // size={26}
+                size={28}
             />    
             </TouchableOpacity> 
             {Object.keys(this.props.store.cartItems).length > 0 ? 
@@ -30,7 +30,7 @@ class ShoppingCart extends React.Component {
             <Badge 
                 value={Object.keys(this.props.store.cartItems).length} 
                 status="error"
-                badgeStyle={{top:0,left:15}}
+                containerStyle={{ position: 'absolute', top: 5, right: 5}}
             /> : null }
                      
         </View>
@@ -47,8 +47,8 @@ const mapStoreToProps = (store) => {
 const styles = StyleSheet.create({
     cart: {
         position: 'absolute',
-        top: Platform.OS === 'ios' ? 75 : 35,
-        right: 25,
+        top: Platform.OS === 'ios' ? 75 : 30,
+        right: Platform.OS === 'ios' ? 25 : 10,
     },
 })
 
