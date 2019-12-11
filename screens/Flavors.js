@@ -15,17 +15,22 @@ const FlavorScreen = props => {
 
   return (
     <SafeAreaView style={styles.container}>
+
       <View style={styles.banner}>
         <Banner />
-        <View style={styles.bar}>
-          <Search />
-        </View>
       </View>
-        <View style={styles.cards}>
-          <RegFlavors />
-        </View>
-        <Shop />
-        <MyAvatar />
+
+      <MyAvatar />
+      <Shop />
+
+      <View style={styles.bar}>
+        <Search />
+      </View>
+      
+      <View style={styles.cards}>
+        <RegFlavors />
+      </View>
+
     </SafeAreaView>
   )
 }
@@ -37,24 +42,14 @@ const styles = StyleSheet.create({
       backgroundColor: 'whitesmoke'
     },
     cards: {
-      flex: 1,
-      position: 'relative',
-      top: -150,
-      // width: '100%',
-      // top: -170,
-      // height: 400,
-      justifyContent: 'space-between',
+      top: 180,
     },
     banner: {
       flex: 1,
-      padding:0,
-      margin:0,
-      alignItems: 'center',
     },
     bar: {
-      position: 'relative',
-      top: -65
-    },
+      top: 140
+    }
 })
 
 export default FlavorScreen

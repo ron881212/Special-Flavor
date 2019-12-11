@@ -102,9 +102,9 @@ const mapDispatchToProps = (dispatch) => {
 const styles = StyleSheet.create({
   container: {
     position: 'relative',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingBottom: 175
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    // paddingBottom: 175
   },
   card: {
       flex: 1,
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'flex-start',
       width: '100%',
-      height: 'auto'
+      // height: 'auto'
   },
 })
 

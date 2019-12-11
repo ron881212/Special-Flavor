@@ -47,8 +47,8 @@ const mapStoreToProps = (store) => {
 const styles = StyleSheet.create({
     cart: {
         position: 'absolute',
-        top: Platform.OS === 'ios' ? 75 : 30,
-        right: Platform.OS === 'ios' ? 25 : 10,
+        top: 65,
+        right: 25,
     },
 })
 
