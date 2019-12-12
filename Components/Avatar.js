@@ -51,8 +51,8 @@ class MyAvatar extends React.Component {
 const styles = StyleSheet.create({
     avatar: {
         position: 'absolute',
-        top: 75,
-        left: 25
+        top: '10%',
+        left: '5%'
     },
 })
 

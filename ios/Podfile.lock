@@ -19,6 +19,9 @@ PODS:
   - Firebase/Firestore (5.20.2):
     - Firebase/CoreOnly
     - FirebaseFirestore (= 1.2.1)
+  - Firebase/Storage (5.20.2):
+    - Firebase/CoreOnly
+    - FirebaseStorage (= 3.1.1)
   - FirebaseAnalytics (5.8.1):
     - FirebaseCore (~> 5.4)
     - FirebaseInstanceID (~> 3.8)
@@ -60,6 +63,10 @@ PODS:
     - FirebaseCore (~> 5.2)
     - GoogleUtilities/Environment (~> 5.2)
     - GoogleUtilities/UserDefaults (~> 5.2)
+  - FirebaseStorage (3.1.1):
+    - FirebaseAuthInterop (~> 1.0)
+    - FirebaseCore (~> 5.2)
+    - GTMSessionFetcher/Core (~> 1.1)
   - GoogleAppMeasurement (5.8.1):
     - GoogleUtilities/AppDelegateSwizzler (~> 5.2)
     - GoogleUtilities/MethodSwizzler (~> 5.2)
@@ -107,7 +114,7 @@ PODS:
     - nanopb/encode (= 0.3.9011)
   - nanopb/decode (0.3.9011)
   - nanopb/encode (0.3.9011)
-  - Protobuf (3.10.0)
+  - Protobuf (3.11.1)
   - React (0.59.9):
     - React/Core (= 0.59.9)
   - react-native-image-picker (1.1.0):
@@ -121,6 +128,7 @@ DEPENDENCIES:
   - Firebase/Core (~> 5.20.1)
   - Firebase/Database (~> 5.20.1)
   - Firebase/Firestore (~> 5.20.1)
+  - Firebase/Storage (~> 5.20.1)
   - React (from `../node_modules/react-native`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -136,6 +144,7 @@ SPEC REPOS:
     - FirebaseDatabase
     - FirebaseFirestore
     - FirebaseInstanceID
+    - FirebaseStorage
     - GoogleAppMeasurement
     - GoogleUtilities
     - "gRPC-C++"
@@ -163,6 +172,7 @@ SPEC CHECKSUMS:
   FirebaseDatabase: 2c15b0ea6f2c6eb5e57413f9d6340f1e50b81ae3
   FirebaseFirestore: faca891c0f0d1d6c10c793473e2f6a29d75014b5
   FirebaseInstanceID: a122b0c258720cf250551bb2bedf48c699f80d90
+  FirebaseStorage: 6162ef4322502b818d9de0ec552f5226d283de43
   GoogleAppMeasurement: ffe513e90551844a739e7bcbb1d2aca1c28a4338
   GoogleUtilities: 04fce34bcd5620c1ee76fb79172105c74a4df335
   "gRPC-C++": e76441995900ac90e9bd98644ab4733f12521edf
@@ -170,11 +180,11 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 43b8b64263023d4f32caa0b40f4c8bfa3c5f36d8
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
-  Protobuf: a4dc852ad69c027ca2166ed287b856697814375b
+  Protobuf: 20d79da7f20b5928b80043b05080b816e802659e
   React: a86b92f00edbe1873a63e4a212c29b7a7ad5224f
   react-native-image-picker: 7a85cf7b0a53845f03ae52fb4592a2748ded069b
   yoga: 03ff42a6f223fb88deeaed60249020d80c3091ee
 
-PODFILE CHECKSUM: 19dd8fb3b7f6d39286169e7a61d48cba927dd272
+PODFILE CHECKSUM: 4675aa21a76a5c59e2f93c55de0206ac68073f84
 
 COCOAPODS: 1.8.4
