@@ -50,7 +50,7 @@ class ShopScreen extends React.Component {
   updateGrandTotal(){
     let nowTotal = 0
     for(let i = 0; i < this.props.store.cartItems.length; i++){
-      nowTotal += this.props.store.cartItems[i].item.price
+      nowTotal += this.props.store.cartItems[i].item.pintPrice
     }
     // console.log(nowTotal)
     this.props.addToTotal(nowTotal)

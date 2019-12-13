@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     avatar: {
         position: 'absolute',
         top: '10%',
-        left: '5%'
+        left: '7%'
     },
 })
 

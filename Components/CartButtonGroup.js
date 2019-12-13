@@ -80,9 +80,10 @@ class CartButtonGroup extends React.Component {
   }
   
   updateGrandTotal(){
-    nowTotal = 0
+    let nowTotal = 0
     for(let i = 0; i < this.props.store.cartItems.length; i++){
       nowTotal += this.props.store.cartItems[i].item.pintPrice
+      // console.log(this.props.store.cartItems[i].item.pintPrice)
     }
     // console.log(nowTotal)
     // console.log('ADD_TO_TOTAL ' + this.props.addToTotal)
@@ -135,4 +136,3 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 export default connect(mapStoreToProps, mapDispatchToProps)(CartButtonGroup)
-
