@@ -2,14 +2,13 @@ import React from 'react'
 import { 
     View, 
     StyleSheet, 
-    SafeAreaView, 
-    TouchableOpacity
+    SafeAreaView,
+    Alert
 } from 'react-native' 
 import firebase from 'react-native-firebase' 
 import { Button, Input } from 'react-native-elements'
-import { Avatar } from 'react-native-elements'
 import { withNavigation } from 'react-navigation'
-import ImagePicker from 'react-native-image-picker'
+import EditAvatar from '../Components/EditAvatar'
 
 class ChangeEmail extends React.Component {
   static navigationOptions =  {
@@ -23,7 +22,6 @@ class ChangeEmail extends React.Component {
       newEmail: null,
       password: null,
       confirmEmail: null,
-      avatarSource: null,
       updated: false
     }
     const email = firebase.auth().currentUser.email  
@@ -34,11 +32,6 @@ class ChangeEmail extends React.Component {
   componentDidMount() {
     const email = firebase.auth().currentUser.email    
     // this.ref = firebase.firestore().collection('Users').doc(email)
-    this.ref.onSnapshot(userInfo => {
-      this.setState({
-        avatarSource: userInfo._data.Avatar || 'https://placeimg.com/140/140/any',
-      })
-    })
     this.setState({ oldEmail: email })
     console.log(email)
   }
@@ -49,27 +42,6 @@ class ChangeEmail extends React.Component {
 
   ProfilePage(){
     this.props.navigation.navigate('MyProfile')
-  }
-
-  selectImage = async () => {
-  ImagePicker.showImagePicker({noData:true,mediaType:'photo'}, (response) => {
-    console.log('Response = ', response)
-
-    if (response.didCancel) {
-      console.log('User cancelled image picker')
-    } else if (response.error) {
-      console.log('ImagePicker Error: ', response.error)
-    } else if (response.customButton) {
-      console.log('User tapped custom button: ', response.customButton)
-    } else {
-      // You can also display the image using data:
-      // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-  
-      this.setState({
-        avatarSource: response.uri,
-      })
-    }
-  })
   }
 
   reauthenticate = (currentPassword) => {
@@ -92,24 +64,13 @@ class ChangeEmail extends React.Component {
         }).catch((error) => { console.log(error) })
     this.props.navigation.navigate('MyProfile')
     }
-    else alert('You must enter the correct current email or password')
+    else Alert.alert('You must enter the correct current email or password')
   }
 
     render() {
       return (
         <SafeAreaView style={styles.container}>
-
-            <TouchableOpacity>
-            <Avatar
-              rounded
-              showEditButton
-              size='xlarge'
-              onPress={this.selectImage}
-              containerStyle={{marginTop:100}}
-              source={{uri: this.state.avatarSource}}
-            />
-            </TouchableOpacity>
-
+          <EditAvatar />
             <Input
             autoCorrect = {false}
             autoCapitalize = 'none'

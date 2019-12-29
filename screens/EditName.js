@@ -3,13 +3,11 @@ import {
     View, 
     StyleSheet, 
     SafeAreaView, 
-    TouchableOpacity
 } from 'react-native' 
 import firebase from 'react-native-firebase' 
 import { Button, Input } from 'react-native-elements'
-import { Avatar } from 'react-native-elements'
 import { withNavigation } from 'react-navigation'
-import ImagePicker from 'react-native-image-picker'
+import EditAvatar from '../Components/EditAvatar'
 
 class EditName extends React.Component {
   static navigationOptions =  {
@@ -19,8 +17,7 @@ class EditName extends React.Component {
   constructor(){
     super()
     this.state = {
-      name: null,
-      avatarSource: null
+      name: null
     }
     const email = firebase.auth().currentUser.email  
     userID = firebase.auth().currentUser.uid 
@@ -29,12 +26,12 @@ class EditName extends React.Component {
 
   componentDidMount() {
     const email = firebase.auth().currentUser.email  
-    userID = firebase.auth().currentUser.uid 
     this.ref = firebase.firestore().collection('Users').doc(userID)
+    userID = firebase.auth().currentUser.uid 
+    
     this.ref.onSnapshot(userInfo => {
       this.setState({
-        name: userInfo._data.Name,
-        avatarSource: userInfo._data.Avatar,
+        name: userInfo._data.Name
       })
     })
   }
@@ -48,7 +45,7 @@ class EditName extends React.Component {
   }
 
   data = () => {
-    const { name, avatarSource } = this.state
+    const { name } = this.state
     const email = firebase.auth().currentUser.email
     userID = firebase.auth().currentUser.uid 
     // // this is an successful atempt to use user email as a doc in firestore
@@ -58,47 +55,17 @@ class EditName extends React.Component {
         // if it does not exist set the population to one
         if (doc.exists) {
           transaction.update(this.userInfo, 
-              { Name: name, Avatar: avatarSource }
+              { Name: name }
           )
         }
       })
       this.ProfilePage()
   }
 
-  selectImage = async () => {
-  ImagePicker.showImagePicker({noData:true,mediaType:'photo'}, (response) => {
-    console.log('Response = ', response)
-
-    if (response.didCancel) {
-      console.log('User cancelled image picker')
-    } else if (response.error) {
-      console.log('ImagePicker Error: ', response.error)
-    } else if (response.customButton) {
-      console.log('User tapped custom button: ', response.customButton)
-    } else {
-      // You can also display the image using data:
-      // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-  
-      this.setState({
-        avatarSource: response.uri,
-      })
-    }
-  })
-  }
-
     render() {
       return (
         <SafeAreaView style={styles.container}>
-            <TouchableOpacity>
-            {/* This.selectImage here */}
-            <Avatar
-              rounded
-              showEditButton
-              size='xlarge'
-              onPress={this.selectImage}
-              source={{uri: this.state.avatarSource}}
-            />
-            </TouchableOpacity>
+          <EditAvatar />
             <Input
             placeholder={this.state.name}
             onChangeText={(nameText) => this.setState({name: nameText})}
