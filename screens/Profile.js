@@ -42,7 +42,16 @@ static navigationOptions =  {
         email: email,
         phone: userInfo._data.Phone,
         address: userInfo._data.Address,
-        avatar: userInfo._data.Avatar || 'https://placeimg.com/140/140/any',
+      })
+    })
+    var avatarRef = firebase.storage().ref(`${email}/images`)
+    avatarRef.getDownloadURL().then( url => {
+    this.setState({
+        avatar: url
+    })
+    }).catch( () => {
+    this.setState({
+        avatar: 'https://placeimg.com/140/140/any'
       })
     })
   }
@@ -62,7 +71,6 @@ static navigationOptions =  {
               source={{uri: this.state.avatar}}
               containerStyle={styles.avatar}
             />
-           
             <ScrollView>
 
               {/* NAME */}

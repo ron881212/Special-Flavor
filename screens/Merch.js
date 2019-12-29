@@ -10,7 +10,6 @@ import Picture from '../images/IMG_1225.jpeg'
 export default class MerchScreen extends React.Component {
   constructor(){
     super()
-    const email = firebase.auth().currentUser.email   
     const userID = firebase.auth().currentUser.uid
     this.emailRef = firebase.firestore().collection('Users').doc(userID)
   }
@@ -21,12 +20,25 @@ export default class MerchScreen extends React.Component {
   }
   
   componentDidMount() {
+    const email = firebase.auth().currentUser.email  
+    this.ref = firebase.firestore().collection('Users').doc(userID)
+    userID = firebase.auth().currentUser.uid 
+    var avatarRef = firebase.storage().ref(`${email}/images`)
+    avatarRef.getDownloadURL().then( url => {
+        this.setState({
+          avatar: url
+        })
+    }).catch( () => {
+        this.setState({
+          avatar: 'https://placeimg.com/140/140/any'
+          })
+    })
     this.emailRef.onSnapshot(userInfo => {
       this.setState({
         userName: userInfo._data.userName || 'anonymous',
-        avatar: userInfo._data.Avatar || 'https://placeimg.com/140/140/any'
       })
     })
+
     this.setState({
       messages: [
         {
@@ -44,7 +56,7 @@ export default class MerchScreen extends React.Component {
       this.setState(previousState => ({
         messages: GiftedChat.append(previousState.messages, message),
       }))
-      )
+    )
   }
 
   get user(){

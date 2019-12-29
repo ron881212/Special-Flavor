@@ -1,16 +1,12 @@
 import React from 'react'
 import { 
-    Image, 
     View, 
-    SafeAreaView, 
     StyleSheet,
     TouchableOpacity,
-    Platform
 } from 'react-native'
 import { withNavigation } from 'react-navigation'
 import { Avatar } from 'react-native-elements'
 import firebase from 'react-native-firebase' 
-
 
 class MyAvatar extends React.Component {
 
@@ -20,14 +16,22 @@ class MyAvatar extends React.Component {
           avatar: null
         }
         const email = firebase.auth().currentUser.email   
-        const userID = firebase.auth().currentUser.uid
+        userID = firebase.auth().currentUser.uid
         this.ref = firebase.firestore().collection('Users').doc(userID)
     }
 
     componentDidMount() {
-        this.ref.onSnapshot(userInfo => {
-          this.setState({
-            avatar: userInfo._data.Avatar || 'https://placeimg.com/140/140/any',
+        const email = firebase.auth().currentUser.email  
+        this.ref = firebase.firestore().collection('Users').doc(userID)
+        userID = firebase.auth().currentUser.uid 
+        var avatarRef = firebase.storage().ref(`${email}/images`)
+        avatarRef.getDownloadURL().then( url => {
+        this.setState({
+            avatar: url
+        })
+        }).catch( () => {
+        this.setState({
+            avatar: 'https://placeimg.com/140/140/any'
           })
         })
     }

@@ -22,12 +22,10 @@ class EditAvatar extends React.Component {
       var avatarRef = firebase.storage().ref(`${email}/images`)
       console.log('avatarRef =', avatarRef)
       avatarRef.getDownloadURL().then( url => {
-        // if(url.length > 10){
         this.setState({
           avatarSource: url
         })
         console.log(url)
-        // }
       }).catch( () => {
         this.setState({
             avatarSource: 'https://placeimg.com/140/140/any'
