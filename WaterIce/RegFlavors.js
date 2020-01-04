@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { 
     FlatList, 
-    View, 
-    SafeAreaView, 
     StyleSheet, 
     ScrollView,
-    Dimensions
 } from 'react-native'
 import firebase from 'react-native-firebase' 
-import { Card, ListItem, Button, Icon, Image } from 'react-native-elements'
 import ItemCard from '../Components/ItemCard'
 import { connect } from 'react-redux'
 
@@ -19,6 +15,7 @@ const RegFlavors = props => {
     const [gallonPrice, setGallonPrice] = useState()
     const [regSearchFlavors, setRegSearchFlavors] = useState([])
     const [isSearching, setIsSearching] = useState(false)
+    const [completed, setCompleted] = useState(false)
 
     useEffect(() => {
         start()
@@ -39,13 +36,14 @@ const RegFlavors = props => {
         prices.docs.forEach( doc => {
             setPintPrice(doc._data.sizeRegular)
             setGallonPrice(doc._data.sizeBucket)
-            
             // console.log(doc._data.sizeBucket)
         })
+        
         
         // console.log('====================================')
         // console.log(props.cartItems)
         // console.log('====================================')
+        setCompleted(!completed)
     }
 
     let index = 0
@@ -66,6 +64,7 @@ const RegFlavors = props => {
             data={flavors}
             keyExtractor={(item, index) => index.toString()}
             numColumns='2'
+            // ListFooterComponentStyle={{padding:30}}
             renderItem={({item}) => 
             <ItemCard
                 item="Water Ice"

@@ -42,13 +42,16 @@ const styles = StyleSheet.create({
       backgroundColor: 'whitesmoke'
     },
     cards: {
-      top: 180,
+      top:'8%',
+      position:'relative',
+      paddingTop: '20%',
     },
     banner: {
       flex: 1,
     },
     bar: {
-      top: 140
+      top: '24%',
+      position: 'absolute'
     }
 })
 

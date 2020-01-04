@@ -4,6 +4,7 @@ import Banner from '../Components/Banner'
 import Shop from '../Components/Shop'
 import MyAvatar from '../Components/Avatar'
 import AduFlavors from '../WaterIce/AduFlavors'
+// import AduFlavorsTwo from '../WaterIce/AduFlavorsTwo'
 import Search from '../Components/SearchBar'
 
 
@@ -37,17 +38,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'whitesmoke'
   },
   cards: {
-    // flex: 1,
-    // position: 'relative',
-    top: 180,
-    // width: '100%',
-    // justifyContent: 'space-between',
+    top:'8%',
+    position:'relative',
+    paddingTop: '20%',
   },
   banner: {
     flex: 1,
   },
   bar: {
-    top: 140
+    top: '24%',
+    position: 'absolute'
   }
 })
 

@@ -1,11 +1,8 @@
 import React from 'react'
 import {
-  Image,
-  TextInput,
   ImageBackground,
   StyleSheet,
   SafeAreaView,
-  Text,
   View,
   KeyboardAvoidingView
 } from 'react-native'
@@ -38,10 +35,7 @@ static navigationOptions = {
   
   
   render() {
-    // const { foo, bar } = this.state
-    // const createUser = firebase.auth.createUserWithEmailAndPassword() 
-    // createUser(this.state.email, this.state.password)
-    // signInWithEmailAndPassword(email, password)
+    
     return (
       <SafeAreaView>
       <ImageBackground
