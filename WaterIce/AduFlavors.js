@@ -12,16 +12,13 @@ import ItemCard from '../Components/ItemCard'
 import { connect } from 'react-redux'
 
 const AduFlavors = props => {
-
   const [aduFlavors, setAduFlavors] = useState([])
-  // const [aduFlavorsTwo, setAduFlavorsTwo] = useState([])
-  const [isSearching, setIsSearching] = useState(false)
-  const [refresh, setRefresh] = useState(false)
+  // const [isSearching, setIsSearching] = useState(false)
+  // const [refresh, setRefresh] = useState(false)
   
-  useEffect(() => {
-    first()
-  },
-  []
+  useEffect(() => { 
+    first() 
+  }, []
   )
 
   const first = async () => {
@@ -30,25 +27,24 @@ const AduFlavors = props => {
         // put this in redux to see if theres a change also needs to be in redux to 
         // make the search work
         getAduFlavors.docs.forEach( doc => {
-          console.log(doc)
-          setAduFlavors([...aduFlavors, aduFlavors.push({
-                names: doc.id,
-                image: doc._data.image,
-                details: doc._data.description,
-                pint: doc._data.price,
-                gallon: doc._data.priceTwo,
-              })])
+          // console.log(doc)
+          props.addToSnacks({
+              names: doc.id,
+              image: doc._data.image,
+              details: doc._data.description,
+              pint: doc._data.price,
+              gallon: doc._data.priceTwo
+          })
         })
-          // console.log('====================================')
-          console.log(aduFlavors)
-          // console.log('====================================')
+        console.log('====================================')
+        console.log('flavor', aduFlavors)
+        console.log('redux flavors', props.cartItems)
+        console.log('====================================')
   }
 
     let index = 0
 
     return (
-      !isSearching ?
-
       <ScrollView 
       contentContainerStyle={styles.container}
       >
@@ -60,32 +56,27 @@ const AduFlavors = props => {
 
         */}
         <FlatList
-            data={aduFlavors}
+            data={props.cartItems.renderSnacks}
             keyExtractor={(item, index) => index.toString()}
             numColumns='2'
-            // extraData={props}
-            // refreshing={true}
-            renderItem={({item}) => 
-            <ItemCard
-                name={item.names}
-                pic={{uri: item.image}}
-                discription={item.details || null}
-                toCart={props.addItemToCart}
-                remove={props.removeItem}
-                itemId={index++}
-                pintPrice={item.pint}
-                gallonPrice={item.gallon}
-            />
-            }
+            // extraData={props.cartItems.renderSnacks}
+            renderItem = {({item}) =>
+        <ItemCard
+            name={item.snacks.names}
+            pic={{uri: item.snacks.image}}
+            discription={item.snacks.details || null}
+            toCart={props.addItemToCart}
+            remove={props.removeItem}
+            itemId={index++}
+            pintPrice={item.snacks.pint}
+            gallonPrice={item.snacks.gallon}
+        /> 
+        }
         />
-        
       </ScrollView>
-
-      :
-
-      null
     )   
 }
+
 const mapStoreToProps = (store) => {
   return {
       cartItems: store
@@ -94,8 +85,11 @@ const mapStoreToProps = (store) => {
 const mapDispatchToProps = (dispatch) => {
   return {
       addItemToCart:(product) => dispatch({type:'ADD_TO_CART',
-      payload:product}),
-      removeItem: (product) => dispatch({type: 'REMOVE_FROM_CART',     payload: product})
+        payload:product}),
+      removeItem: (product) => dispatch({type: 'REMOVE_FROM_CART', 
+        payload: product}),
+      addToSnacks: (snack) => dispatch({type: 'ADD_TO_SNACKS', 
+      payload: snack})
   }
 }
 // the styling is being handled in the ItemCard file
@@ -104,7 +98,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   card: {
-      flex: 1,
+      // flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'flex-start',

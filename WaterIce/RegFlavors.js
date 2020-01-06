@@ -13,8 +13,7 @@ const RegFlavors = props => {
     const [flavors, setFlavors] = useState([])
     const [pintPrice, setPintPrice] = useState()
     const [gallonPrice, setGallonPrice] = useState()
-    const [regSearchFlavors, setRegSearchFlavors] = useState([])
-    const [isSearching, setIsSearching] = useState(false)
+    // const [regSearchFlavors, setRegSearchFlavors] = useState([])
     const [completed, setCompleted] = useState(false)
 
     useEffect(() => {
@@ -26,12 +25,20 @@ const RegFlavors = props => {
         const prices = await firebase.firestore().collection('FlavorSizes').get()
         
         getFlavors.docs.forEach( doc => {
-            setFlavors([...flavors, flavors.push({
-                names: doc.id,
-                image: doc._data.image,
-                details: doc._data.description,
-            })])
+            // setFlavors([...flavors, flavors.push({
+            //     names: doc.id,
+            //     image: doc._data.image,
+            //     details: doc._data.description,
+            // })])
+            props.addToWaterIce(
+                {
+                  names: doc.id,
+                  image: doc._data.image,
+                  details: doc._data.description,
+                }
+            )
         })
+
         
         prices.docs.forEach( doc => {
             setPintPrice(doc._data.sizeRegular)
@@ -41,7 +48,8 @@ const RegFlavors = props => {
         
         
         // console.log('====================================')
-        // console.log(props.cartItems)
+        // // console.log(props.cartItems)
+        // console.log('redux flavors', props.cartItems)
         // console.log('====================================')
         setCompleted(!completed)
     }
@@ -49,8 +57,6 @@ const RegFlavors = props => {
     let index = 0
     
     return (
-    !isSearching ?
-
       <ScrollView 
       contentContainerStyle={styles.container}
       >
@@ -61,16 +67,16 @@ const RegFlavors = props => {
 
         */}
         <FlatList
-            data={flavors}
+            data={props.cartItems.renderWater}
             keyExtractor={(item, index) => index.toString()}
             numColumns='2'
-            // ListFooterComponentStyle={{padding:30}}
+            // extraData={props.cartItems.renderList}
             renderItem={({item}) => 
             <ItemCard
                 item="Water Ice"
-                name={item.names}
-                pic={{uri: item.image}}
-                discription={item.details || null}
+                name={item.flavors.names}
+                pic={{uri: item.flavors.image}}
+                discription={item.flavors.details || null}
                 remove={props.removeItem}
                 toCart={props.addItemToCart}
                 pintPrice={pintPrice}
@@ -80,10 +86,6 @@ const RegFlavors = props => {
             }
         />
       </ScrollView>
-
-      :
-
-      null
     )
 }
 
@@ -91,7 +93,8 @@ const mapDispatchToProps = (dispatch) => ({
     removeItem: (product) => dispatch({type: 'REMOVE_FROM_CART',payload: product}),
     addItemToCart:(product) => dispatch({type:'ADD_TO_CART',payload:product}),   
     addToTotal: (price) => dispatch({type: 'ADD_TO_TOTAL', payload: price}),  
-    subFromTotal: (price) => dispatch({type: 'REMOVE_TO_TOTAL', payload: price})
+    subFromTotal: (price) => dispatch({type: 'REMOVE_TO_TOTAL', payload: price}),
+    addToWaterIce: (waterIce) => dispatch({type: 'ADD_TO_WATER_ICE', payload: waterIce})
 })
 
 const mapStateToProps = (state) => {

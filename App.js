@@ -6,9 +6,11 @@ import AdminNav from './Components/Admin'
 import { Provider } from 'react-redux'
 import cartItems from "./reducers/cartItems"
 import cartTotal from "./reducers/cartTotal"
+import renderSnacks from "./reducers/renderSnacks"
+import renderWater from "./reducers/renderWater"
 import { createStore, combineReducers } from 'redux'
 
-const rootReducer = combineReducers({cartItems, cartTotal})
+const rootReducer = combineReducers({cartItems, cartTotal, renderSnacks, renderWater})
 const store = createStore(rootReducer)
 class App extends React.Component {
 

@@ -47,7 +47,8 @@ const styles = StyleSheet.create({
   },
   bar: {
     top: '24%',
-    position: 'absolute'
+    position: 'absolute',
+    zIndex: 10
   }
 })
 
