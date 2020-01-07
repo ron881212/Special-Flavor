@@ -2,7 +2,8 @@ import React from 'react'
 import firebase from 'react-native-firebase' 
 import Login from './screens/Login' 
 import BottomTab from './Components/BottomTab'
-import AdminNav from './Components/Admin'
+// import AdminNav from './Components/Admin'
+// import SplashScreen from 'react-native-splash-screen'
 import { Provider } from 'react-redux'
 import cartItems from "./reducers/cartItems"
 import cartTotal from "./reducers/cartTotal"
@@ -27,6 +28,7 @@ class App extends React.Component {
    * Listen for any auth state changes and update component state
    */
   componentDidMount() {
+    // SplashScreen.hide()
     this.unsubscriber = firebase.auth().onAuthStateChanged((user) => {
       this.setState({ user }) 
     }) 

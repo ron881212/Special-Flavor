@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 
 const RegFlavors = props => {
 
-    const [flavors, setFlavors] = useState([])
+    // const [flavors, setFlavors] = useState([])
     const [pintPrice, setPintPrice] = useState()
     const [gallonPrice, setGallonPrice] = useState()
     // const [regSearchFlavors, setRegSearchFlavors] = useState([])
@@ -25,11 +25,6 @@ const RegFlavors = props => {
         const prices = await firebase.firestore().collection('FlavorSizes').get()
         
         getFlavors.docs.forEach( doc => {
-            // setFlavors([...flavors, flavors.push({
-            //     names: doc.id,
-            //     image: doc._data.image,
-            //     details: doc._data.description,
-            // })])
             props.addToWaterIce(
                 {
                   names: doc.id,
@@ -70,7 +65,7 @@ const RegFlavors = props => {
             data={props.cartItems.renderWater}
             keyExtractor={(item, index) => index.toString()}
             numColumns='2'
-            // extraData={props.cartItems.renderList}
+            extraData={props.cartItems.renderWater}
             renderItem={({item}) => 
             <ItemCard
                 item="Water Ice"

@@ -59,7 +59,7 @@ const AduFlavors = props => {
             data={props.cartItems.renderSnacks}
             keyExtractor={(item, index) => index.toString()}
             numColumns='2'
-            // extraData={props.cartItems.renderSnacks}
+            extraData={props.cartItems.renderSnacks}
             renderItem = {({item}) =>
         <ItemCard
             name={item.snacks.names}
