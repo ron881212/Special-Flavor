@@ -5,7 +5,7 @@ import {
   ImageBackground,
   StyleSheet,
   SafeAreaView,
-  Text,
+  KeyboardAvoidingView,
   View,
 } from 'react-native'
 import firebase from 'react-native-firebase'
@@ -54,7 +54,7 @@ static navigationOptions = {
             source={require('../images/splash.jpeg')} 
             style={{width: '100%', height: '100%'}}
             imageStyle={{opacity: 0.7}}>
-            <View style={styles.container}>
+          <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
               <Input
                 placeholder='User Name'
                 inputContainerStyle={styles.form2}
@@ -141,7 +141,7 @@ static navigationOptions = {
               title="Sign Up"
               />          
             </View>
-        </View>
+          </KeyboardAvoidingView>
           </ImageBackground>
         </SafeAreaView>
       )

@@ -4,6 +4,7 @@ import {
   StyleSheet,
   SafeAreaView,
   View,
+  Alert,
   KeyboardAvoidingView
 } from 'react-native'
 import { 
@@ -31,6 +32,10 @@ static navigationOptions = {
   userLogIn = () => {
     const {email, password} = this.state
     firebase.auth().signInWithEmailAndPassword(email, password)
+    .catch(err => 
+      Alert.alert('Check your Email and Password', err.code)
+      // console.log(err)
+    )
   }
   
   
@@ -43,7 +48,7 @@ static navigationOptions = {
       style={{width: '100%', height: '100%', backgroundColor:'black'}}
       imageStyle={{opacity: 0.7}}
       >  
-      <KeyboardAvoidingView style={styles.container}>
+      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
         <Input
           placeholder='Email'
           // placeholderTextColor='color'
