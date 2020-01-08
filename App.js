@@ -2,7 +2,7 @@ import React from 'react'
 import firebase from 'react-native-firebase' 
 import Login from './screens/Login' 
 import BottomTab from './Components/BottomTab'
-// import AdminNav from './Components/Admin'
+import AdminNav from './Components/Admin'
 // import SplashScreen from 'react-native-splash-screen'
 import { Provider } from 'react-redux'
 import cartItems from "./reducers/cartItems"
@@ -21,6 +21,7 @@ class App extends React.Component {
     this.unsubscriber = null 
     this.state = {
       user: null,
+      admin:false
     } 
   }
 
@@ -32,6 +33,18 @@ class App extends React.Component {
     this.unsubscriber = firebase.auth().onAuthStateChanged((user) => {
       this.setState({ user }) 
     }) 
+    firebase.auth().currentUser.getIdTokenResult()
+    .then((idTokenResult) => {
+      if(idTokenResult.claims.adminForApp){
+        this.setState({admin:true})
+        // return (
+        //   <Provider store={store}>
+        //     <AdminNav />
+        // </Provider>
+        // )
+      }
+      console.log(idTokenResult.claims)
+    })
   }
 
   componentWillUnmount() {
@@ -44,17 +57,17 @@ class App extends React.Component {
     if (!this.state.user) {
       return <Login /> 
     }
-    
-    // This will return the admin app
-    // if ('The user is an Admin User') {
-    //   return <AdminNav /> 
-    // }
-
-    return (
-      <Provider store={store}>
-          <BottomTab />
-      </Provider>
-    ) 
+    if(this.state.admin == true) {
+      return (
+        <Provider store={store}>
+            <AdminNav />
+        </Provider>
+      ) 
+    } else return (
+        <Provider store={store}>
+            <BottomTab />
+        </Provider>
+      )
   }
 }
 

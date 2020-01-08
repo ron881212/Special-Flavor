@@ -62,6 +62,8 @@ const getTabBarIcon = (navigation, focused, tintColor) => {
   } else if (routeName === 'Boards') {
     iconName = `message-square`
   } else if (routeName === 'Profile') {
+    iconName = `user`
+  } else if (routeName === 'Users') {
     iconName = `user-plus`
   }
 
@@ -85,7 +87,7 @@ const Profile = createStackNavigator(
     },
 )
 
-const Nav = createAppContainer(
+const Admin = createAppContainer(
   createBottomTabNavigator(
     {
       'Water Ice': { screen: FlavorScreen },
