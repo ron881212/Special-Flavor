@@ -15,6 +15,8 @@ import EditName from '../screens/EditName'
 import EditPhone from '../screens/EditPhone'
 import ChangePassword from '../screens/ChangePassword'
 import ChangeEmail from '../screens/ChangeEmail'
+import firebase from 'react-native-firebase' 
+import AdminNav from './Admin'
 
 class IconWithBadge extends React.Component {
   render() {
@@ -62,6 +64,8 @@ const getTabBarIcon = (navigation, focused, tintColor) => {
   } else if (routeName === 'Boards') {
     iconName = `message-square`
   } else if (routeName === 'Profile') {
+    iconName = `user`
+  } else if (routeName === 'Users') {
     iconName = `user-plus`
   }
 
@@ -106,9 +110,50 @@ const Nav = createAppContainer(
   )
 )
 
+const Admin = createAppContainer(
+  createBottomTabNavigator(
+    {
+      'Water Ice': { screen: FlavorScreen },
+      Snacks: { screen: AdultScreen },
+      Boards: { screen: MerchScreen },
+      Profile,
+      Users: { screen: MerchScreen },
+    },
+    {
+      defaultNavigationOptions: ({ navigation }) => ({
+        tabBarIcon: ({ focused, tintColor }) =>
+          getTabBarIcon(navigation, focused, tintColor),
+      }),
+      tabBarOptions: {
+        activeTintColor: 'purple',
+        inactiveTintColor: 'gray',
+      },
+    }
+  )
+)
+
 class BottomNav extends React.Component {
+  constructor() {
+    super() 
+    this.state = {
+      admin:false
+    } 
+  }
+  componentDidMount() {
+    firebase.auth().currentUser.getIdTokenResult()
+    .then((idTokenResult) => {
+      if(idTokenResult.claims.adminForApp){
+        this.setState({admin:true})
+      }
+      console.log(idTokenResult.claims)
+    })
+  }
   render() {
-    return <Nav />
+    if(this.state.admin){
+      return <Admin />
+    } 
+    else return <Nav />
+
   }
 }
 

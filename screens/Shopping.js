@@ -154,9 +154,11 @@ render(){
       <Button 
         title={`Place your order: ${"$" + this.props.store.cartTotal.total + ".00" || total}`}
         buttonStyle={styles.payment}
-        onPress={()=> 
-        // alert("Your order has been placed")
-        console.log(this.props.store.cartTotal)
+        onPress={()=>
+          // this screen navigates to the admin screen to start a new chat
+          // this button also automatically sends the admin the order
+          this.props.navigation.navigate('ScreenGoesHere'),
+          console.log(this.props.store.cartTotal)
         }
       />
       </>

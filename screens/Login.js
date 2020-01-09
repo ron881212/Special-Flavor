@@ -55,7 +55,7 @@ static navigationOptions = {
           keyboardType='email-address'
           autoCapitalize='none'
           inputContainerStyle={styles.form}
-          onChangeText={(text) => this.setState({email:text})}
+          onChangeText={(text) => this.setState({email:text.trim()})}
           leftIcon={
             <Icon
               name='mail'
