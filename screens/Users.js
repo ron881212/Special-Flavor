@@ -11,6 +11,8 @@ import { View,
 import firebase from 'react-native-firebase' 
 import { Card, Avatar, ListItem, Icon } from 'react-native-elements'
 import { withNavigation } from 'react-navigation'
+import { connect } from 'react-redux'
+
 
 class Users extends React.Component {
     constructor(){
@@ -18,7 +20,8 @@ class Users extends React.Component {
         this.state = {
             avatar: null,
             isLoading: true,
-            users: [{
+            users: [
+              {
                 name: 'Ron',
                 address: 'Oak Line',
                 phone: '2152152215',
@@ -29,7 +32,8 @@ class Users extends React.Component {
                 address: 'West Philly',
                 phone: '2152152225',
                 avatar: 'https://placeimg.com/140/140/any',
-            }]
+            }
+          ]
         }
         const userID = firebase.auth().currentUser.uid
         this.ref = firebase.firestore().collection('Users').doc(userID)
@@ -42,11 +46,10 @@ class Users extends React.Component {
     // and a way to recover the password
     componentDidMount() {
     //grab all user names pics and set it to a state array to map over
-    this.getUsers()
-    .then(
-        this.setState({users:this.allUsers}))
-    .then(
-        this.setState({isLoading: false}))
+      this.getUsers()
+      // this.setState({users:this.allUsers})
+      // console.log(this.state.users)
+      this.setState({isLoading: false})
     //grabs the admin picture
     const email = firebase.auth().currentUser.email  
     var avatarRef = firebase.storage().ref(`${email}/images`)
@@ -64,17 +67,17 @@ class Users extends React.Component {
     getUsers = async () => {
       const getUsers = await firebase.firestore().collection('Users').get()
       getUsers.docs.forEach( doc => {
-          this.allUsers.push(
-              {
-                name: doc._data.Name,
-                address: doc._data.Address,
-                phone: doc._data.Phone,
-                avatar: doc
-              }
-          )
+        console.log('forEach', doc)
+        this.props.addToUsers({
+          name: doc._data.Name,
+          address: doc._data.Address,
+          phone: doc._data.Phone,
+          avatar: doc
+        })
       })
+      console.log('allAppUsers ->', this.props.allAppUsers.renderUsers)
     }
-
+   
     render() {
 
       return (
@@ -89,29 +92,30 @@ class Users extends React.Component {
             <ScrollView>
               <View containerStyle={styles.cards}>
               {/* ALL USERS WILL BE MAPPED HERE */}
-                {   !this.state.isLoading ?
-                    this.state.users.map((l, i) => (
+                { 
+                  this.props.allAppUsers.renderUsers.map((l, i, a) => (
                     <TouchableOpacity
                     // this will navigate to the same screen but the chat will change to 
                     // whoever we clicked on.
-                    onPress={()=>this.props.navigation.navigate('ScreenGoesHere')}
+                    onPress={()=>
+                    // this.props.navigation.navigate('ScreenGoesHere')
+                    console.log(l.users)
+                    }
                     key={i}
                     >
                     <ListItem
                       containerStyle={{width: sectionWidth / 1.1}}
                       key={i}
                       leftAvatar={{ source: { uri: l.avatar } }}
-                      title={l.name}
-                      subtitle={l.address}
-                      rightSubtitle={l.phone}
+                      title={l.users.name}
+                      subtitle={l.users.address}
+                      rightSubtitle={l.users.phone}
                       chevron
                       bottomDivider
                       pad={5}
                     />
                     </TouchableOpacity>
                   ))
-                  :
-                  null
                 }
               </View>
             </ScrollView>
@@ -147,5 +151,15 @@ const styles = StyleSheet.create({
     },
 })
 
+// use redux to store all of the users
+const mapDispatchToProps = (dispatch) => ({
+  addToUsers: (user) => dispatch({type: 'ADD_TO_USERS',payload: user}),
+})
+
+const mapStateToProps = (state) => {
+  return {
+      allAppUsers: state
+  }
+}
 // this will navigate to a screen that will house gifted chat.
-export default withNavigation(Users)
+export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(Users))

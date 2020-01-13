@@ -8,9 +8,10 @@ import cartItems from "./reducers/cartItems"
 import cartTotal from "./reducers/cartTotal"
 import renderSnacks from "./reducers/renderSnacks"
 import renderWater from "./reducers/renderWater"
+import renderUsers from "./reducers/renderUsers"
 import { createStore, combineReducers } from 'redux'
 
-const rootReducer = combineReducers({cartItems, cartTotal, renderSnacks, renderWater})
+const rootReducer = combineReducers({cartItems, cartTotal, renderSnacks, renderWater, renderUsers})
 const store = createStore(rootReducer)
 class App extends React.Component {
 
