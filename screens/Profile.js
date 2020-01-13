@@ -23,7 +23,6 @@ class Profile extends React.Component {
       address: null,
       avatar: null
     }
-    const email = firebase.auth().currentUser.email  
     const userID = firebase.auth().currentUser.uid
     this.ref = firebase.firestore().collection('Users').doc(userID)
   }

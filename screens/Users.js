@@ -16,16 +16,24 @@ class Users extends React.Component {
     constructor(){
         super()
         this.state = {
-            name: null,
-            email: null,
-            phone: null,
-            address: null,
             avatar: null,
-            list: []
+            isLoading: true,
+            users: [{
+                name: 'Ron',
+                address: 'Oak Line',
+                phone: '2152152215',
+                avatar: 'https://placeimg.com/140/140/any',
+            },
+            {
+                name: 'Nes',
+                address: 'West Philly',
+                phone: '2152152225',
+                avatar: 'https://placeimg.com/140/140/any',
+            }]
         }
-        const email = firebase.auth().currentUser.email  
         const userID = firebase.auth().currentUser.uid
         this.ref = firebase.firestore().collection('Users').doc(userID)
+        this.allUsers = []
     }
     static navigationOptions =  {
       title: 'Users'
@@ -33,11 +41,41 @@ class Users extends React.Component {
     // get email and password screen must have a way to change the password 
     // and a way to recover the password
     componentDidMount() {
-      //grab all user names pics and set it to a state array to map over
-
+    //grab all user names pics and set it to a state array to map over
+    this.getUsers()
+    .then(
+        this.setState({users:this.allUsers}))
+    .then(
+        this.setState({isLoading: false}))
+    //grabs the admin picture
+    const email = firebase.auth().currentUser.email  
+    var avatarRef = firebase.storage().ref(`${email}/images`)
+    avatarRef.getDownloadURL().then( url => {
+    this.setState({
+      avatar: url
+    })
+    }).catch( () => {
+      this.setState({
+        avatar: 'https://placeimg.com/140/140/any'
+      })
+    })
     }
 
-    render() {   
+    getUsers = async () => {
+      const getUsers = await firebase.firestore().collection('Users').get()
+      getUsers.docs.forEach( doc => {
+          this.allUsers.push(
+              {
+                name: doc._data.Name,
+                address: doc._data.Address,
+                phone: doc._data.Phone,
+                avatar: doc
+              }
+          )
+      })
+    }
+
+    render() {
 
       return (
         <SafeAreaView style={styles.container}>
@@ -49,26 +87,33 @@ class Users extends React.Component {
               containerStyle={styles.avatar}
             />
             <ScrollView>
-              <Card containerStyle={styles.cards}>
+              <View containerStyle={styles.cards}>
               {/* ALL USERS WILL BE MAPPED HERE */}
-                {
-                  list.map((l, i) => (
+                {   !this.state.isLoading ?
+                    this.state.users.map((l, i) => (
                     <TouchableOpacity
                     // this will navigate to the same screen but the chat will change to 
                     // whoever we clicked on.
                     onPress={()=>this.props.navigation.navigate('ScreenGoesHere')}
+                    key={i}
                     >
                     <ListItem
+                      containerStyle={{width: sectionWidth / 1.1}}
                       key={i}
-                      leftAvatar={{ source: { uri: l.avatar_url } }}
+                      leftAvatar={{ source: { uri: l.avatar } }}
                       title={l.name}
-                      subtitle={l.subtitle}
+                      subtitle={l.address}
+                      rightSubtitle={l.phone}
+                      chevron
                       bottomDivider
+                      pad={5}
                     />
                     </TouchableOpacity>
                   ))
+                  :
+                  null
                 }
-              </Card>
+              </View>
             </ScrollView>
         </SafeAreaView>
       )

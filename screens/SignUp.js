@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   View,
+  Alert
 } from 'react-native'
 import firebase from 'react-native-firebase'
 import { Input, Button } from 'react-native-elements'
@@ -43,7 +44,10 @@ static navigationOptions = {
                 }
             })
           }
-        }) 
+        })
+      }
+      else if(setPassword !== confirmPassword){
+        Alert.alert('Confirm password doesn\'t match')
       }
     }
 

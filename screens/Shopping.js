@@ -1,8 +1,9 @@
 import React from 'react'
 import { Text, View, SafeAreaView, StyleSheet, Dimensions, ScrollView } from 'react-native'
-import { Card, Button, Input, Overlay, ListItem, Slider, Icon } from 'react-native-elements'
+import { Card, Button, Input, Overlay, ListItem, Slider } from 'react-native-elements'
 import { withNavigation } from 'react-navigation'
-import RegFlavors from '../WaterIce/RegFlavors'
+import Icon from 'react-native-vector-icons/Feather'
+// import RegFlavors from '../WaterIce/RegFlavors'
 import { connect } from 'react-redux'
 import firebase from 'react-native-firebase' 
 import CartButtonGroup from '../Components/CartButtonGroup'
@@ -75,7 +76,7 @@ render(){
   return (
     <ScrollView style={styles.scrollContainer}>
     <View style={styles.container}>
-      {Object.keys(this.props.store.cartItems).length > 0 ? 
+      { Object.keys(this.props.store.cartItems).length > 0 ? 
       // here is where I put my custom component that renders shopping cart items with info like price/size, picture, name etc.
       //might have to use a flatlist or map over all items in cart
       <>
@@ -116,7 +117,7 @@ render(){
         />
       </Card>
       
-      {this.props.store.cartItems.map(flavor => (
+      { this.props.store.cartItems.map(flavor => (
         <Swipeout backgroundColor="#e8e8e8" 
           right={swipeoutBtns(flavor.item)} 
           autoClose={true} 
@@ -164,8 +165,26 @@ render(){
       </>
       
       // what the shopping cart show when empty
-      :<Text>Welcome to the shopping cart</Text>
-      }
+      :
+      <View style={styles.emptyContainer}>
+      <Text style={{marginTop:'15%'}}>Welcome to the shopping cart</Text>
+      <Text style={{marginBottom:'10%'}}>Your shopping cart is empty</Text>
+      <Button
+        buttonStyle={{borderRadius:50}}
+        onPress={()=>
+          this.props.navigation.navigate('ScreenGoesHere')
+          // console.log("ScreenGoesHere")
+        }
+        icon={
+          <Icon
+            name="message-square"
+            size={50}
+            color="white"
+          />
+        }     
+      />
+      </View>
+    }
     </View>
     </ScrollView>
   )
@@ -197,6 +216,13 @@ const styles = StyleSheet.create({
   scrollContainer: {
     position: 'relative',
     backgroundColor: '#e8e8e8',
+  },
+  emptyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: '#e8e8e8',
+    justifyContent: 'center',
+    // alignContent: 'end'
   },
   section: {
     marginTop: 25,

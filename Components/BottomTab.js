@@ -1,10 +1,10 @@
 import React from 'react'
 import { Text, View } from 'react-native'
-import Ionicons from 'react-native-vector-icons/Feather'
+import Ionicons from 'react-native-vector-icons/FontAwesome5'
 import { createAppContainer } from 'react-navigation'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 import { createStackNavigator } from 'react-navigation-stack'
-import shoppingCart from '../Components/Shop'
+// import shoppingCart from '../Components/Shop'
 import FlavorScreen from '../screens/Flavors'
 import AdultScreen from '../screens/Adults'
 import MerchScreen from '../screens/Merch'
@@ -16,7 +16,8 @@ import EditPhone from '../screens/EditPhone'
 import ChangePassword from '../screens/ChangePassword'
 import ChangeEmail from '../screens/ChangeEmail'
 import firebase from 'react-native-firebase' 
-import AdminNav from './Admin'
+// import AdminNav from './Admin'
+import Users from '../screens/Users'
 
 class IconWithBadge extends React.Component {
   render() {
@@ -57,16 +58,16 @@ const getTabBarIcon = (navigation, focused, tintColor) => {
   let IconComponent = Ionicons
   let iconName
   if (routeName === 'Water Ice') {
-    iconName = `book`
+    iconName = `glass-whiskey`
     IconComponent = HomeIconWithBadge
   } else if (routeName === 'Snacks') {
-    iconName = `inbox`
+    iconName = `cookie`
   } else if (routeName === 'Boards') {
-    iconName = `message-square`
+    iconName = `comments`
   } else if (routeName === 'Profile') {
-    iconName = `user`
+    iconName = `id-card`
   } else if (routeName === 'Users') {
-    iconName = `user-plus`
+    iconName = `users`
   }
 
   // You can return any component that you like here!
@@ -117,7 +118,7 @@ const Admin = createAppContainer(
       Snacks: { screen: AdultScreen },
       Boards: { screen: MerchScreen },
       Profile,
-      Users: { screen: MerchScreen },
+      Users: { screen: Users },
     },
     {
       defaultNavigationOptions: ({ navigation }) => ({
