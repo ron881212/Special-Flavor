@@ -15,9 +15,10 @@ import EditName from '../screens/EditName'
 import EditPhone from '../screens/EditPhone'
 import ChangePassword from '../screens/ChangePassword'
 import ChangeEmail from '../screens/ChangeEmail'
+import PersonalChat from '../screens/PersonalChat'
 import firebase from 'react-native-firebase' 
 // import AdminNav from './Admin'
-import Users from '../screens/Users'
+import AllUsers from '../screens/Users'
 
 class IconWithBadge extends React.Component {
   render() {
@@ -57,7 +58,7 @@ const getTabBarIcon = (navigation, focused, tintColor) => {
   const { routeName } = navigation.state
   let IconComponent = Ionicons
   let iconName
-  if (routeName === 'Water Ice') {
+  if (routeName === 'WaterIce') {
     iconName = `glass-whiskey`
     IconComponent = HomeIconWithBadge
   } else if (routeName === 'Snacks') {
@@ -68,6 +69,8 @@ const getTabBarIcon = (navigation, focused, tintColor) => {
     iconName = `id-card`
   } else if (routeName === 'Users') {
     iconName = `users`
+  } else if (routeName === 'Customer') {
+    iconName = `user`
   }
 
   // You can return any component that you like here!
@@ -82,18 +85,29 @@ const Profile = createStackNavigator(
     EditName: { screen: EditName },
     EditPhone: { screen: EditPhone },
     ChangePassword: { screen: ChangePassword },
-    ChangeEmail: { screen: ChangeEmail },
-    Shop: { screen: ShopScreen }
+    ChangeEmail: { screen: ChangeEmail }
   },
     { 
       initialRouteName: 'MyProfile'
     },
 )
 
+const WaterIce = createStackNavigator(
+  {
+    'Water Ice': { screen: FlavorScreen },  
+    Customer: {screen: PersonalChat},
+    Shop: { screen: ShopScreen }
+  },
+    { 
+      initialRouteName: 'Water Ice',
+      initialRouteKey: 'Water Ice'
+    },
+)
+
 const Nav = createAppContainer(
   createBottomTabNavigator(
     {
-      'Water Ice': { screen: FlavorScreen },
+      WaterIce,
       Snacks: { screen: AdultScreen },
       Boards: { screen: MerchScreen },
       Profile,
@@ -114,11 +128,11 @@ const Nav = createAppContainer(
 const Admin = createAppContainer(
   createBottomTabNavigator(
     {
-      'Water Ice': { screen: FlavorScreen },
+      WaterIce,
       Snacks: { screen: AdultScreen },
       Boards: { screen: MerchScreen },
       Profile,
-      Users: { screen: Users },
+      Users: { screen: AllUsers },
     },
     {
       defaultNavigationOptions: ({ navigation }) => ({

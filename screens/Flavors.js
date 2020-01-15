@@ -12,6 +12,10 @@ const ComponentView = Platform.select({
 })()
 
 const FlavorScreen = props => {
+  FlavorScreen.navigationOptions = ({ navigation }) => ({
+    headerMode: 'screen',
+    headerShown: false
+  })
 
   return (
     <SafeAreaView style={styles.container}>

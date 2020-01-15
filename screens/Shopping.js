@@ -156,10 +156,11 @@ render(){
         title={`Place your order: ${"$" + this.props.store.cartTotal.total + ".00" || total}`}
         buttonStyle={styles.payment}
         onPress={()=>
-          // this screen navigates to the admin screen to start a new chat
           // this button also automatically sends the admin the order
-          this.props.navigation.navigate('ScreenGoesHere'),
-          console.log(this.props.store.cartTotal)
+          this.props.navigation.navigate('Customer')
+          // we need add a handlePress function here to grab user info as well as 
+          // the redux order to pass it to the 'Customer' screen 
+          // console.log(this.props.store.cartTotal)
         }
       />
       </>
@@ -172,7 +173,7 @@ render(){
       <Button
         buttonStyle={{borderRadius:50}}
         onPress={()=>
-          this.props.navigation.navigate('ScreenGoesHere')
+          this.props.navigation.navigate('Customer')
           // console.log("ScreenGoesHere")
         }
         icon={

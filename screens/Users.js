@@ -13,7 +13,6 @@ import { Card, Avatar, ListItem, Icon } from 'react-native-elements'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 
-
 class Users extends React.Component {
     constructor(){
         super()
@@ -21,18 +20,18 @@ class Users extends React.Component {
             avatar: null,
             isLoading: true,
             users: [
-              {
-                name: 'Ron',
-                address: 'Oak Line',
-                phone: '2152152215',
-                avatar: 'https://placeimg.com/140/140/any',
-            },
-            {
-                name: 'Nes',
-                address: 'West Philly',
-                phone: '2152152225',
-                avatar: 'https://placeimg.com/140/140/any',
-            }
+            //   {
+            //     name: 'Ron',
+            //     address: 'Oak Line',
+            //     phone: '2152152215',
+            //     avatar: 'https://placeimg.com/140/140/any',
+            // },
+            // {
+            //     name: 'Nes',
+            //     address: 'West Philly',
+            //     phone: '2152152225',
+            //     avatar: 'https://placeimg.com/140/140/any',
+            // }
           ]
         }
         const userID = firebase.auth().currentUser.uid
@@ -52,7 +51,7 @@ class Users extends React.Component {
       this.setState({isLoading: false})
     //grabs the admin picture
     const email = firebase.auth().currentUser.email  
-    var avatarRef = firebase.storage().ref(`${email}/images`)
+    var avatarRef = firebase.storage().ref(`${userID}/images`)
     avatarRef.getDownloadURL().then( url => {
     this.setState({
       avatar: url
@@ -67,17 +66,26 @@ class Users extends React.Component {
     getUsers = async () => {
       const getUsers = await firebase.firestore().collection('Users').get()
       getUsers.docs.forEach( doc => {
-        console.log('forEach', doc)
         this.props.addToUsers({
           name: doc._data.Name,
           address: doc._data.Address,
           phone: doc._data.Phone,
-          avatar: doc
+          avatar: doc._data.Avatar
         })
       })
       console.log('allAppUsers ->', this.props.allAppUsers.renderUsers)
     }
    
+    // put the url into the database under avatar 
+    getPic = (userPic) => {
+      var userRef = firebase.storage().ref(`${userPic}/images`)
+      userRef.getDownloadURL().then( url => {
+          return url
+        }).catch( () => {
+            return 'https://placeimg.com/140/140/any'
+        })
+    }
+
     render() {
 
       return (
@@ -98,15 +106,15 @@ class Users extends React.Component {
                     // this will navigate to the same screen but the chat will change to 
                     // whoever we clicked on.
                     onPress={()=>
-                    // this.props.navigation.navigate('ScreenGoesHere')
-                    console.log(l.users)
+                    this.props.navigation.navigate('Customer')
+                    // console.log(l.users)
                     }
                     key={i}
                     >
                     <ListItem
                       containerStyle={{width: sectionWidth / 1.1}}
                       key={i}
-                      leftAvatar={{ source: { uri: l.avatar } }}
+                      leftAvatar={{ source: { uri: l.users.avatar} }}
                       title={l.users.name}
                       subtitle={l.users.address}
                       rightSubtitle={l.users.phone}

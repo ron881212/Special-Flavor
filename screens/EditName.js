@@ -58,8 +58,8 @@ class EditName extends React.Component {
               { Name: name }
           )
         }
-      })
-      this.ProfilePage()
+    })
+    this.ProfilePage()
   }
 
     render() {

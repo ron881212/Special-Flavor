@@ -46,8 +46,21 @@ class EditAvatar extends React.Component {
     } else {
       // You can also display the image using data:
       // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-  
-      var ref = firebase.storage().ref().child(`${email}/images`)
+      // store this url in 'avatar' under the user
+      firebase.firestore().runTransaction(async transaction => {
+        const doc = await transaction.get(this.ref)
+        if (doc.exists) {
+          transaction.update(this.ref, 
+            { Avatar: response.uri }
+          )
+        } 
+        else if (!doc.exists) {
+          transaction.set(this.ref, 
+              { Avatar: response.uri }
+          )
+        }
+      })
+      var ref = firebase.storage().ref().child(`${userID}/images`)
 
         this.setState({
           avatarSource: response.uri,
