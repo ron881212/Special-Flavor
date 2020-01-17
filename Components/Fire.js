@@ -11,6 +11,10 @@ class Fire {
     return firebase.database().ref('messages')
   }
 
+  get ref2() {
+    return firebase.database().ref(this.uid)
+  }
+
   parse = snapshot => {
     const { timestamp: numberStamp, text, user } = snapshot.val()
     const { key: _id } = snapshot
@@ -29,13 +33,18 @@ class Fire {
       .limitToLast(20)
       .on('child_added', snapshot => callback(this.parse(snapshot)))
 
+  on2 = callback =>
+    this.ref2
+      .limitToLast(20)
+      .on('child_added', snapshot => callback(this.parse(snapshot)))
+  
   get timestamp() {
     return firebase.database.ServerValue.TIMESTAMP
   }
   // send the message to the Backend
   send = messages => {
     for (let i = 0; i < messages.length; i++) {
-      const { text, user } = messages[i];
+      const { text, user } = messages[i]
       const message = {
         text,
         user,
@@ -44,9 +53,25 @@ class Fire {
       this.append(message)
     }
     console.log(this.ref.on)
-  };
+  }
 
+  send2 = messages => {
+    for (let i = 0; i < messages.length; i++) {
+      const { text, user } = messages[i]
+      const message = {
+        text,
+        user,
+        timestamp: this.timestamp,
+      };
+      this.append2(message)
+    }
+    console.log(this.ref.on)
+  }
+  
   append = message => this.ref.push(message)
+
+  append2 = message => this.ref2.push(message)
+
 }
 
 Fire.shared = new Fire()

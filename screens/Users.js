@@ -66,6 +66,7 @@ class Users extends React.Component {
     getUsers = async () => {
       const getUsers = await firebase.firestore().collection('Users').get()
       getUsers.docs.forEach( doc => {
+        // found clever way to add avatar here and work on screen.
         this.props.addToUsers({
           name: doc._data.Name,
           address: doc._data.Address,
@@ -77,14 +78,14 @@ class Users extends React.Component {
     }
    
     // put the url into the database under avatar 
-    getPic = (userPic) => {
-      var userRef = firebase.storage().ref(`${userPic}/images`)
-      userRef.getDownloadURL().then( url => {
-          return url
-        }).catch( () => {
-            return 'https://placeimg.com/140/140/any'
-        })
-    }
+    // getPic = (userPic) => {
+    //   var userRef = firebase.storage().ref(`${userPic}/images`)
+    //   userRef.getDownloadURL().then( url => {
+    //       return url
+    //     }).catch( () => {
+    //         return 'https://placeimg.com/140/140/any'
+    //     })
+    // }
 
     render() {
 

@@ -52,7 +52,7 @@ export default class MerchScreen extends React.Component {
         },
       ],
     })
-    Fire.shared.on(message =>
+    Fire.shared.on2(message =>
       this.setState(previousState => ({
         messages: GiftedChat.append(previousState.messages, message),
       }))
@@ -78,7 +78,7 @@ export default class MerchScreen extends React.Component {
       >
       <GiftedChat
         messages={this.state.messages}
-        onSend={Fire.shared.send}
+        onSend={Fire.shared.send2}
         user={this.user}
         showUserAvatar={true}
         showAvatarForEveryMessage={true}
