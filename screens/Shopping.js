@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, SafeAreaView, StyleSheet, Dimensions, ScrollView } from 'react-native'
+import { Text, View, SafeAreaView, StyleSheet, Dimensions, ScrollView, Alert } from 'react-native'
 import { Card, Button, Input, Overlay, ListItem, Slider } from 'react-native-elements'
 import { withNavigation } from 'react-navigation'
 import Icon from 'react-native-vector-icons/Feather'
@@ -9,6 +9,7 @@ import firebase from 'react-native-firebase'
 import CartButtonGroup from '../Components/CartButtonGroup'
 import SnackButtonGroup from '../Components/SnackButtonGroup'
 import Swipeout from 'react-native-swipeout'
+import { TouchableHighlight } from 'react-native-gesture-handler'
 
 class ShopScreen extends React.Component {
   static navigationOptions =  {
@@ -94,16 +95,17 @@ render(){
         <Text>{this.state.address}</Text>
       </Card>
 
-      <Card containerStyle={styles.card}>
+      {/* <Card containerStyle={styles.card}>
         <Text>Ordering instructions</Text>
         <Input 
           placeholder='your order instructions'
           onChangeText={(custom) => this.setState({instructions: custom})}
         />
-      </Card>
+      </Card> */}
 
       <View style={styles.section}><Text style={styles.sectionText}>        Your Payment</Text></View>
 
+      <TouchableHighlight underlayColor='#e8e8e8' onPress={() => Alert.alert('Other payment options coming soon')}>
       <Card containerStyle={styles.card}>
         <ListItem
           chevron
@@ -116,6 +118,7 @@ render(){
           }}
         />
       </Card>
+      </TouchableHighlight>
       
       { this.props.store.cartItems.map(flavor => (
         <Swipeout backgroundColor="#e8e8e8" 
@@ -158,6 +161,7 @@ render(){
         onPress={()=>
           // this button also automatically sends the admin the order
           this.props.navigation.navigate('Customer')
+          // console.log(this.props.store.cartItems)
           // we need add a handlePress function here to grab user info as well as 
           // the redux order to pass it to the 'Customer' screen 
           // console.log(this.props.store.cartTotal)

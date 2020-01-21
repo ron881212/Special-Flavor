@@ -43,7 +43,7 @@ static navigationOptions =  {
         address: userInfo._data.Address,
       })
     })
-    var avatarRef = firebase.storage().ref(`${email}/images`)
+    var avatarRef = firebase.storage().ref(`${userID}/images`)
     avatarRef.getDownloadURL().then( url => {
     this.setState({
         avatar: url

@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   },
   backgroundStyle:{
     flex: 1,
-    backgroundColor:'black',
+    backgroundColor:'#2a5e9f',
     resizeMode: 'cover',
   }
 })

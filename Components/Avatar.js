@@ -24,7 +24,7 @@ class MyAvatar extends React.Component {
         const email = firebase.auth().currentUser.email  
         this.ref = firebase.firestore().collection('Users').doc(userID)
         userID = firebase.auth().currentUser.uid 
-        var avatarRef = firebase.storage().ref(`${email}/images`)
+        var avatarRef = firebase.storage().ref(`${userID}/images`)
         avatarRef.getDownloadURL().then( url => {
         this.setState({
             avatar: url

@@ -19,20 +19,7 @@ class Users extends React.Component {
         this.state = {
             avatar: null,
             isLoading: true,
-            users: [
-            //   {
-            //     name: 'Ron',
-            //     address: 'Oak Line',
-            //     phone: '2152152215',
-            //     avatar: 'https://placeimg.com/140/140/any',
-            // },
-            // {
-            //     name: 'Nes',
-            //     address: 'West Philly',
-            //     phone: '2152152225',
-            //     avatar: 'https://placeimg.com/140/140/any',
-            // }
-          ]
+            users: []
         }
         const userID = firebase.auth().currentUser.uid
         this.ref = firebase.firestore().collection('Users').doc(userID)
@@ -67,16 +54,27 @@ class Users extends React.Component {
       const getUsers = await firebase.firestore().collection('Users').get()
       getUsers.docs.forEach( doc => {
         // found clever way to add avatar here and work on screen.
-        this.props.addToUsers({
-          name: doc._data.Name,
-          address: doc._data.Address,
-          phone: doc._data.Phone,
-          avatar: doc._data.Avatar
-        })
+        // console.log(doc._ref._documentPath._parts[1])
+        var avatarRef = firebase.storage().ref(`${doc._ref._documentPath._parts[1]}/images`)
+        avatarRef.getDownloadURL().then( url => {
+          this.props.addToUsers({
+            name: doc._data.Name,
+            address: doc._data.Address,
+            phone: doc._data.Phone,
+            avatar: url || 'https://placeimg.com/140/140/any'
+          })
+        }).catch(
+          (err) => console.log(err)
+        )
       })
       console.log('allAppUsers ->', this.props.allAppUsers.renderUsers)
     }
    
+    handleChat = (userUID) => {
+      // this function will take in the user uid and navitgate to the
+      // message chat that 
+      this.props.navigation.navigate('Customer')
+    }
     // put the url into the database under avatar 
     // getPic = (userPic) => {
     //   var userRef = firebase.storage().ref(`${userPic}/images`)
@@ -107,7 +105,7 @@ class Users extends React.Component {
                     // this will navigate to the same screen but the chat will change to 
                     // whoever we clicked on.
                     onPress={()=>
-                    this.props.navigation.navigate('Customer')
+                    this.handleChat()
                     // console.log(l.users)
                     }
                     key={i}

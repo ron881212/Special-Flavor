@@ -19,7 +19,7 @@ class EditAvatar extends React.Component {
     const email = firebase.auth().currentUser.email  
     this.ref = firebase.firestore().collection('Users').doc(userID)
     userID = firebase.auth().currentUser.uid 
-      var avatarRef = firebase.storage().ref(`${email}/images`)
+      var avatarRef = firebase.storage().ref(`${userID}/images`)
       console.log('avatarRef =', avatarRef)
       avatarRef.getDownloadURL().then( url => {
         this.setState({
