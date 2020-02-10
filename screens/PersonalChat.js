@@ -23,6 +23,7 @@ export default class MerchScreen extends React.Component {
     const email = firebase.auth().currentUser.email  
     this.ref = firebase.firestore().collection('Users').doc(this.userID)
     // userID = firebase.auth().currentUser.uid 
+    // Fire.customUid = this.userID;
     var avatarRef = firebase.storage().ref(`${this.userID}/images`)
     avatarRef.getDownloadURL().then( url => {
         this.setState({

@@ -2,6 +2,8 @@ import firebase from 'react-native-firebase'
 
 class Fire {
 
+  static customUid = firebase.auth().currentUser.uid;
+
   get uid() {
     return (firebase.auth().currentUser || {}).uid
   }
@@ -12,8 +14,13 @@ class Fire {
   }
 
   get ref2() {
-    return firebase.database().ref(this.uid)
+    return firebase.database().ref(Fire.customUid)
   }
+
+  // setRef(customUid) {
+  //   return firebase.database().ref(customUid)
+  //   customUid = 'this'
+  // }
 
   parse = snapshot => {
     const { timestamp: numberStamp, text, user } = snapshot.val()

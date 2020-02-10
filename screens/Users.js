@@ -9,6 +9,7 @@ import { View,
   ScrollView
 } from 'react-native' 
 import firebase from 'react-native-firebase' 
+import Fire from '../Components/Fire'
 import { Card, Avatar, ListItem, Icon } from 'react-native-elements'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
@@ -56,11 +57,13 @@ class Users extends React.Component {
         // found clever way to add avatar here and work on screen.
         // console.log(doc._ref._documentPath._parts[1])
         var avatarRef = firebase.storage().ref(`${doc._ref._documentPath._parts[1]}/images`)
+        console.log(doc._ref._documentPath._parts[1])
         avatarRef.getDownloadURL().then( url => {
           this.props.addToUsers({
             name: doc._data.Name,
             address: doc._data.Address,
             phone: doc._data.Phone,
+            uid: doc._ref._documentPath._parts[1],
             avatar: url || 'https://placeimg.com/140/140/any'
           })
         }).catch(
@@ -72,18 +75,12 @@ class Users extends React.Component {
    
     handleChat = (userUID) => {
       // this function will take in the user uid and navitgate to the
-      // message chat that 
+      Fire.customUid = userUID;
+      console.log(Fire.customUid)
       this.props.navigation.navigate('Customer')
+      
     }
-    // put the url into the database under avatar 
-    // getPic = (userPic) => {
-    //   var userRef = firebase.storage().ref(`${userPic}/images`)
-    //   userRef.getDownloadURL().then( url => {
-    //       return url
-    //     }).catch( () => {
-    //         return 'https://placeimg.com/140/140/any'
-    //     })
-    // }
+
 
     render() {
 
@@ -104,9 +101,9 @@ class Users extends React.Component {
                     <TouchableOpacity
                     // this will navigate to the same screen but the chat will change to 
                     // whoever we clicked on.
-                    onPress={()=>
-                    this.handleChat()
-                    // console.log(l.users)
+                    onPress={()=> {
+                    this.handleChat(l.users.uid);
+                    console.log(l) }
                     }
                     key={i}
                     >
