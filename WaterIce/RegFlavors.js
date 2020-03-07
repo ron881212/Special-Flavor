@@ -34,13 +34,11 @@ const RegFlavors = props => {
             )
         })
 
-        
         prices.docs.forEach( doc => {
             setPintPrice(doc._data.sizeRegular)
             setGallonPrice(doc._data.sizeBucket)
             // console.log(doc._data.sizeBucket)
         })
-        
         
         // console.log('====================================')
         // // console.log(props.cartItems)
@@ -65,7 +63,7 @@ const RegFlavors = props => {
             data={props.cartItems.renderWater}
             keyExtractor={(item, index) => index.toString()}
             numColumns='2'
-            extraData={props.cartItems.renderWater}
+            // extraData={props.cartItems.renderWater}
             renderItem={({item}) => 
             <ItemCard
                 item="Water Ice"

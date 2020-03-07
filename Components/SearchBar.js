@@ -7,15 +7,17 @@ import {
     ScrollView 
 } from 'react-native'
 import { SearchBar } from 'react-native-elements'
+import { connect } from 'react-redux'
 
-export default class Search extends React.Component {
+class Search extends React.Component {
   state = {
     search: '',
   }
 
   updateSearch = search => {
-    const newSearch = search.toLowerCase()
+    const newSearch = search.trim()
     this.setState({ search: newSearch })
+    this.props.searchWaterIce(this.state.search)
     console.log(newSearch)
   }
 
@@ -36,6 +38,17 @@ export default class Search extends React.Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  addToWaterIce: (waterIce) => dispatch({type: 'ADD_TO_WATER_ICE', payload: waterIce}),
+  searchWaterIce: (search) => dispatch({type: 'SEARCH_WATER_ICE', payload: search})
+})
+
+const mapStateToProps = (state) => {
+  return {
+      cartItems: state
+  }
+}
+
 const styles = StyleSheet.create({
     bar: {
         width: 350,
@@ -52,3 +65,5 @@ const styles = StyleSheet.create({
         // lightTheme: true
     }
 })
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search)

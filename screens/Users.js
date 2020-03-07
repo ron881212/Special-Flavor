@@ -75,12 +75,11 @@ class Users extends React.Component {
    
     handleChat = (userUID) => {
       // this function will take in the user uid and navitgate to the
+      Fire.customUid = null;
       Fire.customUid = userUID;
       console.log(Fire.customUid)
       this.props.navigation.navigate('Customer')
-      
     }
-
 
     render() {
 
