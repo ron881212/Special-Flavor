@@ -10,41 +10,20 @@ import { connect } from 'react-redux'
 
 const RegFlavors = props => {
 
-    // const [flavors, setFlavors] = useState([])
     const [pintPrice, setPintPrice] = useState()
     const [gallonPrice, setGallonPrice] = useState()
-    // const [regSearchFlavors, setRegSearchFlavors] = useState([])
-    const [completed, setCompleted] = useState(false)
 
     useEffect(() => {
         start()
     },[])
 
     const start = async () => {
-        const getFlavors = await firebase.firestore().collection('Flavors').get()
         const prices = await firebase.firestore().collection('FlavorSizes').get()
-        
-        getFlavors.docs.forEach( doc => {
-            props.addToWaterIce(
-                {
-                  names: doc.id,
-                  image: doc._data.image,
-                  details: doc._data.description,
-                }
-            )
-        })
-
         prices.docs.forEach( doc => {
             setPintPrice(doc._data.sizeRegular)
             setGallonPrice(doc._data.sizeBucket)
             // console.log(doc._data.sizeBucket)
         })
-        
-        // console.log('====================================')
-        // // console.log(props.cartItems)
-        // console.log('redux flavors', props.cartItems)
-        // console.log('====================================')
-        setCompleted(!completed)
     }
 
     let index = 0
@@ -53,12 +32,6 @@ const RegFlavors = props => {
       <ScrollView 
       contentContainerStyle={styles.container}
       >
-        {/* import itemCard to Searchbar put searched items into a card;
-            searchFlavors ? newFlatlist : original Flatlist; // okay
-            grab searchbar component use props for onchangetext and vaule;
-            move state and updateSearch to this component;
-
-        */}
         <FlatList
             data={props.cartItems.renderWater}
             keyExtractor={(item, index) => index.toString()}

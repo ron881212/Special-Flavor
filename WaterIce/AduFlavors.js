@@ -36,10 +36,10 @@ const AduFlavors = props => {
               gallon: doc._data.priceTwo
           })
         })
-        console.log('====================================')
-        console.log('flavor', aduFlavors)
-        console.log('redux flavors', props.cartItems)
-        console.log('====================================')
+        // console.log('====================================')
+        // console.log('flavor', aduFlavors)
+        // console.log('redux flavors', props.cartItems)
+        // console.log('====================================')
   }
 
     let index = 0
@@ -48,13 +48,6 @@ const AduFlavors = props => {
       <ScrollView 
       contentContainerStyle={styles.container}
       >
-
-        {/* import itemCard to Searchbar put searched items into a card;
-            searchFlavors ? newFlatlist : original Flatlist; // okay
-            grab searchbar component use props for onchangetext and vaule;
-            move state and updateSearch to this component;
-
-        */}
         <FlatList
             data={props.cartItems.renderSnacks}
             keyExtractor={(item, index) => index.toString()}

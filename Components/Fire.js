@@ -3,7 +3,8 @@ import firebase from 'react-native-firebase'
 class Fire {
 
   // this component renders before the sign in.  needs to be after
-  static customUid = firebase.auth().currentUser.uid;
+  static customUid;
+  //= firebase.auth().currentUser.uid;
 
   get uid() {
     return (firebase.auth().currentUser || {}).uid
