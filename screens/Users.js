@@ -10,6 +10,7 @@ import { View,
 } from 'react-native' 
 import firebase from 'react-native-firebase' 
 import Fire from '../Components/Fire'
+import NoOrder from '../Components/NoOrder'
 import { Card, Avatar, ListItem, Icon } from 'react-native-elements'
 import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
@@ -20,7 +21,8 @@ class Users extends React.Component {
         this.state = {
             avatar: null,
             isLoading: true,
-            users: []
+            users: [],
+            updates: 0
         }
         const userID = firebase.auth().currentUser.uid
         this.ref = firebase.firestore().collection('Users').doc(userID)
@@ -49,6 +51,7 @@ class Users extends React.Component {
         avatar: 'https://placeimg.com/140/140/any'
       })
     })
+
     }
 
     getUsers = async () => {
@@ -57,12 +60,13 @@ class Users extends React.Component {
         // found clever way to add avatar here and work on screen.
         // console.log(doc._ref._documentPath._parts[1])
         var avatarRef = firebase.storage().ref(`${doc._ref._documentPath._parts[1]}/images`)
-        console.log(doc._ref._documentPath._parts[1])
+        // console.log(doc._ref._documentPath._parts[1])
         avatarRef.getDownloadURL().then( url => {
           this.props.addToUsers({
+            count: doc._data.Count,
             name: doc._data.Name,
-            address: doc._data.Address,
             phone: doc._data.Phone,
+            address: doc._data.Address,
             uid: doc._ref._documentPath._parts[1],
             avatar: url || 'https://placeimg.com/140/140/any'
           })
@@ -70,14 +74,18 @@ class Users extends React.Component {
           (err) => console.log(err)
         )
       })
-      console.log('allAppUsers ->', this.props.allAppUsers.renderUsers)
+      // console.log('allAppUsers ->', this.props.allAppUsers.renderUsers)
     }
    
-    handleChat = (userUID) => {
+    handleChat = (userUID, cb) => {
       // this function will take in the user uid and navitgate to the
       Fire.customUid = null;
       Fire.customUid = userUID;
-      console.log(Fire.customUid)
+      // console.log(Fire.customUid)
+      cb()
+    }
+
+    cb = () => {
       this.props.navigation.navigate('Customer')
     }
 
@@ -101,27 +109,43 @@ class Users extends React.Component {
                     // this will navigate to the same screen but the chat will change to 
                     // whoever we clicked on.
                     onPress={()=> {
-                    this.handleChat(l.users.uid);
-                    console.log(l) }
+                    this.handleChat(l.users.uid, this.cb);
+                    // console.log(l) 
+                    }
                     }
                     key={i}
                     >
+
+                  { l.users.count > 1 ? 
+
                     <ListItem
                       containerStyle={{width: sectionWidth / 1.1}}
                       key={i}
                       leftAvatar={{ source: { uri: l.users.avatar} }}
                       title={l.users.name}
                       subtitle={l.users.address}
-                      rightSubtitle={l.users.phone}
+                      // rightSubtitle={l.users.phone}
+                      badge={
+                        // l.users.count > 1 ?
+                        { value: l.users.count, textStyle: { color: 'white', fontSize: 20 },status:"primary", badgeStyle: {borderRadius: 50, height:25, width: 35 }, containerStyle: {marginRight: 5} }
+                        // : null
+                      }
                       chevron
                       bottomDivider
                       pad={5}
                     />
+                    :
+                    null
+                  }
+                    
                     </TouchableOpacity>
                   ))
                 }
               </View>
             </ScrollView>
+
+            <NoOrder />
+
         </SafeAreaView>
       )
     }
@@ -143,7 +167,7 @@ const styles = StyleSheet.create({
       display: 'flex',
       flexDirection: 'column',
       height: 80,
-      margin:10,
+      // margin:10,
       borderRadius: 5,
       borderColor: 'white',
       width: sectionWidth / 1.1,
