@@ -6,7 +6,8 @@ import { View,
   SafeAreaView,
   Dimensions,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  FlatList
 } from 'react-native' 
 import firebase from 'react-native-firebase' 
 import Fire from '../Components/Fire'
@@ -86,6 +87,7 @@ class Users extends React.Component {
     }
 
     cb = () => {
+      // clear badge count here
       this.props.navigation.navigate('Customer')
     }
 
@@ -101,47 +103,25 @@ class Users extends React.Component {
               containerStyle={styles.avatar}
             />
             <ScrollView>
-              <View containerStyle={styles.cards}>
-              {/* ALL USERS WILL BE MAPPED HERE */}
-                { 
-                  this.props.allAppUsers.renderUsers.map((l, i, a) => (
-                    <TouchableOpacity
-                    // this will navigate to the same screen but the chat will change to 
-                    // whoever we clicked on.
-                    onPress={()=> {
-                    this.handleChat(l.users.uid, this.cb);
-                    // console.log(l) 
-                    }
-                    }
-                    key={i}
-                    >
 
-                  { l.users.count > 1 ? 
+            <FlatList
+              data={this.props.allAppUsers.renderUsers}
+              keyExtractor={(item, index) => index.toString()}
+              // numColumns='2'
+              // extraData={props.cartItems.renderWater}
+              renderItem={({item}) => 
+                <Orders
+                  handleChat={this.handleChat}
+                  userUID={item.users.uid}
+                  nav={this.cb}
+                  userAvatar={item.users.avatar}
+                  name={item.users.name}
+                  address={item.users.address}
+                  count={item.users.count}
+                />
+              }
+            />
 
-                    <ListItem
-                      containerStyle={{width: sectionWidth / 1.1}}
-                      key={i}
-                      leftAvatar={{ source: { uri: l.users.avatar} }}
-                      title={l.users.name}
-                      subtitle={l.users.address}
-                      // rightSubtitle={l.users.phone}
-                      badge={
-                        // l.users.count > 1 ?
-                        { value: l.users.count, textStyle: { color: 'white', fontSize: 20 },status:"primary", badgeStyle: {borderRadius: 50, height:25, width: 35 }, containerStyle: {marginRight: 5} }
-                        // : null
-                      }
-                      chevron
-                      bottomDivider
-                      pad={5}
-                    />
-                    :
-                    null
-                  }
-                    
-                    </TouchableOpacity>
-                  ))
-                }
-              </View>
             </ScrollView>
 
             <NoOrder />
@@ -149,6 +129,37 @@ class Users extends React.Component {
         </SafeAreaView>
       )
     }
+}
+
+const Orders = props => {
+  return (
+    props.count > 0 ?
+      <TouchableOpacity
+      // this will navigate to the same screen but the chat will change to 
+      // whoever we clicked on.
+      onPress={()=> {
+      props.handleChat(props.userUID, props.nav);
+      // console.log(l) 
+      }}
+      // key={i}
+      >
+      <ListItem
+        containerStyle={{width: sectionWidth / 1.1}}
+        // key={i}
+        leftAvatar={{ source: { uri: props.userAvatar} }}
+        title={props.name}
+        subtitle={props.address}
+        // rightSubtitle={l.users.phone}
+        badge={
+          { value: props.count, textStyle: { color: 'white', fontSize: 20 },status:"primary", badgeStyle: {borderRadius: 50, height:25, width: 35 }, containerStyle: {marginRight: 5} }
+        }
+        chevron
+        bottomDivider
+        pad={5}
+      />
+      </TouchableOpacity>
+    : null
+  )
 }
 
 const sectionWidth = Dimensions.get('window').width

@@ -160,7 +160,7 @@ class BottomNav extends React.Component {
       if(idTokenResult.claims.adminForApp){
         this.setState({admin:true})
       }
-      console.log(idTokenResult.claims)
+      // console.log(idTokenResult.claims)
     })
   }
   render() {
