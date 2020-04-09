@@ -53,7 +53,7 @@ class NoOrder extends React.Component {
                     <ListItem
                       containerStyle={{width: sectionWidth / 1.1}}
                       key={i}
-                      leftAvatar={{ source: { uri: l.users.avatar} }}
+                      // leftAvatar={{ source: { uri: l.users.avatar} }}
                       title={l.users.name}
                       subtitle={l.users.address}
                       rightSubtitle={l.users.phone}
