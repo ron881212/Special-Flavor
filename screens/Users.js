@@ -17,31 +17,26 @@ import { withNavigation } from 'react-navigation'
 import { connect } from 'react-redux'
 
 class Users extends React.Component {
-    constructor(){
-        super()
-        this.state = {
-            avatar: null,
-            isLoading: true,
-            users: [],
-            updates: 0
-        }
-        const userID = firebase.auth().currentUser.uid
-        this.ref = firebase.firestore().collection('Users').doc(userID)
-        this.allUsers = []
+  constructor(){
+    super()
+    this.state = {
+        avatar: null,
+        isLoading: true,
+        users: [],
+        updates: 0
     }
-    static navigationOptions =  {
-      title: 'Users'
-    }
-    // get email and password screen must have a way to change the password 
-    // and a way to recover the password
-    componentDidMount() {
+    const userID = firebase.auth().currentUser.uid
+    this.ref = firebase.firestore().collection('Users').doc(userID)
+    this.allUsers = []
+  }
+  static navigationOptions =  {
+    title: 'Users'
+  }
+  componentDidMount() {
     //grab all user names pics and set it to a state array to map over
-      this.getUsers()
-      // this.setState({users:this.allUsers})
-      // console.log(this.state.users)
-      this.setState({isLoading: false})
+    this.getUsers(this.a, this.b)
+    this.setState({isLoading: false})
     //grabs the admin picture
-    const email = firebase.auth().currentUser.email  
     var avatarRef = firebase.storage().ref(`${userID}/images`)
     avatarRef.getDownloadURL().then( url => {
     this.setState({
@@ -52,100 +47,111 @@ class Users extends React.Component {
         avatar: 'https://placeimg.com/140/140/any'
       })
     })
+  }
 
-    }
-
-    getUsers = async () => {
-      const getUsers = await firebase.firestore().collection('Users').get()
-      getUsers.docs.forEach( doc => {
-        // found clever way to add avatar here and work on screen.
-        // console.log(doc._ref._documentPath._parts[1])
-        var avatarRef = firebase.storage().ref(`${doc._ref._documentPath._parts[1]}/images`)
-        // console.log(doc._ref._documentPath._parts[1])
-        avatarRef.getDownloadURL().then( url => {
-          this.props.addToUsers({
-            count: doc._data.Count,
-            name: doc._data.Name,
-            phone: doc._data.Phone,
-            address: doc._data.Address,
-            uid: doc._ref._documentPath._parts[1],
-            avatar: url || 'https://placeimg.com/140/140/any'
-          })
-        }).catch(
-          (err) => console.log(err)
-        )
-      })
-      // console.log('allAppUsers ->', this.props.allAppUsers.renderUsers)
-    }
-   
-    handleChat = (userUID, cb) => {
-      // this function will take in the user uid and navitgate to the
-      Fire.customUid = null;
-      Fire.customUid = userUID;
-      // console.log(Fire.customUid)
-      cb()
-    }
-
-    cb = () => {
-      // clear badge count here
-      this.props.navigation.navigate('Customer')
-    }
-
-    render() {
-
-      return (
-        <SafeAreaView style={styles.container}>
-        {/* Use own profilePic in database */}
-            <Avatar
-              rounded
-              size='xlarge'
-              source={{uri: this.state.avatar}}
-              containerStyle={styles.avatar}
-            />
-            <ScrollView>
-
-            <FlatList
-              data={this.props.allAppUsers.renderUsers}
-              keyExtractor={(item, index) => index.toString()}
-              // numColumns='2'
-              // extraData={props.cartItems.renderWater}
-              renderItem={({item}) => 
-                <Orders
-                  handleChat={this.handleChat}
-                  userUID={item.users.uid}
-                  nav={this.cb}
-                  userAvatar={item.users.avatar}
-                  name={item.users.name}
-                  address={item.users.address}
-                  count={item.users.count}
-                />
-              }
-            />
-
-            </ScrollView>
-
-            <NoOrder />
-
-        </SafeAreaView>
+  getUsers = async (a, b) => {
+    const getUsers = await firebase.firestore().collection('Users').get()
+    // Set the fields for all users
+    getUsers.docs.forEach( doc => {
+      var avatarRef = firebase.storage().ref(`${doc._ref._documentPath._parts[1]}/images`)
+      avatarRef.getDownloadURL().then( url => {
+        this.props.addToUsers({
+          count: doc._data.Count,
+          name: doc._data.Name,
+          phone: doc._data.Phone,
+          address: doc._data.Address,
+          uid: doc._ref._documentPath._parts[1],
+          avatar: url || 'https://placeimg.com/140/140/any'
+        })
+      }).catch(
+        (err) => console.log(err)
       )
-    }
+    })
+    // Callbacks for setting isLoading and count snapshots
+    a()
+    b()
+  }
+
+  // This function takes in the user uid and navitgate to the chat
+  handleChat = (userUID, cb) => {
+    Fire.customUid = null;
+    Fire.customUid = userUID;
+    cb()
+  }
+  // Callback to navigate to chat
+  cb = () => {
+    // Clear badge count here
+    this.props.navigation.navigate('Customer')
+  }
+  a = () => {
+    this.setState({isLoading: false})
+  }
+
+  // Callback method for snapshop on count and users
+  b = async () => {
+  // Expected to loop thru all user counts
+  const getUsers = await firebase.firestore().collection('Users').get()
+  !this.state.isLoading ?
+    getUsers.docs.forEach( doc => {
+      let getCount = firebase.firestore().collection('Users').doc(doc._ref._documentPath._parts[1])
+      getCount.onSnapshot(current => {
+        console.log('We need this to be the current affected user', current)
+        console.log('Loaded current users', this.props.allAppUsers.renderUsers)
+        console.log('UID of the effected user -> ',current._ref._documentPath._parts[1])
+        this.props.updateCount(current._ref._documentPath._parts[1], current._data.Count)
+        // right here take in the uid and add the uid fields to the user 
+        // this.props.addNewUser()
+      })
+    })
+  :
+  null
+}
+
+  render() {
+    return (
+      <SafeAreaView style={styles.container}>
+      {/* Use own profilePic in database */}
+          <Avatar
+            rounded
+            size='xlarge'
+            source={{uri: this.state.avatar}}
+            containerStyle={styles.avatar}
+          />
+          <ScrollView>
+          <FlatList
+            data={this.props.allAppUsers.renderUsers}
+            extraData={this.props}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({item}) => 
+              <Orders
+                handleChat={this.handleChat}
+                userUID={item.users.uid}
+                nav={this.cb}
+                userAvatar={item.users.avatar}
+                name={item.users.name}
+                address={item.users.address}
+                count={item.users.count}
+              />
+            }
+          />
+          </ScrollView>
+          <NoOrder />
+      </SafeAreaView>
+    )
+  }
 }
 
 const Orders = props => {
   return (
     props.count > 0 ?
       <TouchableOpacity
-      // this will navigate to the same screen but the chat will change to 
-      // whoever we clicked on.
+      // Navigates to the same screen but the chat changes to the user
       onPress={()=> {
       props.handleChat(props.userUID, props.nav);
-      // console.log(l) 
       }}
-      // key={i}
       >
       <ListItem
         containerStyle={{width: sectionWidth / 1.1}}
-        // key={i}
         leftAvatar={{ source: { uri: props.userAvatar} }}
         title={props.name}
         subtitle={props.address}
@@ -165,33 +171,34 @@ const Orders = props => {
 const sectionWidth = Dimensions.get('window').width
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'space-around',
-      backgroundColor: '#e8e8e8',
-    },
-    avatar: {
-      margin:20
-    },
-    cards: {
-      display: 'flex',
-      flexDirection: 'column',
-      height: 80,
-      // margin:10,
-      borderRadius: 5,
-      borderColor: 'white',
-      width: sectionWidth / 1.1,
-      shadowColor: 'rgba(0,0,0, .2)',
-      shadowOffset: { height: 0, width: 0 },
-      shadowOpacity: 0, //default is 1
-      shadowRadius: 0
-    },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    backgroundColor: '#e8e8e8',
+  },
+  avatar: {
+    margin:20
+  },
+  cards: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: 80,
+    borderRadius: 5,
+    borderColor: 'white',
+    width: sectionWidth / 1.1,
+    shadowColor: 'rgba(0,0,0, .2)',
+    shadowOffset: { height: 0, width: 0 },
+    shadowOpacity: 0, //default is 1
+    shadowRadius: 0
+  },
 })
 
-// use redux to store all of the users
+// Stored users in redux
 const mapDispatchToProps = (dispatch) => ({
   addToUsers: (user) => dispatch({type: 'ADD_TO_USERS',payload: user}),
+  updateCount: (uid, num) => dispatch({type: 'UPDATE_COUNT',payload: uid,count: num}),
+  addNewUser: (user) => dispatch({type: 'UPDATE_USERS',payload: user})
 })
 
 const mapStateToProps = (state) => {
@@ -199,5 +206,5 @@ const mapStateToProps = (state) => {
       allAppUsers: state
   }
 }
-// this will navigate to a screen that will house gifted chat.
+
 export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(Users))
