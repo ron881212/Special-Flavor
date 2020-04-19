@@ -1,4 +1,4 @@
-import React from 'react' 
+import React, {useEffect} from 'react' 
 import { View, 
   Text, 
   StyleSheet, 
@@ -142,6 +142,7 @@ class Users extends React.Component {
 }
 
 const Orders = props => {
+
   return (
     props.count > 0 ?
       <TouchableOpacity
