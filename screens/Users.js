@@ -95,10 +95,12 @@ class Users extends React.Component {
     getUsers.docs.forEach( doc => {
       let getCount = firebase.firestore().collection('Users').doc(doc._ref._documentPath._parts[1])
       getCount.onSnapshot(current => {
-        console.log('We need this to be the current affected user', current)
-        console.log('Loaded current users', this.props.allAppUsers.renderUsers)
-        console.log('UID of the effected user -> ',current._ref._documentPath._parts[1])
+      if(__DEV__) {
+        console.tron.log('We need this to be the current affected user', current)
+        console.tron.log('Loaded current users', this.props.allAppUsers.renderUsers)
+        console.tron.log('UID of the effected user -> ',current._ref._documentPath._parts[1])
         this.props.updateCount(current._ref._documentPath._parts[1], current._data.Count)
+      }
         // right here take in the uid and add the uid fields to the user 
         // this.props.addNewUser()
       })

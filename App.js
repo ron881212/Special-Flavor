@@ -1,3 +1,7 @@
+if(__DEV__) {
+  import('./ReactotronConfig').then(() => console.log('Reactotron Configured'))
+}
+import reactotron from './ReactotronConfig'
 import React from 'react' 
 import firebase from 'react-native-firebase' 
 import Login from './screens/Login' 
@@ -12,7 +16,8 @@ import renderUsers from "./reducers/renderUsers"
 import { createStore, combineReducers } from 'redux'
 
 const rootReducer = combineReducers({cartItems, cartTotal, renderSnacks, renderWater, renderUsers})
-const store = createStore(rootReducer)
+const store = createStore(rootReducer, reactotron.createEnhancer())
+
 class App extends React.Component {
 
   constructor() {
