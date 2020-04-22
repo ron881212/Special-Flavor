@@ -16,7 +16,20 @@ const cartItems = (state = [], action)=>{
                 }
             // try putting return before state.filter
             })
-                // console.log(action.payload.id)
+        case 'UPDATE_QUANTITY':
+            return state.filter((value) => {
+                if(value.item.id == action.payload){
+                    value.item.quantity = action.count
+                }
+                return value
+            })
+        case 'PRODUCT_TOTAL':
+            return state.filter((value) => {
+                if(value.item.id == action.payload){
+                    value.item.total = action.total
+                }
+                return value
+            })
     }
     return state
 }

@@ -48,6 +48,8 @@ const RegFlavors = props => {
                 pintPrice={pintPrice}
                 gallonPrice={gallonPrice}
                 itemId={index++}
+                quantity={1}
+                total={pintPrice}
             />
             }
         />

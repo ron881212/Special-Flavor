@@ -27,8 +27,10 @@ const ItemCard = props => {
         item: props.item,
         pic: props.pic,
         id: props.itemId,
+        quantity: props.quantity,
         pintPrice: props.pintPrice,
-        gallonPrice: props.gallonPrice
+        gallonPrice: props.gallonPrice,
+        total: props.total
     }
 
     return(

@@ -33,7 +33,7 @@ const AduFlavors = props => {
               image: doc._data.image,
               details: doc._data.description,
               pint: doc._data.price,
-              gallon: doc._data.priceTwo
+              // gallon: doc._data.priceTwo
           })
         })
         // console.log('====================================')
@@ -62,7 +62,9 @@ const AduFlavors = props => {
             remove={props.removeItem}
             itemId={index++}
             pintPrice={item.snacks.pint}
-            gallonPrice={item.snacks.gallon}
+            // gallonPrice={item.snacks.gallon}
+            quantity={1}
+            total={item.snacks.pint}
         /> 
         }
         />

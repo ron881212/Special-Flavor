@@ -138,12 +138,15 @@ render(){
               <CartButtonGroup
               itemID={flavor.item.id}
               itemPrice={flavor.item.price}
+              value={flavor.item.quantity}
+              itemTotal={flavor.item.total}
               />
             : 
               <SnackButtonGroup
               itemID={flavor.item.id}
               pintPrice={flavor.item.pintPrice}
               gallonPrice={flavor.item.gallonPrice}
+              value={flavor.item.quantity}
               />}
           </Card>
         </Swipeout>
