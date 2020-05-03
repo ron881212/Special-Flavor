@@ -8,7 +8,7 @@ class CartButtonGroup extends React.Component {
   constructor () {
     super()
     this.state = {
-      selectedIndex: 0,
+      selectedIndex: null,
       price: null,
       gallon: null,
       value: null,
@@ -16,33 +16,31 @@ class CartButtonGroup extends React.Component {
       normal: null,
       large: null,
     } 
-    this.setPrice = this.setPrice.bind(this)
     this.updateIndex = this.updateIndex.bind(this)
     this.updateTotal = this.updateTotal.bind(this)
     this.updateGrandTotal = this.updateGrandTotal.bind(this)
   }
 
   componentDidMount() {
-    this.setState({value: this.props.value})
-    console.tron.log('this.props.itemTotal',this.props.itemTotal);
     this.updateGrandTotal()
-    this.setPrice()
+    this.setPrice() 
+    this.setState({normal: 5})
+    this.setState({large: 30})
+    this.setState({gallon: 30})
+    this.setState({value: this.props.value})
+    this.setState({total: this.props.pintPrice})
+    this.setState({selectedIndex: this.props.sizeIndex})
+    console.tron.log('this.props.sizeIndex',this.props.sizeIndex)
   }
 
-  setPrice = async () => {
-    const prices = await firebase.firestore().collection('FlavorSizes').get()
-    prices.docs.forEach( doc => {
-      this.setState({price: doc._data.sizeRegular})
-      // this.setState({total: doc._data.sizeRegular})
-      this.setState({total: this.props.itemTotal})
-      this.setState({gallon: doc._data.sizeBucket})
-      this.setState({normal: doc._data.sizeNormal})
-      this.setState({large: doc._data.sizeLarge})
-    })
+  setPrice(){
+    if(this.props.sizeIndex == 0) this.setState({price: 5})
+    if(this.props.sizeIndex == 1) this.setState({price: 30})
   }
 
   updateIndex (selectedIndex) {
     this.setState({selectedIndex})
+    this.props.updateSelectedIndex(this.props.itemID, selectedIndex)
     if(selectedIndex == 0) {
       this.setState({price: this.state.normal})
       this.setState({total: (this.state.normal * this.state.value)})
@@ -70,8 +68,6 @@ class CartButtonGroup extends React.Component {
   }
 
   updateTotal() {
-    // this.props.value(this.state.value)
-    // console.tron.log('this.props.itemTotal=> ',this.props.itemTotal)
     this.setState({total: (this.state.price * this.state.value)})
     this.props.updateQuantity(this.props.itemID, this.state.value)
     this.props.productTotal(this.props.itemID, this.state.total)
@@ -84,7 +80,7 @@ class CartButtonGroup extends React.Component {
       }
     }
   }
-  
+
   updateGrandTotal(){
     let nowTotal = 0
     for(let i = 0; i < this.props.store.cartItems.length; i++){
@@ -94,6 +90,9 @@ class CartButtonGroup extends React.Component {
     // console.log(nowTotal)
     // console.log('ADD_TO_TOTAL ' + this.props.addToTotal)
     this.props.addToTotal(nowTotal)
+    console.tron.log('this.state.price in updateGrandTotal=> ',this.state.total)
+    console.tron.log('this.state.value=> ',this.state.value)
+
   }
   
   render () {
@@ -140,6 +139,7 @@ const mapDispatchToProps = (dispatch) => ({
   addToTotal: (product) => dispatch({type: 'ADD_TO_TOTAL', payload: product}),
   addToTotalCart: (product, id) => dispatch({type: 'ADD_TOTAL_TO_CART', payload: product, id: id}),
   updateQuantity: (id, num) => dispatch({type: 'UPDATE_QUANTITY', payload: id, count: num}),
+  updateSelectedIndex: (id, num) => dispatch({type: 'UPDATE_INDEX', payload: id, count: num}),
   productTotal: (id, num) => dispatch({type: 'PRODUCT_TOTAL', payload: id, total: num})
 })
 

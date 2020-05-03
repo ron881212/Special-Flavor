@@ -30,7 +30,8 @@ const ItemCard = props => {
         quantity: props.quantity,
         pintPrice: props.pintPrice,
         gallonPrice: props.gallonPrice,
-        total: props.total
+        total: props.total,
+        selectedIndex: 0
     }
 
     return(

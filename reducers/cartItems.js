@@ -23,6 +23,13 @@ const cartItems = (state = [], action)=>{
                 }
                 return value
             })
+        case 'UPDATE_INDEX':
+            return state.filter((value) => {
+                if(value.item.id == action.payload){
+                    value.item.selectedIndex = action.count
+                }
+                return value
+            })
         case 'PRODUCT_TOTAL':
             return state.filter((value) => {
                 if(value.item.id == action.payload){

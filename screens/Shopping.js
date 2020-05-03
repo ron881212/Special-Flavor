@@ -43,12 +43,6 @@ class ShopScreen extends React.Component {
     this.updateGrandTotal()
   }
 
-  // componentWillUpdate() {
-  //   console.log(`component updated`)
-  //   console.log("cartItems length " + this.props.store.cartItems.length)
-  //   this.updateTotal()
-  // }
-
   updateGrandTotal(){
     let nowTotal = 0
     for(let i = 0; i < this.props.store.cartItems.length; i++){
@@ -140,6 +134,9 @@ render(){
               itemPrice={flavor.item.price}
               value={flavor.item.quantity}
               itemTotal={flavor.item.total}
+              pintPrice={flavor.item.pintPrice}
+              gallonPrice={flavor.item.gallonPrice}
+              sizeIndex={flavor.item.selectedIndex}
               />
             : 
               <SnackButtonGroup
