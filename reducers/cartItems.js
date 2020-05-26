@@ -37,8 +37,30 @@ const cartItems = (state = [], action)=>{
                 }
                 return value
             })
+        case 'SEND_ORDER':
+            return state.filter(orders => {
+                if (orders.item) {
+                //   return orders.item.name
+                  orders.item.text = 
+                //   'Can I get ' + 
+                  orders.item.quantity + 'x ' + 
+                //   orders.item.selectedIndex == 0 ? 'pint of ' : 'gallon of '
+                  orders.item.name 
+                //   + ' ' + 
+                //   orders.item.item
+                } 
+                return orders
+            })
     }
     return state
 }
 
 export default cartItems
+
+// Sudo order format
+// Hey sis lemme get
+// { Loop order
+// "{Quantity} {Pint : Gallon} of {Flavor} {WaterIce : null}"
+// }
+// __________
+// {total}

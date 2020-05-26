@@ -55,7 +55,7 @@ class DidOrder extends React.Component {
         <TouchableOpacity
         // Navigates to the same screen but the chat changes to the user
         onPress={()=> {
-        props.handleChat(this.props.userUID, this.props.nav);
+        this.props.handleChat(this.props.userUID, this.props.nav);
         }}
         >
         <ListItem

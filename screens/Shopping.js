@@ -10,6 +10,8 @@ import CartButtonGroup from '../Components/CartButtonGroup'
 import SnackButtonGroup from '../Components/SnackButtonGroup'
 import Swipeout from 'react-native-swipeout'
 import { TouchableHighlight } from 'react-native-gesture-handler'
+import { GiftedChat } from 'react-native-gifted-chat'
+import Fire from '../Components/Fire'
 
 class ShopScreen extends React.Component {
   static navigationOptions =  {
@@ -25,14 +27,19 @@ class ShopScreen extends React.Component {
       phone: null,
       total: null,
       address: null,
-      instructions: null
+      instructions: null,
+      order: [{_id:1,text:'first order'}],
+      userName: '',
+      avatar: null,
+      uid: null
     }
     const email = firebase.auth().currentUser.email 
-    const uid = firebase.auth().currentUser.uid 
+    const uid = firebase.auth().currentUser.uid
     this.ref = firebase.firestore().collection('Users').doc(uid)
     this.updateGrandTotal = this.updateGrandTotal.bind(this)
   }
   componentDidMount() {
+    const uid = firebase.auth().currentUser.uid 
     this.ref.onSnapshot(userInfo => {
       this.setState({
         name: userInfo._data.Name,
@@ -40,6 +47,7 @@ class ShopScreen extends React.Component {
         address: userInfo._data.Address
       })
     })
+    this.setState({uid: uid})
     this.updateGrandTotal()
   }
 
@@ -53,6 +61,21 @@ class ShopScreen extends React.Component {
     // this.setState({total:nowTotal})
   }
 
+  sendOrder(userUID, cb){
+    // count++ here
+    console.tron.log('this.props.store.cartItems', this.props.store.cartItems)
+    this.props.orderInfo()
+    Fire.customUid = null;
+    Fire.customUid = userUID;
+    cb()
+  }
+
+  cb = () => {
+    Fire.shared.send3(this.props.store.cartItems)
+    // Empty cartItems after
+    console.tron.log('print info', this.props.store.cartItems)
+    this.props.navigation.navigate('Customer')
+  }
 render(){
   const total = '$0.00'
   const payment = 'Cash'
@@ -88,14 +111,6 @@ render(){
         <Text>Deliver to*</Text>
         <Text>{this.state.address}</Text>
       </Card>
-
-      {/* <Card containerStyle={styles.card}>
-        <Text>Ordering instructions</Text>
-        <Input 
-          placeholder='your order instructions'
-          onChangeText={(custom) => this.setState({instructions: custom})}
-        />
-      </Card> */}
 
       <View style={styles.section}><Text style={styles.sectionText}>        Your Payment</Text></View>
 
@@ -159,12 +174,7 @@ render(){
         title={`Place your order: ${"$" + this.props.store.cartTotal.total + ".00" || total}`}
         buttonStyle={styles.payment}
         onPress={()=>
-          // this button also automatically sends the admin the order
-          this.props.navigation.navigate('Customer')
-          // console.log(this.props.store.cartItems)
-          // we need add a handlePress function here to grab user info as well as 
-          // the redux order to pass it to the 'Customer' screen 
-          // console.log(this.props.store.cartTotal)
+          this.sendOrder(this.state.uid, this.cb)
         }
       />
       </>
@@ -178,7 +188,6 @@ render(){
         buttonStyle={{borderRadius:50}}
         onPress={()=>
           this.props.navigation.navigate('Customer')
-          // console.log("ScreenGoesHere")
         }
         icon={
           <Icon
@@ -207,8 +216,8 @@ const mapStoreToProps = (store) => {
 const mapDispatchToProps = (dispatch) => ({
   removeItem: (product) => dispatch({type: 'REMOVE_FROM_CART', payload: product}),
   addToTotal: (price) => dispatch({type: 'ADD_TO_TOTAL', payload: price}),  
-  subFromTotal: (price) => dispatch({type: 'REMOVE_TO_TOTAL', payload: price})
-  
+  subFromTotal: (price) => dispatch({type: 'REMOVE_TO_TOTAL', payload: price}),
+  orderInfo: (order) => dispatch({type: 'SEND_ORDER', payload: order})
 })
 
 const styles = StyleSheet.create({
@@ -227,7 +236,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#e8e8e8',
     justifyContent: 'center',
-    // alignContent: 'end'
   },
   section: {
     marginTop: 25,

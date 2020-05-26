@@ -75,6 +75,19 @@ class Fire {
     }
     console.log(this.ref.on)
   }
+
+  send3 = messages => {
+    for (let i = 0; i < messages.length; i++) {
+      const { text, user } = messages[i].item
+      const message = {
+        text,
+        // user,
+        timestamp: this.timestamp,
+      };
+      this.append2(message)
+    }
+    console.log(this.ref.on)
+  }
   
   append = message => this.ref.push(message)
 
@@ -83,4 +96,5 @@ class Fire {
 }
 
 Fire.shared = new Fire()
+
 export default Fire
