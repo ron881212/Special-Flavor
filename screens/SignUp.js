@@ -7,7 +7,8 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   View,
-  Alert
+  Alert,
+  Platform
 } from 'react-native'
 import firebase from 'react-native-firebase'
 import { Input, Button } from 'react-native-elements'
@@ -58,7 +59,10 @@ static navigationOptions = {
             source={require('../images/splash.jpeg')} 
             style={{width: '100%', height: '100%'}}
             imageStyle={{opacity: 0.7}}>
-          <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+          <KeyboardAvoidingView 
+          style={styles.container} 
+          behavior="padding" 
+          enabled={Platform.OS === 'ios' ? true : false}>
               <Input
                 placeholder='User Name'
                 inputContainerStyle={styles.form2}

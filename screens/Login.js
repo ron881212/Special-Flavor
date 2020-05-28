@@ -5,7 +5,8 @@ import {
   SafeAreaView,
   View,
   Alert,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Platform
 } from 'react-native'
 import { 
   createAppContainer,
@@ -48,7 +49,10 @@ static navigationOptions = {
       style={{width: '100%', height: '100%', backgroundColor:'black'}}
       imageStyle={{opacity: 0.7}}
       >  
-      <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+      <KeyboardAvoidingView 
+      style={styles.container} 
+      behavior="padding" 
+      enabled={Platform.OS === 'ios' ? true : false}>
         <Input
           placeholder='Email'
           // placeholderTextColor='color'

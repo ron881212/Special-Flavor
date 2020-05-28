@@ -51,6 +51,8 @@ const cartItems = (state = [], action)=>{
                 } 
                 return orders
             })
+            case 'EMPTY_CART':
+                return state.length = 0;
     }
     return state
 }

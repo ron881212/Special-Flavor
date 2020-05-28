@@ -74,6 +74,8 @@ class Users extends React.Component {
   handleChat = (userUID, cb) => {
     Fire.customUid = null;
     Fire.customUid = userUID;
+    const countRef = firebase.firestore().collection('Users').doc(userUID);
+    countRef.update({ Count: 0 })
     cb()
   }
   // Callback to navigate to chat

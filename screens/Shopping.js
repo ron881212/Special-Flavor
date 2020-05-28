@@ -10,7 +10,7 @@ import CartButtonGroup from '../Components/CartButtonGroup'
 import SnackButtonGroup from '../Components/SnackButtonGroup'
 import Swipeout from 'react-native-swipeout'
 import { TouchableHighlight } from 'react-native-gesture-handler'
-import { GiftedChat } from 'react-native-gifted-chat'
+// import { GiftedChat } from 'react-native-gifted-chat'
 import Fire from '../Components/Fire'
 
 class ShopScreen extends React.Component {
@@ -62,7 +62,8 @@ class ShopScreen extends React.Component {
   }
 
   sendOrder(userUID, cb){
-    // count++ here
+    const increment = firebase.firestore.FieldValue.increment(1)
+    this.ref.update({ Count: increment })
     console.tron.log('this.props.store.cartItems', this.props.store.cartItems)
     this.props.orderInfo()
     Fire.customUid = null;
@@ -73,6 +74,7 @@ class ShopScreen extends React.Component {
   cb = () => {
     Fire.shared.send3(this.props.store.cartItems)
     // Empty cartItems after
+    // this.props.emptyCart()
     console.tron.log('print info', this.props.store.cartItems)
     this.props.navigation.navigate('Customer')
   }
@@ -217,7 +219,8 @@ const mapDispatchToProps = (dispatch) => ({
   removeItem: (product) => dispatch({type: 'REMOVE_FROM_CART', payload: product}),
   addToTotal: (price) => dispatch({type: 'ADD_TO_TOTAL', payload: price}),  
   subFromTotal: (price) => dispatch({type: 'REMOVE_TO_TOTAL', payload: price}),
-  orderInfo: (order) => dispatch({type: 'SEND_ORDER', payload: order})
+  orderInfo: (order) => dispatch({type: 'SEND_ORDER', payload: order}),
+  emptyCart: () => dispatch({type: 'EMPTY_CART'})
 })
 
 const styles = StyleSheet.create({
