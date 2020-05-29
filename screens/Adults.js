@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: 'whitesmoke'
+    backgroundColor: '#dddddd'
   },
   cards: {
     top:'8%',

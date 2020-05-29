@@ -9,11 +9,6 @@ import firebase from 'react-native-firebase'
 import { connect } from 'react-redux'
 import Fire from '../Components/Fire'
 
-const ComponentView = Platform.select({
-  ios: () => require('SafeAreaView'),
-  android: () => require('View'),
-})()
-
 const FlavorScreen = props => {
 
   useEffect(() => {
@@ -79,7 +74,7 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       alignItems: 'center',
-      backgroundColor: 'whitesmoke'
+      backgroundColor: '#dddddd'
     },
     cards: {
       top:'8%',

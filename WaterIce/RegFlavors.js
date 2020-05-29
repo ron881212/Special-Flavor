@@ -12,19 +12,24 @@ const RegFlavors = props => {
 
     const [pintPrice, setPintPrice] = useState()
     const [gallonPrice, setGallonPrice] = useState()
-
+    // const [task, setTask] = useState(false)
+    
     useEffect(() => {
-        start()
-    },[])
-
-    const start = async () => {
-        const prices = await firebase.firestore().collection('FlavorSizes').get()
-        prices.docs.forEach( doc => {
+        let task = false
+        const getPrice = async () => {
+          const prices = await firebase.firestore().collection('FlavorSizes').get()
+          if(!task){
+            prices.docs.forEach( doc => {
             setPintPrice(doc._data.sizeRegular)
             setGallonPrice(doc._data.sizeBucket)
-            // console.log(doc._data.sizeBucket)
-        })
-    }
+            })
+          }
+        }
+        getPrice()
+        return () => {
+            task = true
+        }
+    },[])
 
     let index = 0
     
@@ -76,13 +81,13 @@ const styles = StyleSheet.create({
     container: {
       position: 'relative',
     },
-    card: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        width: '100%',
-    },
+    // card: {
+    //     flex: 1,
+    //     flexDirection: 'row',
+    //     alignItems: 'center',
+    //     justifyContent: 'flex-start',
+    //     width: '100%',
+    // },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegFlavors)

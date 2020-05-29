@@ -2,25 +2,29 @@ import React, { useState, useEffect, useContext } from 'react'
 import { 
     Text, 
     View, 
-    SafeAreaView, 
     StyleSheet, 
-    ScrollView,
-    Dimensions
+    Dimensions, 
+    ActivityIndicator,
+    TouchableOpacity
 } from 'react-native'
-import firebase from 'react-native-firebase' 
 import { connect } from 'react-redux'
 import { Card, ListItem, Button, Icon, Image } from 'react-native-elements'
+import heartOne from '../images/purple_heart.png'
+import heartTwo from '../images/purple_heart_2.png'
 
 const ItemCard = props => {
     const [newIcon, setIcon] = useState(false)
     const [cartTitle, setCartTitle] = useState(false)
+    const [fav, setFav] = useState(false)
 
     const Added = () => {
         setIcon(!newIcon)
         setCartTitle(!cartTitle)  
     }
 
-    // let index = 0
+    const favorite = () => {
+        setFav(!fav)
+    }
 
     let allCartItems = {
         name: props.name,
@@ -37,29 +41,49 @@ const ItemCard = props => {
     return(
         <View>
         <Card
-            // title name font needs to be smaller
-            title={props.name}
             titleStyle={styles.title}
-            // all images need a fixed size
             image={props.pic}
             imageWrapperStyle={styles.image}
             containerStyle={styles.card}
+            imageProps={{PlaceholderContent:<ActivityIndicator />}}
             >
-            <Text style={{marginBottom: 10, textAlign: 'center', fontSize: 12}}>
-                {props.discription}
+            <Text style={{marginBottom: 10, textAlign: 'left', fontSize: 12}}>
+                {props.name + '\n' + `$${props.pintPrice}.00`}
             </Text>
+            <TouchableOpacity onPress={()=>favorite()}>
+            <Image
+              source={ !fav ? heartOne : heartTwo }
+              style={{ width: 35, height: 35 }}
+              PlaceholderContent={<ActivityIndicator />}
+            />
+            </TouchableOpacity>
+        </Card>
             <Button
-              icon={<Icon 
-                name={(newIcon === false) ? 'shopping-bag' : 'check-square'} 
+              icon={
+                <Icon 
+                name='shopping-bag'
                 color='#ffffff' 
-                type='feather'/>}
+                type='feather'
+                />
+              }
               backgroundColor='#03A9F4'
               buttonStyle={{
-                borderRadius: 0, 
-                marginLeft: 0, 
-                marginRight: 0, 
-                marginBottom: 0}}
-              title={(cartTitle === false) ? ' Add To Cart' : ' Added!' }
+                borderRadius: 50, 
+                width: 60,
+                height: 60,
+                right: 30,
+                bottom: 30
+              }}
+              containerStyle={{
+                borderRadius: 50, 
+                width: 70,
+                height: 70,
+                left: cardWidth / 1.3,
+                bottom: '12%',
+                borderColor: '#dddddd',
+                borderWidth: 40,
+                marginBottom: -30
+              }}
               // onpress replace props.name with an object that contains all waterIce info
               onPress={ !cartTitle ?
                 () => {
@@ -76,7 +100,6 @@ const ItemCard = props => {
                 }
               }
             />
-        </Card>
         </View>
     )
 }
@@ -87,14 +110,6 @@ const mapStoreToProps = (store) => {
     }
 }
 
-// const mapDispatchToProps = (dispatch) => ({
-//     addItemToCart:(product) => dispatch({type:'ADD_TO_CART',
-//     payload:product}),
-//     removeItem: (product) => dispatch({type: 'REMOVE_FROM_CART',       payload: product}),
-//     addToTotal: (price) => dispatch({type: 'ADD_TO_TOTAL', payload: price}),
-//     subFromTotal: (price) => dispatch({type: 'REMOVE_TO_TOTAL', payload: price})
-// })
-
 const cardWidth = Dimensions.get('window').width / 2.4
 
 const styles = StyleSheet.create({
@@ -104,7 +119,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         width: cardWidth,
-        // height: 'auto'
+        borderRadius: 25,
+        borderWidth: 0,
+        shadowColor: 'rgba(0,0,0, .2)',
+        shadowOffset: { height: 0, width: 0 },
+        shadowOpacity: 0, //default is 1
+        shadowRadius: 0,
+        // marginBottom: -10
     },
     title: {
         display: 'flex',
@@ -114,6 +135,9 @@ const styles = StyleSheet.create({
     image: {
         display: 'flex',
         justifyContent: 'center',
+        width: cardWidth,
+        borderRadius: 25,
+        overflow: 'hidden'
     }
 })
 
