@@ -2,6 +2,7 @@ import React from 'react'
 import { 
     View, 
     StyleSheet,
+    ActivityIndicator
 } from 'react-native'
 import { Avatar } from 'react-native-elements'
 import firebase from 'react-native-firebase' 
@@ -40,6 +41,7 @@ class LargeAvatar extends React.Component {
             size='xlarge'
             source={{uri: this.state.avatar}}
             containerStyle={styles.avatar}
+            renderPlaceholderContent={<ActivityIndicator />}
             />
         </View>
     )

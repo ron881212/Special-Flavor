@@ -1,9 +1,6 @@
 import React from 'react' 
-import { View, 
-  Text, 
-  StyleSheet, 
-  TextInput, 
-  SafeAreaView,
+import {
+  ActivityIndicator,
   Dimensions,
   TouchableOpacity,
   ScrollView
@@ -31,22 +28,13 @@ class DidOrder extends React.Component {
   a = async () => {
     // Expected to loop thru all user counts
     const getUsers = await firebase.firestore().collection('Users').get()
-    // !this.state.isLoading ?
       getUsers.docs.forEach( doc => {
         let getCount = firebase.firestore().collection('Users').doc(doc._ref._documentPath._parts[1])
         getCount.onSnapshot(current => {
-        if(__DEV__) {
-          // console.tron.log('We need this to be the current affected user', current)
-          // console.tron.log('Loaded current users', this.props.allAppUsers.renderUsers)
-          // console.tron.log('UID of the effected user -> ',current._ref._documentPath._parts[1])
           this.props.updateCount(current._ref._documentPath._parts[1], current._data.Count)
-        }
-          // right here take in the uid and add the uid fields to the user 
-          // this.props.addNewUser()
         })
       })
-    // :
-    // null
+
     }
 
   render() {
@@ -60,7 +48,14 @@ class DidOrder extends React.Component {
         >
         <ListItem
           containerStyle={{width: sectionWidth / 1.1}}
-          leftAvatar={{ source: { uri: this.props.userAvatar} }}
+          leftAvatar={
+            <Avatar
+            rounded
+            size={50}
+            source={{uri: this.props.userAvatar}}
+            renderPlaceholderContent={<ActivityIndicator />}
+            />
+            }
           title={this.props.name}
           subtitle={this.props.address}
           // rightSubtitle={l.users.phone}
@@ -78,30 +73,6 @@ class DidOrder extends React.Component {
 }
 
 const sectionWidth = Dimensions.get('window').width
-
-// const styles = StyleSheet.create({
-//     container: {
-//       flex: 1,
-//       alignItems: 'center',
-//       justifyContent: 'space-around',
-//       backgroundColor: '#e8e8e8',
-//     },
-//     avatar: {
-//       margin:20
-//     },
-//     cards: {
-//       display: 'flex',
-//       flexDirection: 'column',
-//       height: 80,
-//       borderRadius: 5,
-//       borderColor: 'white',
-//       width: sectionWidth / 1.1,
-//       shadowColor: 'rgba(0,0,0, .2)',
-//       shadowOffset: { height: 0, width: 0 },
-//       shadowOpacity: 0,
-//       shadowRadius: 0
-//     },
-// })
 
 // use redux to store all of the users
 const mapDispatchToProps = (dispatch) => ({

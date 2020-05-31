@@ -80,14 +80,7 @@ const mapStateToProps = (state) => {
 const styles = StyleSheet.create({
     container: {
       position: 'relative',
-    },
-    // card: {
-    //     flex: 1,
-    //     flexDirection: 'row',
-    //     alignItems: 'center',
-    //     justifyContent: 'flex-start',
-    //     width: '100%',
-    // },
+    }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegFlavors)

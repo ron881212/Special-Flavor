@@ -3,6 +3,7 @@ import {
     View, 
     StyleSheet,
     TouchableOpacity,
+    ActivityIndicator
 } from 'react-native'
 import { withNavigation } from 'react-navigation'
 import { Avatar } from 'react-native-elements'
@@ -52,6 +53,7 @@ class MyAvatar extends React.Component {
             rounded
             size={60}
             source={{uri: this.state.avatar}}
+            renderPlaceholderContent={<ActivityIndicator />}
             />
             </TouchableOpacity>
         </View>

@@ -12,22 +12,29 @@ import Fire from '../Components/Fire'
 const FlavorScreen = props => {
 
   useEffect(() => {
+    let task = false
+    const start = async (a) => {
+      Fire.customUid = firebase.auth().currentUser.uid
+      const getFlavors = await firebase.firestore().collection('Flavors').get()
+      if(!task){
+        getFlavors.docs.forEach( doc => {
+            props.addToWaterIce(
+                {
+                  names: doc.id,
+                  image: doc._data.image,
+                  details: doc._data.description,
+                }
+            )
+        })
+      }
+    }
     start()
+    return () => {
+      task = true
+    }
   },[])
 
-  const start = async (a) => {
-    Fire.customUid = firebase.auth().currentUser.uid
-    const getFlavors = await firebase.firestore().collection('Flavors').get()
-    getFlavors.docs.forEach( doc => {
-        props.addToWaterIce(
-            {
-              names: doc.id,
-              image: doc._data.image,
-              details: doc._data.description,
-            }
-        )
-    })
-  }
+  
 
   return (
     <SafeAreaView style={styles.container}>

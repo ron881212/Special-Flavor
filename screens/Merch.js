@@ -11,7 +11,7 @@ export default class MerchScreen extends React.Component {
   constructor(){
     super()
     this.userID = firebase.auth().currentUser.uid
-    this.emailRef = firebase.firestore().collection('Users').doc(userID)
+    this.emailRef = firebase.firestore().collection('Users').doc(this.userID)
   }
   state = {
     messages: [],
@@ -21,9 +21,9 @@ export default class MerchScreen extends React.Component {
   
   componentDidMount() {
     const email = firebase.auth().currentUser.email  
-    this.ref = firebase.firestore().collection('Users').doc(this.userID)
-    // userID = firebase.auth().currentUser.uid 
-    var avatarRef = firebase.storage().ref(`${this.userID}/images`)
+    const userID = firebase.auth().currentUser.uid 
+    this.ref = firebase.firestore().collection('Users').doc(userID)
+    var avatarRef = firebase.storage().ref(`${userID}/images`)
     avatarRef.getDownloadURL().then( url => {
         this.setState({
           avatar: url

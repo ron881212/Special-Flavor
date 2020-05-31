@@ -11,7 +11,7 @@ export default class MerchScreen extends React.Component {
   constructor(){
     super()
     this.userID = firebase.auth().currentUser.uid
-    this.emailRef = firebase.firestore().collection('Users').doc(userID)
+    this.emailRef = firebase.firestore().collection('Users').doc(this.userID)
   }
   state = {
     messages: [],
@@ -79,7 +79,7 @@ export default class MerchScreen extends React.Component {
       >
       <GiftedChat
         messages={this.state.messages}
-        onSend={Fire.shared.send2}
+        onSend={Fire.shared.send2, ()=> console.tron.log('update count here')}
         user={this.user}
         showUserAvatar={true}
         showAvatarForEveryMessage={true}

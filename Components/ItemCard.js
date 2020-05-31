@@ -72,17 +72,17 @@ const ItemCard = props => {
                 width: 60,
                 height: 60,
                 right: 30,
-                bottom: 30
+                bottom: 30 //30
               }}
               containerStyle={{
                 borderRadius: 50, 
                 width: 70,
                 height: 70,
                 left: cardWidth / 1.3,
-                bottom: '12%',
+                bottom: '15%', // 12%
                 borderColor: '#dddddd',
                 borderWidth: 40,
-                marginBottom: -30
+                marginBottom: -40 //-30
               }}
               // onpress replace props.name with an object that contains all waterIce info
               onPress={ !cartTitle ?

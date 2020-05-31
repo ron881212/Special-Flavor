@@ -6,7 +6,8 @@ import { View,
   SafeAreaView,
   Dimensions,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  ActivityIndicator
 } from 'react-native' 
 import firebase from 'react-native-firebase' 
 import { Card, Button, Avatar, ListItem, Input, Icon } from 'react-native-elements'
@@ -69,6 +70,7 @@ static navigationOptions =  {
               size='xlarge'
               source={{uri: this.state.avatar}}
               containerStyle={styles.avatar}
+              renderPlaceholderContent={<ActivityIndicator />}
             />
             <ScrollView>
 
