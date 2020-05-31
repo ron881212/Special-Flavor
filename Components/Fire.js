@@ -18,10 +18,9 @@ class Fire {
     return firebase.database().ref(Fire.customUid)
   }
 
-  // setRef(customUid) {
-  //   return firebase.database().ref(customUid)
-  //   customUid = 'this'
-  // }
+  get countRef() {
+    return firebase.firestore().collection('Users').doc(this.uid)
+  }
 
   parse = snapshot => {
     const { timestamp: numberStamp, text, user } = snapshot.val()
@@ -64,6 +63,8 @@ class Fire {
   }
 
   send2 = messages => {
+    const increment = firebase.firestore.FieldValue.increment(1)
+
     for (let i = 0; i < messages.length; i++) {
       const { text, user } = messages[i]
       const message = {
@@ -73,7 +74,7 @@ class Fire {
       };
       this.append2(message)
     }
-    console.log(this.ref.on)
+    this.countRef.update({ Count: increment })
   }
 
   send3 = messages => {
@@ -86,7 +87,6 @@ class Fire {
       };
       this.append2(message)
     }
-    console.log(this.ref.on)
   }
   
   append = message => this.ref.push(message)

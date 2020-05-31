@@ -39,16 +39,23 @@ class ShopScreen extends React.Component {
     this.updateGrandTotal = this.updateGrandTotal.bind(this)
   }
   componentDidMount() {
+    this.mount = false
     const uid = firebase.auth().currentUser.uid 
     this.ref.onSnapshot(userInfo => {
-      this.setState({
-        name: userInfo._data.Name,
-        phone: userInfo._data.Phone,
-        address: userInfo._data.Address
-      })
+      if(!this.mounted){
+        this.setState({
+          name: userInfo._data.Name,
+          phone: userInfo._data.Phone,
+          address: userInfo._data.Address
+        })
+      }
     })
-    this.setState({uid: uid})
+    if(!this.mounted) this.setState({uid: uid})
     this.updateGrandTotal()
+  }
+
+  componentWillUnmount(){
+    this.mounted = true
   }
 
   updateGrandTotal(){

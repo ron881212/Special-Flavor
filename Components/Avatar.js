@@ -19,8 +19,6 @@ class MyAvatar extends React.Component {
     }
     
     componentDidMount() {
-        // const email = firebase.auth().currentUser.email  
-        // this.ref = firebase.firestore().collection('Users').doc(userID)
         this.img = false
         const getImg = async () => {
           const userID = firebase.auth().currentUser.uid

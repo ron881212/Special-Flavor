@@ -69,6 +69,12 @@ export default class MerchScreen extends React.Component {
     }
   }
 
+  // updateCount = () => {
+  //   const increment = firebase.firestore.FieldValue.increment(1)
+  //   this.ref.update({ Count: increment })
+  //   Fire.shared.send2
+  // }
+
   render() {
 
   return (
@@ -79,7 +85,7 @@ export default class MerchScreen extends React.Component {
       >
       <GiftedChat
         messages={this.state.messages}
-        onSend={Fire.shared.send2, ()=> console.tron.log('update count here')}
+        onSend={Fire.shared.send2}
         user={this.user}
         showUserAvatar={true}
         showAvatarForEveryMessage={true}
@@ -89,6 +95,7 @@ export default class MerchScreen extends React.Component {
   )
   }
 }
+
 const sectionWidth = Dimensions.get('window').width
 
 const styles = StyleSheet.create({

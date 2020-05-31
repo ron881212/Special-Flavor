@@ -20,23 +20,28 @@ export default class MerchScreen extends React.Component {
   }
   
   componentDidMount() {
+    this.mounted = false
     const email = firebase.auth().currentUser.email  
     const userID = firebase.auth().currentUser.uid 
     this.ref = firebase.firestore().collection('Users').doc(userID)
     var avatarRef = firebase.storage().ref(`${userID}/images`)
     avatarRef.getDownloadURL().then( url => {
+      if(!this.mounted){
         this.setState({
           avatar: url
         })
-    }).catch( () => {
-        this.setState({
-          avatar: 'https://placeimg.com/140/140/any'
-          })
-    })
-    this.emailRef.onSnapshot(userInfo => {
-      this.setState({
-        userName: userInfo._data.userName || 'anonymous',
+      }
+      }).catch( () => {
+          this.setState({
+            avatar: 'https://placeimg.com/140/140/any'
+            })
       })
+    this.emailRef.onSnapshot(userInfo => {
+      if(!this.mounted){
+        this.setState({
+          userName: userInfo._data.userName || 'anonymous',
+        })
+      }
     })
 
     this.setState({
@@ -58,6 +63,10 @@ export default class MerchScreen extends React.Component {
       }))
     )
   }
+
+  componentWillUnmount(){
+    this.mounted = true
+  } 
 
   get user(){
     return {
