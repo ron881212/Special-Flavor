@@ -74,7 +74,13 @@ class Fire {
       };
       this.append2(message)
     }
-    this.countRef.update({ Count: increment })
+    firebase.auth().currentUser.getIdTokenResult()
+    .then((idTokenResult) => {
+      if(idTokenResult.claims.adminForApp){
+        this.countRef.update({ Messages: increment })
+      }
+      else this.countRef.update({ Count: increment })
+    })
   }
 
   send3 = messages => {
@@ -92,6 +98,8 @@ class Fire {
   append = message => this.ref.push(message)
 
   append2 = message => this.ref2.push(message)
+
+  
 
 }
 

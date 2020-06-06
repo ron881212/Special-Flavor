@@ -20,10 +20,7 @@ export default class MerchScreen extends React.Component {
   }
   
   componentDidMount() {
-    const email = firebase.auth().currentUser.email  
     this.ref = firebase.firestore().collection('Users').doc(this.userID)
-    // userID = firebase.auth().currentUser.uid 
-    // Fire.customUid = this.userID;
     var avatarRef = firebase.storage().ref(`${this.userID}/images`)
     avatarRef.getDownloadURL().then( url => {
         this.setState({
@@ -69,16 +66,12 @@ export default class MerchScreen extends React.Component {
     }
   }
 
-  // updateCount = () => {
-  //   const increment = firebase.firestore.FieldValue.increment(1)
-  //   this.ref.update({ Count: increment })
-  //   Fire.shared.send2
-  // }
-
   render() {
 
   return (
-    <SafeAreaView style={styles.container}> 
+    <SafeAreaView 
+    style={styles.container}
+    > 
       <ImageBackground
         source={require('../images/SpecialFlavorsLogo.png')} 
         style={styles.backgroundStyle}
@@ -89,6 +82,8 @@ export default class MerchScreen extends React.Component {
         user={this.user}
         showUserAvatar={true}
         showAvatarForEveryMessage={true}
+        minInputToolbarHeight={-5}
+        listViewProps={{marginBottom:50}}
       />
       </ImageBackground>
     </SafeAreaView>

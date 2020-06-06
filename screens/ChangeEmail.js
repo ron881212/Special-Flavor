@@ -30,10 +30,17 @@ class ChangeEmail extends React.Component {
   }
   
   componentDidMount() {
+    this.mounted = false
     const email = firebase.auth().currentUser.email    
     // this.ref = firebase.firestore().collection('Users').doc(email)
-    this.setState({ oldEmail: email })
-    console.log(email)
+    if(!this.mounted){
+      this.setState({ oldEmail: email })
+    }
+    // console.log(email)
+  }
+
+  componentWillUnmount() {
+    this.mounted = true
   }
 
   logOut(){

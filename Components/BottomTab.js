@@ -53,7 +53,7 @@ const HomeIconWithBadge = props => {
   // You should pass down the badgeCount in some other ways like context, redux, mobx or event emitters.
   return <IconWithBadge {...props} badgeCount={0} />
 }
-
+   
 const getTabBarIcon = (navigation, focused, tintColor) => {
   const { routeName } = navigation.state
   let IconComponent = Ionicons
@@ -64,19 +64,20 @@ const getTabBarIcon = (navigation, focused, tintColor) => {
   } else if (routeName === 'Snacks') {
     iconName = `cookie`
   } else if (routeName === 'Boards') {
-    iconName = `comments`
+    iconName = `comments`  
   } else if (routeName === 'Profile') {
     iconName = `id-card`
   } else if (routeName === 'Users') {
     iconName = `users`
   } else if (routeName === 'Customer') {
     iconName = `user`
+  } else if (routeName === 'Order') {
+    iconName = `comment-dots`
   }
-
+    
   // You can return any component that you like here!
   return <IconComponent name={iconName} size={25} color={tintColor} />
 }
-
 
 const Profile = createStackNavigator(
   {
@@ -105,6 +106,7 @@ const WaterIce = createStackNavigator(
 )
 
 const Nav = createAppContainer(
+  // pass props through here
   createBottomTabNavigator(
     {
       WaterIce,
@@ -126,6 +128,7 @@ const Nav = createAppContainer(
 )
 
 const Admin = createAppContainer(
+  // pass props through here
   createBottomTabNavigator(
     {
       WaterIce,
@@ -148,6 +151,7 @@ const Admin = createAppContainer(
 )
 
 class BottomNav extends React.Component {
+  // pass props through here
   constructor() {
     super() 
     this.state = {

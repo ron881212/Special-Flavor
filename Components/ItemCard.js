@@ -61,7 +61,7 @@ const ItemCard = props => {
             <Button
               icon={
                 <Icon 
-                name='shopping-bag'
+                name={!cartTitle ? 'shopping-bag' : 'check-square'}
                 color='#ffffff' 
                 type='feather'
                 />

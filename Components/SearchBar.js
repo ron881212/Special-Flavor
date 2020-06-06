@@ -65,7 +65,7 @@ class Search extends React.Component {
         inputContainerStyle={styles.search}
         inputStyle={styles.text}
         lightTheme = {true}
-        onClear={this.clearSearch}
+        // onClear={this.clearSearch}
       />
     )
   }

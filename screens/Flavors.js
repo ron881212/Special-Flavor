@@ -61,7 +61,7 @@ const FlavorScreen = props => {
 FlavorScreen.navigationOptions = {
   headerMode: 'screen',
   headerShown: false
-}
+} 
 
 const mapDispatchToProps = (dispatch) => ({
   removeItem: (product) => dispatch({type: 'REMOVE_FROM_CART',payload: product}),

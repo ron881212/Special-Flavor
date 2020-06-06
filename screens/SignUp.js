@@ -41,7 +41,7 @@ static navigationOptions = {
             firebase.firestore().runTransaction(async transaction => {
                 const doc = await transaction.get(this.userInfo);
                 if (!doc.exists) {
-                  transaction.set(this.userInfo, { Name: setUserName, Count: 0 })
+                  transaction.set(this.userInfo, { Name: setUserName, Count: 0, Messages:0 })
                 }
             })
           }

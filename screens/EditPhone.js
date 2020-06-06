@@ -25,14 +25,21 @@ class EditPhone extends React.Component {
   }
 
   componentDidMount() {
+    this.mounted = false
     const email = firebase.auth().currentUser.email 
     const userID = firebase.auth().currentUser.uid
     this.ref = firebase.firestore().collection('Users').doc(userID)
     this.ref.onSnapshot(userInfo => {
-      this.setState({
+      if(!this.mounted){
+        this.setState({
         phone: userInfo._data.Phone
       })
+      }
     })
+  }
+
+  componentWillUnmount(){
+    this.mounted = true
   }
 
   logOut(){

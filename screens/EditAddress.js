@@ -25,14 +25,21 @@ class EditAddress extends React.Component {
   }
   
   componentDidMount() {
+    this.mounted = false
     const email = firebase.auth().currentUser.email 
     userID = firebase.auth().currentUser.uid 
     this.ref = firebase.firestore().collection('Users').doc(userID)
     this.ref.onSnapshot(userInfo => {
-      this.setState({
+      if(!this.mounted){
+        this.setState({
         address: userInfo._data.Address
       })
+      }
     })
+  }
+
+  componentWillMount(){
+    this.mounted = true
   }
 
   logOut(){

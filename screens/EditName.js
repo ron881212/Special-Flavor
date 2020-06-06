@@ -25,15 +25,21 @@ class EditName extends React.Component {
   }
 
   componentDidMount() {
+    this.mounted = false
     const email = firebase.auth().currentUser.email  
     this.ref = firebase.firestore().collection('Users').doc(userID)
     userID = firebase.auth().currentUser.uid 
-    
     this.ref.onSnapshot(userInfo => {
-      this.setState({
+      if(!this.mounted){
+        this.setState({
         name: userInfo._data.Name
       })
+      }
     })
+  }
+
+  componentWillUnmount(){
+    this.mounted = true
   }
 
   logOut(){

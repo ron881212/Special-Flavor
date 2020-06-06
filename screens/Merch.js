@@ -6,62 +6,71 @@ import { GiftedChat } from 'react-native-gifted-chat'
 import firebase from 'react-native-firebase' 
 import Fire from '../Components/Fire'
 import Picture from '../images/IMG_1225.jpeg'
+import { withNavigation } from 'react-navigation'
 
-export default class MerchScreen extends React.Component {
+class MerchScreen extends React.Component {
   constructor(){
     super()
     this.userID = firebase.auth().currentUser.uid
     this.emailRef = firebase.firestore().collection('Users').doc(this.userID)
   }
+
   state = {
     messages: [],
     userName: '',
     avatar: null
   }
-  
+
   componentDidMount() {
+    console.tron.log('this.props.navigation',this.props.navigation)
     this.mounted = false
     const email = firebase.auth().currentUser.email  
     const userID = firebase.auth().currentUser.uid 
     this.ref = firebase.firestore().collection('Users').doc(userID)
     var avatarRef = firebase.storage().ref(`${userID}/images`)
-    avatarRef.getDownloadURL().then( url => {
-      if(!this.mounted){
-        this.setState({
-          avatar: url
-        })
-      }
-      }).catch( () => {
+
+      avatarRef.getDownloadURL().then( url => {
+        if(!this.mounted){
+          this.setState({
+            avatar: url
+          })
+        }
+        }).catch( () => {
           this.setState({
             avatar: 'https://placeimg.com/140/140/any'
-            })
-      })
-    this.emailRef.onSnapshot(userInfo => {
-      if(!this.mounted){
-        this.setState({
-          userName: userInfo._data.userName || 'anonymous',
+          })
         })
-      }
-    })
 
-    this.setState({
-      messages: [
-        {
-          _id: 1,
-          text: 'Hey yall',
-          user: {
-            _id: 2,
-            name: 'Admin',
-            avatar: Picture,
+      this.emailRef.onSnapshot(userInfo => {
+        if(!this.mounted){
+          this.setState({
+            userName: userInfo._data.userName || 'anonymous',
+          })
+        }
+      })
+
+      if(!this.mounted){
+      this.setState({
+        messages: [
+          {
+            _id: 1,
+            text: 'Hey yall',
+            user: {
+              _id: 2,
+              name: 'Admin',
+              avatar: Picture,
+            },
           },
-        },
-      ],
-    })
-    Fire.shared.on(message =>
-      this.setState(previousState => ({
-        messages: GiftedChat.append(previousState.messages, message),
-      }))
-    )
+        ],
+      })
+      }
+      Fire.shared.on(message => {
+        if(!this.mounted){
+        this.setState(previousState => ({
+          messages: GiftedChat.append(previousState.messages, message),
+        }))
+        }
+      })
   }
 
   componentWillUnmount(){
@@ -91,7 +100,9 @@ export default class MerchScreen extends React.Component {
         user={this.user}
         showUserAvatar={true}
         showAvatarForEveryMessage={true}
-      />
+        minInputToolbarHeight={-5}
+        listViewProps={{marginBottom:50}}
+      /> 
       </ImageBackground>
     </SafeAreaView>
   )
@@ -117,3 +128,5 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   }
 })
+
+export default withNavigation(MerchScreen)
