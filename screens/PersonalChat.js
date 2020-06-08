@@ -1,11 +1,10 @@
-import React, {useState} from 'react'
 import { View, SafeAreaView, StyleSheet, ImageBackground, Dimensions } from 'react-native'
-import { Input, Button } from 'react-native-elements'
 import Icon from 'react-native-vector-icons/Feather'
 import { GiftedChat } from 'react-native-gifted-chat'
 import firebase from 'react-native-firebase' 
 import Fire from '../Components/Fire'
 import Picture from '../images/IMG_1225.jpeg'
+import React from 'react'
 
 export default class MerchScreen extends React.Component {
   constructor(){
@@ -20,6 +19,7 @@ export default class MerchScreen extends React.Component {
   }
   
   componentDidMount() {
+    // here we need to set the incomming message count to 0
     this.ref = firebase.firestore().collection('Users').doc(this.userID)
     var avatarRef = firebase.storage().ref(`${this.userID}/images`)
     avatarRef.getDownloadURL().then( url => {

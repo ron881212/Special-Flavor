@@ -1,7 +1,5 @@
 import React from 'react'
 import { View, SafeAreaView, StyleSheet, ImageBackground, Dimensions } from 'react-native'
-// import { Input, Button } from 'react-native-elements'
-// import Icon from 'react-native-vector-icons/Feather'
 import { GiftedChat } from 'react-native-gifted-chat'
 import firebase from 'react-native-firebase' 
 import Fire from '../Components/Fire'
@@ -22,7 +20,6 @@ class MerchScreen extends React.Component {
   }
 
   componentDidMount() {
-    console.tron.log('this.props.navigation',this.props.navigation)
     this.mounted = false
     const email = firebase.auth().currentUser.email  
     const userID = firebase.auth().currentUser.uid 

@@ -4,7 +4,7 @@ import Ionicons from 'react-native-vector-icons/FontAwesome5'
 import { createAppContainer } from 'react-navigation'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 import { createStackNavigator } from 'react-navigation-stack'
-// import shoppingCart from '../Components/Shop'
+import firebase from 'react-native-firebase' 
 import FlavorScreen from '../screens/Flavors'
 import AdultScreen from '../screens/Adults'
 import MerchScreen from '../screens/Merch'
@@ -16,8 +16,6 @@ import EditPhone from '../screens/EditPhone'
 import ChangePassword from '../screens/ChangePassword'
 import ChangeEmail from '../screens/ChangeEmail'
 import PersonalChat from '../screens/PersonalChat'
-import firebase from 'react-native-firebase' 
-// import AdminNav from './Admin'
 import AllUsers from '../screens/Users'
 
 class IconWithBadge extends React.Component {
@@ -32,10 +30,10 @@ class IconWithBadge extends React.Component {
               position: 'absolute',
               right: -6,
               top: -3,
-              backgroundColor: 'red',
-              borderRadius: 6,
-              width: 12,
-              height: 12,
+              backgroundColor: '#03A9F4',
+              borderRadius: 10,
+              width: 20,
+              height: 20,
               justifyContent: 'center',
               alignItems: 'center',
             }}>
@@ -49,9 +47,10 @@ class IconWithBadge extends React.Component {
   }
 }
 
-const HomeIconWithBadge = props => {
+const ChatIconWithBadge = props => {
   // You should pass down the badgeCount in some other ways like context, redux, mobx or event emitters.
-  return <IconWithBadge {...props} badgeCount={0} />
+  // The badgeCount is pulled from firebase 
+  return <IconWithBadge {...props} badgeCount={5} />
 }
    
 const getTabBarIcon = (navigation, focused, tintColor) => {
@@ -60,11 +59,13 @@ const getTabBarIcon = (navigation, focused, tintColor) => {
   let iconName
   if (routeName === 'WaterIce') {
     iconName = `glass-whiskey`
-    IconComponent = HomeIconWithBadge
   } else if (routeName === 'Snacks') {
     iconName = `cookie`
   } else if (routeName === 'Boards') {
+    // here we need props.iconImage to conditionally change
+    // icon images in the BottomNav class
     iconName = `comments`  
+    IconComponent = ChatIconWithBadge
   } else if (routeName === 'Profile') {
     iconName = `id-card`
   } else if (routeName === 'Users') {
@@ -104,13 +105,13 @@ const WaterIce = createStackNavigator(
       initialRouteKey: 'Water Ice'
     },
 )
-
+// This is to be a hook function the returns createAppContainer
 const Nav = createAppContainer(
-  // pass props through here
   createBottomTabNavigator(
     {
       WaterIce,
       Snacks: { screen: AdultScreen },
+      // MerchScreen needs to be props.MerchScreen 
       Boards: { screen: MerchScreen },
       Profile,
     },
