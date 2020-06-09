@@ -1,10 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Text, View } from 'react-native'
 import Ionicons from 'react-native-vector-icons/FontAwesome5'
 import { createAppContainer } from 'react-navigation'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 import { createStackNavigator } from 'react-navigation-stack'
-import firebase from 'react-native-firebase' 
 import FlavorScreen from '../screens/Flavors'
 import AdultScreen from '../screens/Adults'
 import MerchScreen from '../screens/Merch'
@@ -16,43 +15,18 @@ import EditPhone from '../screens/EditPhone'
 import ChangePassword from '../screens/ChangePassword'
 import ChangeEmail from '../screens/ChangeEmail'
 import PersonalChat from '../screens/PersonalChat'
+import firebase from 'react-native-firebase' 
 import AllUsers from '../screens/Users'
-
-class IconWithBadge extends React.Component {
-  render() {
-    const { name, badgeCount, color, size } = this.props
-    return (
-      <View style={{ width: 24, height: 24, margin: 5 }}>
-        <Ionicons name={name} size={size} color={color} />
-        {badgeCount > 0 && (
-          <View
-            style={{
-              position: 'absolute',
-              right: -6,
-              top: -3,
-              backgroundColor: '#03A9F4',
-              borderRadius: 10,
-              width: 20,
-              height: 20,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Text style={{ color: 'white', fontSize: 10, fontWeight: 'bold' }}>
-              {badgeCount}
-            </Text>
-          </View>
-        )}
-      </View>
-    )
-  }
-}
+import IconWithBadge from '../Components/IconWithBadge'
 
 const ChatIconWithBadge = props => {
   // You should pass down the badgeCount in some other ways like context, redux, mobx or event emitters.
-  // The badgeCount is pulled from firebase 
-  return <IconWithBadge {...props} badgeCount={5} />
+  // The badgeCount is pulled from redux 
+  let count = 0
+  // let newCount = props.incoming.messageCount
+  return <IconWithBadge {...props} />
 }
-   
+
 const getTabBarIcon = (navigation, focused, tintColor) => {
   const { routeName } = navigation.state
   let IconComponent = Ionicons
@@ -64,7 +38,7 @@ const getTabBarIcon = (navigation, focused, tintColor) => {
   } else if (routeName === 'Boards') {
     // here we need props.iconImage to conditionally change
     // icon images in the BottomNav class
-    iconName = `comments`  
+    // iconName = `comments`  
     IconComponent = ChatIconWithBadge
   } else if (routeName === 'Profile') {
     iconName = `id-card`
@@ -106,6 +80,7 @@ const WaterIce = createStackNavigator(
     },
 )
 // This is to be a hook function the returns createAppContainer
+
 const Nav = createAppContainer(
   createBottomTabNavigator(
     {
@@ -167,7 +142,9 @@ class BottomNav extends React.Component {
       }
       // console.log(idTokenResult.claims)
     })
+
   }
+
   render() {
     if(this.state.admin){
       return <Admin />

@@ -13,6 +13,7 @@ import cartTotal from "./reducers/cartTotal"
 import renderSnacks from "./reducers/renderSnacks"
 import renderWater from "./reducers/renderWater"
 import renderUsers from "./reducers/renderUsers"
+import messageCount from "./reducers/messageCount"
 import { createStore, combineReducers } from 'redux'
 
 const rootReducer = combineReducers({
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
   cartTotal, 
   renderSnacks, 
   renderWater, 
-  renderUsers
+  renderUsers,
+  messageCount
 })
 const store = createStore(rootReducer, reactotron.createEnhancer())
 
