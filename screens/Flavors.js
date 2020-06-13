@@ -34,11 +34,8 @@ const FlavorScreen = props => {
     }
   },[])
 
-  
-
   return (
     <SafeAreaView style={styles.container}>
-
       <View style={styles.banner}>
         <Banner />
       </View>
@@ -95,9 +92,6 @@ const styles = StyleSheet.create({
       top: '24%',
       position: 'absolute',
       zIndex: 10
-    },
-    StatusBar: {
-      color: 'black'
     }
 })
 

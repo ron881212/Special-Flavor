@@ -6,7 +6,6 @@ import Fire from '../Components/Fire'
 import Picture from '../images/IMG_1225.jpeg'
 import { withNavigation } from 'react-navigation'
 
-
 class MerchScreen extends React.Component {
   constructor(){
     super()

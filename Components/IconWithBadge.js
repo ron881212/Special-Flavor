@@ -8,14 +8,14 @@ import MerchScreen from '../screens/Merch'
 class IconWithBadge extends React.Component {
 constructor(props){
   super(props)
-  this.userID = firebase.auth().currentUser.uid
-  this.ref = firebase.firestore().collection('Users').doc(this.userID)
   this.state = {
     messages: 0
   } 
 }
 componentDidMount(){
   this.mounted = false
+  this.userID = firebase.auth().currentUser.uid
+  this.ref = firebase.firestore().collection('Users').doc(this.userID)
   this.ref.onSnapshot(unread => {
     if(!this.mounted){
       this.setState(prevState => {
