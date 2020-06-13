@@ -85,6 +85,7 @@ class ShopScreen extends React.Component {
     // this.props.emptyCart()
     console.tron.log('print info', this.props.store.cartItems)
     this.props.navigation.navigate('Customer')
+    this.props.emptyCart()
   }
 render(){
   const total = '$0.00'

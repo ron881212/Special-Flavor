@@ -1,9 +1,9 @@
 import React from 'react'
 import { Text, View } from 'react-native'
 import firebase from 'react-native-firebase' 
-// import { connect } from 'react-redux'
 import Ionicons from 'react-native-vector-icons/FontAwesome5'
 import { Icon, withBadge, Badge } from 'react-native-elements'
+import MerchScreen from '../screens/Merch'
 
 class IconWithBadge extends React.Component {
 constructor(props){
@@ -15,13 +15,37 @@ constructor(props){
   } 
 }
 componentDidMount(){
+  this.mounted = false
   this.ref.onSnapshot(unread => {
-    // console.tron.log('unread', unread)
-    this.setState(prevState => {
-      return {messages: unread._data.Messages}
-    })
+    if(!this.mounted){
+      this.setState(prevState => {
+        console.tron.log('message', unread._data.Messages)
+        return {messages: unread._data.Messages}
+      })
+    }
   })
 }
+componentWillUnmount(){
+    this.mounted = true
+}
+// dark(){
+//   let message;
+//   function check() {
+//     // return true
+//     this.ref.onSnapshot(unread => {
+//       console.tron.log('message1', unread._data.Messages)
+//       if(unread._data.Messages > 0){
+//         return true
+//       }
+//     })
+//   }
+
+  // console.tron.log('message2', message)
+  // console.tron.log('state', this.state.messages)
+  
+  // if(check() > 0) return 'Order'
+  // else return 'Comments'
+// }
 render() {
   const { name, badgeCount, color, size } = this.props
   return (
@@ -40,5 +64,7 @@ render() {
   )
 }
 }
+
+IconWithBadge.shared = new IconWithBadge()
 
 export default IconWithBadge

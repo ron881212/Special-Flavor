@@ -6,7 +6,7 @@ import Fire from '../Components/Fire'
 import Picture from '../images/IMG_1225.jpeg'
 import React from 'react'
 
-export default class MerchScreen extends React.Component {
+export default class PersonalChat extends React.Component {
   constructor(){
     super()
     this.userID = firebase.auth().currentUser.uid
@@ -19,42 +19,53 @@ export default class MerchScreen extends React.Component {
   }
   
   componentDidMount() {
-    // here we need to set the incomming message count to 0
+    this.mounted = false
     this.ref = firebase.firestore().collection('Users').doc(this.userID)
     var avatarRef = firebase.storage().ref(`${this.userID}/images`)
     avatarRef.getDownloadURL().then( url => {
+      if(!this.mounted){
         this.setState({
           avatar: url
         })
+      }
     }).catch( () => {
+      if(!this.mounted){
         this.setState({
           avatar: 'https://placeimg.com/140/140/any'
-          })
+        })
+      }
     })
     this.emailRef.onSnapshot(userInfo => {
+      if(!this.mounted){
+        this.setState({
+          userName: userInfo._data.userName || 'anonymous',
+        })
+      }
+    })
+    if(!this.mounted){
       this.setState({
-        userName: userInfo._data.userName || 'anonymous',
-      })
-    })
-
-    this.setState({
-      messages: [
-        {
-          _id: 1,
-          text: 'Hey yall',
-          user: {
-            _id: 2,
-            name: 'Admin',
-            avatar: Picture,
+        messages: [
+          {
+            _id: 1,
+            text: 'Hey yall',
+            user: {
+              _id: 2,
+              name: 'Admin',
+              avatar: Picture,
+            },
           },
-        },
-      ],
-    })
+        ],
+      })
+    }
     Fire.shared.on2(message =>
       this.setState(previousState => ({
         messages: GiftedChat.append(previousState.messages, message),
       }))
     )
+  }
+
+  componentWillUnmount(){
+    this.mounted = true
   }
 
   get user(){

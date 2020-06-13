@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Platform, View, SafeAreaView, StyleSheet } from 'react-native'
+import { Platform, View, SafeAreaView, StyleSheet, StatusBar } from 'react-native'
 import Banner from '../Components/Banner'
 import Shop from '../Components/Shop'
 import MyAvatar from '../Components/Avatar'
@@ -95,6 +95,9 @@ const styles = StyleSheet.create({
       top: '24%',
       position: 'absolute',
       zIndex: 10
+    },
+    StatusBar: {
+      color: 'black'
     }
 })
 

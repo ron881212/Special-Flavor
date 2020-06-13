@@ -6,20 +6,21 @@ import Fire from '../Components/Fire'
 import Picture from '../images/IMG_1225.jpeg'
 import { withNavigation } from 'react-navigation'
 
+
 class MerchScreen extends React.Component {
   constructor(){
     super()
     this.userID = firebase.auth().currentUser.uid
     this.emailRef = firebase.firestore().collection('Users').doc(this.userID)
-  }
-
-  state = {
-    messages: [],
-    userName: '',
-    avatar: null
+    this.state = {
+      messages: [],
+      userName: '',
+      avatar: null
+    }
   }
 
   componentDidMount() {
+    // console.tron.log('here', MerchScreen.)
     this.mounted = false
     const email = firebase.auth().currentUser.email  
     const userID = firebase.auth().currentUser.uid 
@@ -67,6 +68,17 @@ class MerchScreen extends React.Component {
           messages: GiftedChat.append(previousState.messages, message),
         }))
         }
+      })
+      
+      this.ref.onSnapshot(unread => {
+        // if(!this.mounted){
+        this.setState(prevState => {
+          console.tron.log('message', unread._data.Messages)
+          // return {messages: unread._data.Messages}
+          if(unread._data.Messages > 0) this.props.navigation.navigate('Customer')
+          else this.props.navigation.navigate('Boards')
+        })
+        // }
       })
   }
 

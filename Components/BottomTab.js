@@ -20,15 +20,13 @@ import AllUsers from '../screens/Users'
 import IconWithBadge from '../Components/IconWithBadge'
 
 const ChatIconWithBadge = props => {
-  // You should pass down the badgeCount in some other ways like context, redux, mobx or event emitters.
-  // The badgeCount is pulled from redux 
   let count = 0
   // let newCount = props.incoming.messageCount
   return <IconWithBadge {...props} />
 }
 
 const getTabBarIcon = (navigation, focused, tintColor) => {
-  const { routeName } = navigation.state
+  const { routeName, name } = navigation.state
   let IconComponent = Ionicons
   let iconName
   if (routeName === 'WaterIce') {
@@ -36,9 +34,8 @@ const getTabBarIcon = (navigation, focused, tintColor) => {
   } else if (routeName === 'Snacks') {
     iconName = `cookie`
   } else if (routeName === 'Boards') {
-    // here we need props.iconImage to conditionally change
-    // icon images in the BottomNav class
-    // iconName = `comments`  
+    iconName = `comments`  
+    // name = 'welcome'
     IconComponent = ChatIconWithBadge
   } else if (routeName === 'Profile') {
     iconName = `id-card`
@@ -79,29 +76,38 @@ const WaterIce = createStackNavigator(
       initialRouteKey: 'Water Ice'
     },
 )
-// This is to be a hook function the returns createAppContainer
 
-const Nav = createAppContainer(
-  createBottomTabNavigator(
-    {
-      WaterIce,
-      Snacks: { screen: AdultScreen },
-      // MerchScreen needs to be props.MerchScreen 
-      Boards: { screen: MerchScreen },
-      Profile,
-    },
-    {
-      defaultNavigationOptions: ({ navigation }) => ({
-        tabBarIcon: ({ focused, tintColor }) =>
-          getTabBarIcon(navigation, focused, tintColor),
-      }),
-      tabBarOptions: {
-        activeTintColor: 'purple',
-        inactiveTintColor: 'gray',
+// // This is to be a hook function the returns createAppContainer
+function Nav(props) {
+  // static navigationOptions 
+  // let screenName = props.name
+  const UserNav = createAppContainer(
+    createBottomTabNavigator(
+      {
+        WaterIce,
+        Snacks: { screen: AdultScreen },
+        // MerchScreen needs to be props.MerchScreen 
+        Boards: { screen: MerchScreen },
+        Profile,
       },
-    }
+      {
+        defaultNavigationOptions: ({ navigation }) => ({
+          tabBarIcon: ({ focused, tintColor }) => 
+          getTabBarIcon(navigation, focused, tintColor),
+        }),
+        tabBarOptions: {
+          style:{height:40},
+          activeTintColor: 'purple',
+          inactiveTintColor: 'gray',   
+          showLabel: false
+        }
+      }
+      )
   )
-)
+    return(
+      <UserNav />
+    )
+}
 
 const Admin = createAppContainer(
   // pass props through here
@@ -119,15 +125,16 @@ const Admin = createAppContainer(
           getTabBarIcon(navigation, focused, tintColor),
       }),
       tabBarOptions: {
+        style:{height:40},
         activeTintColor: 'purple',
         inactiveTintColor: 'gray',
+        showLabel: false
       },
     }
   )
 )
 
 class BottomNav extends React.Component {
-  // pass props through here
   constructor() {
     super() 
     this.state = {
@@ -135,14 +142,21 @@ class BottomNav extends React.Component {
     } 
   }
   componentDidMount() {
+    this.mounted = false
     firebase.auth().currentUser.getIdTokenResult()
     .then((idTokenResult) => {
-      if(idTokenResult.claims.adminForApp){
+      if(!this.mounted){
+        if(idTokenResult.claims.adminForApp){
         this.setState({admin:true})
+        }
       }
+      // Nav.
       // console.log(idTokenResult.claims)
     })
+  }
 
+  componentWillUnmount(){
+    this.mounted = true
   }
 
   render() {
@@ -150,7 +164,6 @@ class BottomNav extends React.Component {
       return <Admin />
     } 
     else return <Nav />
-
   }
 }
 
