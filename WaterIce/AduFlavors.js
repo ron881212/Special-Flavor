@@ -91,14 +91,9 @@ const mapDispatchToProps = (dispatch) => {
 const styles = StyleSheet.create({
   container: {
     position: 'relative',
-  },
-  card: {
-      // flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'flex-start',
-      width: '100%',
-  },
+    marginTop: 0,
+    padding: 0
+  }
 })
 
 export default connect(mapStoreToProps, mapDispatchToProps)(AduFlavors)

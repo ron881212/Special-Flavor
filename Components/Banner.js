@@ -1,23 +1,29 @@
 import React, { Component } from 'react'
 import { 
-    SafeAreaView, 
     View,
     StyleSheet, 
-    ImageBackground,
     Image,
-    ScrollView,
     Dimensions
 } from 'react-native';
+import Shop from './Shop'
+import MyAvatar from './Avatar'
+import Search from './SearchBar'
 
 const Banner = props => {
     return (
-        // <View style={styles.banner}>
-        <Image
-        source={require('../images/SpecialFlavorsBanner3.png')} 
-        style={styles.backgroundStyle}
-        />
-        // </Image>
-        // </View>
+        <View style={styles.banner}>
+            <Image
+            source={require('../images/SpecialFlavorsBanner3.png')} 
+            // style={styles.backgroundStyle}
+            />
+            <MyAvatar />
+            <Shop />
+
+            <View style={styles.bar}>
+            <Search />
+            </View>
+
+        </View>
     )
 }
 // create stylesheet here.
@@ -27,16 +33,14 @@ const sectionWidth = Dimensions.get('window').width
 
 const styles = StyleSheet.create({
     banner: {
-        flex: 1,
-    },
-    backgroundStyle: {
         backgroundColor:'purple',
-        width: sectionWidth,
-        resizeMode: 'contain',
-        margin:0,
-        padding:0
-        
-    }
+        alignItems: 'center',
+        marginBottom: 20
+    },
+    bar: {
+        bottom: '12%',
+        position: 'absolute',
+      }
 })
 
 export default Banner

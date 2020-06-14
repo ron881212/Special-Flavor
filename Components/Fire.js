@@ -99,8 +99,6 @@ class Fire {
 
   append2 = message => this.ref2.push(message)
 
-  
-
 }
 
 Fire.shared = new Fire()
