@@ -25,6 +25,8 @@ const styles = StyleSheet.create({
   },
   cards: {
     position:'relative',
+    // marginBottom:'20%',
+    paddingBottom:220
   }
 })
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Platform, View, SafeAreaView, StyleSheet, StatusBar } from 'react-native'
+import { Platform, View, SafeAreaView, StyleSheet } from 'react-native'
 import Banner from '../Components/Banner'
 import RegFlavors from '../WaterIce/RegFlavors'
 import firebase from 'react-native-firebase' 
@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import Fire from '../Components/Fire'
 
 const FlavorScreen = props => {
-
+  
   useEffect(() => {
     let task = false
     const start = async (a) => {
@@ -30,6 +30,8 @@ const FlavorScreen = props => {
       task = true
     }
   },[])
+
+  // StatusBar.setBackgroundColor('black')
 
   return (
     <SafeAreaView style={styles.container}>
@@ -71,6 +73,8 @@ const styles = StyleSheet.create({
     },
     cards: {
       position:'relative',
+      // marginBottom:'20%',
+      paddingBottom:220
     }
 })
 

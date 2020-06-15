@@ -74,13 +74,13 @@ class Fire {
       };
       this.append2(message)
     }
-    firebase.auth().currentUser.getIdTokenResult()
-    .then((idTokenResult) => {
-      if(idTokenResult.claims.adminForApp){
-        this.countRef.update({ Messages: increment })
-      }
-      else this.countRef.update({ Count: increment })
-    })
+    // firebase.auth().currentUser.getIdTokenResult()
+    // .then((idTokenResult) => {
+    //   if(idTokenResult.claims.adminForApp){
+    //     this.countRef.update({ Messages: increment })
+    //   }
+    //   else this.countRef.update({ Count: increment })
+    // })
   }
 
   send3 = messages => {

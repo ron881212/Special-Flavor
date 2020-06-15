@@ -40,12 +40,15 @@ const ItemCard = props => {
 
     return(
         <View>
+
+        <View style={{zIndex:1}}>
         <Card
             titleStyle={styles.title}
             image={props.pic}
             imageWrapperStyle={styles.image}
             containerStyle={styles.card}
             imageProps={{PlaceholderContent:<ActivityIndicator />}}
+            wrapperStyle={{zIndex:1,overflow:'hidden'}}
             >
             <Text style={{marginBottom: 10, textAlign: 'left', fontSize: 12}}>
                 {props.name + '\n' + `$${props.pintPrice}.00`}
@@ -58,6 +61,8 @@ const ItemCard = props => {
             />
             </TouchableOpacity>
         </Card>
+        </View>
+
             <Button
               icon={
                 <Icon 
@@ -72,17 +77,18 @@ const ItemCard = props => {
                 width: 60,
                 height: 60,
                 right: 30,
-                bottom: 30 //30
+                bottom: 30,
               }}
               containerStyle={{
                 borderRadius: 50, 
                 width: 70,
                 height: 70,
                 left: cardWidth / 1.3,
-                bottom: '15%', // 12%
+                bottom: '15%',
                 borderColor: '#dddddd',
                 borderWidth: 40,
-                marginBottom: -40 //-30
+                marginBottom: -40,
+                zIndex:10
               }}
               // onpress replace props.name with an object that contains all waterIce info
               onPress={ !cartTitle ?
@@ -125,7 +131,7 @@ const styles = StyleSheet.create({
         shadowOffset: { height: 0, width: 0 },
         shadowOpacity: 0, //default is 1
         shadowRadius: 0,
-        // marginBottom: -10
+        zIndex:1,
     },
     title: {
         display: 'flex',

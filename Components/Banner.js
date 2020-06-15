@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
     banner: {
         backgroundColor:'purple',
         alignItems: 'center',
-        marginBottom: 20
+        marginBottom: 20,
+        width:'100%'
     },
     bar: {
         bottom: '12%',

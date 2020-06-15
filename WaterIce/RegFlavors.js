@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     container: {
       position: 'relative',
       marginTop: 0,
-      padding: 0
+      padding: 0,
     }
 })
 

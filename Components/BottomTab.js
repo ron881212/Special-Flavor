@@ -96,7 +96,7 @@ function Nav(props) {
           getTabBarIcon(navigation, focused, tintColor),
         }),
         tabBarOptions: {
-          style:{height:40},
+          style:{height:50},
           activeTintColor: 'purple',
           inactiveTintColor: 'gray',   
           showLabel: false

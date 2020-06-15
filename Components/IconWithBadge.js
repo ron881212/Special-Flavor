@@ -1,8 +1,9 @@
 import React from 'react'
-import { Text, View } from 'react-native'
+import { Text, View, TouchableHighlight } from 'react-native'
 import firebase from 'react-native-firebase' 
 import Ionicons from 'react-native-vector-icons/FontAwesome5'
 import { Icon, withBadge, Badge } from 'react-native-elements'
+import { withNavigation } from 'react-navigation'
 import MerchScreen from '../screens/Merch'
 
 class IconWithBadge extends React.Component {
@@ -26,37 +27,30 @@ componentDidMount(){
   })
 }
 componentWillUnmount(){
-    this.mounted = true
+  this.mounted = true
 }
-// dark(){
-//   let message;
-//   function check() {
-//     // return true
-//     this.ref.onSnapshot(unread => {
-//       console.tron.log('message1', unread._data.Messages)
-//       if(unread._data.Messages > 0){
-//         return true
-//       }
-//     })
-//   }
 
-  // console.tron.log('message2', message)
-  // console.tron.log('state', this.state.messages)
-  
-  // if(check() > 0) return 'Order'
-  // else return 'Comments'
-// }
+changeScreen(){
+  this.state.messages > 0 ? 
+  this.props.navigation.navigate('Customer') 
+  : 
+  this.props.navigation.navigate('MerchScreen')
+}
+
 render() {
   const { name, badgeCount, color, size } = this.props
   return (
     <View style={{ width: 30, height: 24, margin: 5 }}>
-      <Ionicons name={this.state.messages > 0 ? 'comment' : 'comments'} size={size} color={color} />
+      <Ionicons name={this.state.messages > 0 ? 'comment' : 'comments'} size={size} color={color} 
+        onPress={()=> this.changeScreen()}
+      />
       { this.state.messages > 0 ? 
 
       <Badge 
           value={ this.state.messages } 
           status="primary"
           containerStyle={{ position: 'absolute', top: -3, right: -6}}
+          onPress={()=> this.changeScreen()}
       /> 
 
       : null }
@@ -67,4 +61,4 @@ render() {
 
 IconWithBadge.shared = new IconWithBadge()
 
-export default IconWithBadge
+export default withNavigation(IconWithBadge)

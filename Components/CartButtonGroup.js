@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View } from 'react-native'
+import { Text, View, Platform, StyleSheet } from 'react-native'
 import { ButtonGroup, Slider, Button } from 'react-native-elements'
 import { connect } from 'react-redux'
 import firebase from 'react-native-firebase' 
@@ -120,14 +120,20 @@ class CartButtonGroup extends React.Component {
           step={1}
           onSlidingComplete={this.updateTotal}
         />
-        <Text style={{height:20}}>Quantity: {this.state.value}</Text>
+        <Text style={styles.card}>Quantity: {this.state.value}</Text>
       </View>
     </>
     )
   }
 }
-
+// hieght is 20
 // try to name state something else
+
+const styles = StyleSheet.create({
+  card:{
+    height: Platform.OS ==='ios' ? 20 : 40
+  }
+})
 const mapStoreToProps = (store) => {
     return {
       store: store
