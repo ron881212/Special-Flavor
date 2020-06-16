@@ -18,24 +18,28 @@ class MyAvatar extends React.Component {
         }
     }
     
-    componentDidMount() {
+    async componentDidMount() {
         this.img = false
-        const getImg = async () => {
+        // const getImg = async () => {
+            // if(!this.img){
           const userID = firebase.auth().currentUser.uid
           var avatarRef = firebase.storage().ref(`${userID}/images`)
+          if(!this.img){
             await avatarRef.getDownloadURL().then( url => {
-            if(!this.img){
-              this.setState({
-                  avatar: url
-              })
-            }
+                this.setState({
+                    avatar: url
+                })
             }).catch( () => {
-              this.setState({
-                  avatar: 'https://placeimg.com/140/140/any'
+                this.setState({
+                    avatar: 'https://placeimg.com/140/140/any'
                 })
             })
-        }
-        getImg()
+          }
+        // }
+        // }
+        // if(!this.img){
+        //     getImg()
+        // }
     }
 
     componentWillUnmount(){

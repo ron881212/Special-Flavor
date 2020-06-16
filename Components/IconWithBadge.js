@@ -14,16 +14,24 @@ constructor(props){
   } 
   this.userID = firebase.auth().currentUser.uid
   this.ref = firebase.firestore().collection('Users').doc(this.userID)
+  this.phone = firebase.firestore().collection('Users').doc(this.userID).collection('Phone')
 }
 componentDidMount(){
   this.mounted = false
-  this.ref.onSnapshot(unread => {
+  // const phone = this.phone.get()
+  // phone.
+  if(this.phone > 0){
+    this.ref.onSnapshot(unread => {
+    // let data = unread._data.Messages
     if(!this.mounted){
-    this.setState(prevState => {
-      return {messages: unread._data.Messages}
+      this.setState(prevState => {
+        console.tron.log('unread._data.Messages ',unread._data.Messages)
+        return {messages: unread._data.Messages}
     })
     }
   })
+  }
+  
 }
 componentWillUnmount(){
   this.mounted = true
