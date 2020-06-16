@@ -5,6 +5,8 @@ class Fire {
   // current user Uid is set when the home screen mounts
   static customUid;
 
+  // static usersUid;
+
   get uid() {
     return (firebase.auth().currentUser || {}).uid
   }
@@ -22,6 +24,10 @@ class Fire {
     return firebase.firestore().collection('Users').doc(this.uid)
   }
 
+  get countRef2() {
+    return firebase.firestore().collection('Users').doc(Fire.customUid)
+  }
+  
   parse = snapshot => {
     const { timestamp: numberStamp, text, user } = snapshot.val()
     const { key: _id } = snapshot
@@ -74,13 +80,13 @@ class Fire {
       };
       this.append2(message)
     }
-    // firebase.auth().currentUser.getIdTokenResult()
-    // .then((idTokenResult) => {
-    //   if(idTokenResult.claims.adminForApp){
-    //     this.countRef.update({ Messages: increment })
-    //   }
-    //   else this.countRef.update({ Count: increment })
-    // })
+    firebase.auth().currentUser.getIdTokenResult()
+    .then((idTokenResult) => {
+      if(idTokenResult.claims.adminForApp){
+        this.countRef2.update({ Messages: increment })
+      }
+      else this.countRef.update({ Count: increment })
+    })
   }
 
   send3 = messages => {

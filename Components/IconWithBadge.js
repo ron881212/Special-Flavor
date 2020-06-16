@@ -12,17 +12,16 @@ constructor(props){
   this.state = {
     messages: 0
   } 
+  this.userID = firebase.auth().currentUser.uid
+  this.ref = firebase.firestore().collection('Users').doc(this.userID)
 }
 componentDidMount(){
   this.mounted = false
-  this.userID = firebase.auth().currentUser.uid
-  this.ref = firebase.firestore().collection('Users').doc(this.userID)
   this.ref.onSnapshot(unread => {
     if(!this.mounted){
-      this.setState(prevState => {
-        console.tron.log('message', unread._data.Messages)
-        return {messages: unread._data.Messages}
-      })
+    this.setState(prevState => {
+      return {messages: unread._data.Messages}
+    })
     }
   })
 }
@@ -31,10 +30,11 @@ componentWillUnmount(){
 }
 
 changeScreen(){
-  this.state.messages > 0 ? 
-  this.props.navigation.navigate('Customer') 
-  : 
-  this.props.navigation.navigate('MerchScreen')
+  console.tron.log('state.message ', this.state.messages)
+  if(this.state.messages > 0){
+    this.props.navigation.navigate('Customer')
+  }
+  else this.props.navigation.navigate('Boards')
 }
 
 render() {

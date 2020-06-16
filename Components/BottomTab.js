@@ -18,11 +18,17 @@ import PersonalChat from '../screens/PersonalChat'
 import firebase from 'react-native-firebase' 
 import AllUsers from '../screens/Users'
 import IconWithBadge from '../Components/IconWithBadge'
+import UserWithBadge from '../Components/UserWithBadge'
 
 const ChatIconWithBadge = props => {
   let count = 0
   // let newCount = props.incoming.messageCount
   return <IconWithBadge {...props} />
+}
+
+const UserIconWithBadge = props => {
+
+  return <UserWithBadge {...props} />
 }
 
 const getTabBarIcon = (navigation, focused, tintColor) => {
@@ -41,6 +47,7 @@ const getTabBarIcon = (navigation, focused, tintColor) => {
     iconName = `id-card`
   } else if (routeName === 'Users') {
     iconName = `users`
+    IconComponent = UserIconWithBadge
   } else if (routeName === 'Customer') {
     iconName = `user`
   } else if (routeName === 'Order') {

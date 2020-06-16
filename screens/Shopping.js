@@ -41,18 +41,18 @@ class ShopScreen extends React.Component {
   componentDidMount() {
     this.mount = false
     const uid = firebase.auth().currentUser.uid 
-    if(!this.mounted){
     this.ref.onSnapshot(userInfo => {
+      if(!this.mounted){
         this.setState({
           name: userInfo._data.Name,
           phone: userInfo._data.Phone,
           address: userInfo._data.Address
         })
-      
+      } 
     })
     if(!this.mounted) this.setState({uid: uid})
     this.updateGrandTotal()
-  }
+
   }
 
   componentWillUnmount(){
@@ -85,7 +85,7 @@ class ShopScreen extends React.Component {
     // this.props.emptyCart()
     console.tron.log('print info', this.props.store.cartItems)
     this.props.navigation.navigate('Customer')
-    this.props.emptyCart()
+    // this.props.emptyCart()
   }
 render(){
   const total = '$0.00'

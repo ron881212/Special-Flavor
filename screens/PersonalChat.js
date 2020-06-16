@@ -11,15 +11,16 @@ export default class PersonalChat extends React.Component {
     super()
     this.userID = firebase.auth().currentUser.uid
     this.emailRef = firebase.firestore().collection('Users').doc(this.userID)
+    this.countRef = firebase.firestore().collection('Users').doc(this.userID);
   }
   state = {
     messages: [],
     userName: '',
     avatar: null
   }
-  
   componentDidMount() {
     this.mounted = false
+    this.countRef.update({ Messages: 0 })
     this.ref = firebase.firestore().collection('Users').doc(this.userID)
     var avatarRef = firebase.storage().ref(`${this.userID}/images`)
     avatarRef.getDownloadURL().then( url => {
@@ -57,11 +58,15 @@ export default class PersonalChat extends React.Component {
         ],
       })
     }
-    Fire.shared.on2(message =>
-      this.setState(previousState => ({
-        messages: GiftedChat.append(previousState.messages, message),
-      }))
-    )
+    // if(!this.mounted){
+      Fire.shared.on2(message => {
+        // if(!this.mounted){
+          this.setState(previousState => ({
+            messages: GiftedChat.append(previousState.messages, message),
+          }))
+        // }
+      })
+    // }
   }
 
   componentWillUnmount(){

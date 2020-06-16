@@ -20,12 +20,13 @@ class NoOrder extends React.Component {
       // this function will take in the user uid and navitgate to the
       Fire.customUid = null;
       Fire.customUid = userUID;
-      // console.log(Fire.customUid)
+      // console.tron.log('Fire.customUid in NoOrder', Fire.customUid)
       cb()
     }
 
     cb = () => {
       this.props.navigation.navigate('Customer')
+      // console.tron.log('Fire.customUid in NoOrder', Fire.customUid)
     }
 
     render() {

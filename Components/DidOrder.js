@@ -16,7 +16,7 @@ class DidOrder extends React.Component {
   componentDidMount(){
     this.a()
   }
-
+  
   handleChat = (userUID, cb) => {
     // this function will take in the user uid and navitgate to the
     Fire.customUid = null;
@@ -34,8 +34,7 @@ class DidOrder extends React.Component {
           this.props.updateCount(current._ref._documentPath._parts[1], current._data.Count)
         })
       })
-
-    }
+  }
 
   render() {
     return (
@@ -43,7 +42,9 @@ class DidOrder extends React.Component {
         <TouchableOpacity
         // Navigates to the same screen but the chat changes to the user
         onPress={()=> {
-        this.props.handleChat(this.props.userUID, this.props.nav);
+          this.props.handleChat(this.props.userUID, this.props.nav);
+          // Fire.usersUid = this.props.userUID
+          // console.tron.log('Fire.usersUid ',Fire.usersUid )
         }}
         >
         <ListItem

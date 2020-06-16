@@ -68,17 +68,6 @@ class MerchScreen extends React.Component {
         }))
         }
       })
-      
-      this.ref.onSnapshot(unread => {
-        // if(!this.mounted){
-        this.setState(prevState => {
-          console.tron.log('message', unread._data.Messages)
-          // return {messages: unread._data.Messages}
-          if(unread._data.Messages > 0) this.props.navigation.navigate('Customer')
-          else this.props.navigation.navigate('Boards')
-        })
-        // }
-      })
   }
 
   componentWillUnmount(){

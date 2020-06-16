@@ -32,6 +32,7 @@ class Users extends React.Component {
     title: 'Users'
   }
   componentDidMount() {
+    Fire.customUid = null;
     //grab all user names pics and set it to a state array to map over
     this.getUsers(this.a, this.b)
     this.setState({isLoading: false})
@@ -72,6 +73,7 @@ class Users extends React.Component {
 
   // This function takes in the user uid and navitgate to the chat
   handleChat = (userUID, cb) => {
+    // console.tron.log('customUid ',customUid )
     Fire.customUid = null;
     Fire.customUid = userUID;
     const countRef = firebase.firestore().collection('Users').doc(userUID);
