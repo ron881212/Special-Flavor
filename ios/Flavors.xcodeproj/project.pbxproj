@@ -392,6 +392,7 @@
 		56C7164640424E4B9457E64E /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		69D307007A5AFBA26CBE3263 /* Pods-Flavors.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flavors.release.xcconfig"; path = "Target Support Files/Pods-Flavors/Pods-Flavors.release.xcconfig"; sourceTree = "<group>"; };
+		72E68C7A2499675A004A1C3B /* Flavors.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Flavors.entitlements; path = Flavors/Flavors.entitlements; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		9E66C19EB064E9E2446FE677 /* Pods-Flavors.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flavors.debug.xcconfig"; path = "Target Support Files/Pods-Flavors/Pods-Flavors.debug.xcconfig"; sourceTree = "<group>"; };
@@ -524,6 +525,7 @@
 		13B07FAE1A68108700A75B9A /* Flavors */ = {
 			isa = PBXGroup;
 			children = (
+				72E68C7A2499675A004A1C3B /* Flavors.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -1358,9 +1360,10 @@
 			baseConfigurationReference = 9E66C19EB064E9E2446FE677 /* Pods-Flavors.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Flavors/Flavors.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 2CZ8WC4T2N;
 				HEADER_SEARCH_PATHS = (
@@ -1370,6 +1373,7 @@
 				INFOPLIST_FILE = Flavors/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.3.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1388,9 +1392,10 @@
 			baseConfigurationReference = 69D307007A5AFBA26CBE3263 /* Pods-Flavors.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Flavors/Flavors.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 2CZ8WC4T2N;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1399,6 +1404,7 @@
 				INFOPLIST_FILE = Flavors/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.3.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
