@@ -16,12 +16,12 @@
 
 #import "Firestore/Source/Local/FSTLevelDB.h"
 
+#include <limits>
 #include <memory>
 #include <unordered_map>
 #include <utility>
 
 #import "FIRFirestoreErrors.h"
-#import "Firestore/Source/Local/FSTLRUGarbageCollector.h"
 #import "Firestore/Source/Remote/FSTSerializerBeta.h"
 
 #include "Firestore/core/include/firebase/firestore/firestore_errors.h"
@@ -37,6 +37,8 @@
 #include "Firestore/core/src/firebase/firestore/local/leveldb_transaction.h"
 #include "Firestore/core/src/firebase/firestore/local/leveldb_util.h"
 #include "Firestore/core/src/firebase/firestore/local/listen_sequence.h"
+#include "Firestore/core/src/firebase/firestore/local/lru_garbage_collector.h"
+#include "Firestore/core/src/firebase/firestore/local/reference_delegate.h"
 #include "Firestore/core/src/firebase/firestore/local/reference_set.h"
 #include "Firestore/core/src/firebase/firestore/local/remote_document_cache.h"
 #include "Firestore/core/src/firebase/firestore/model/database_id.h"
@@ -45,6 +47,7 @@
 #include "Firestore/core/src/firebase/firestore/model/types.h"
 #include "Firestore/core/src/firebase/firestore/util/filesystem.h"
 #include "Firestore/core/src/firebase/firestore/util/hard_assert.h"
+#include "Firestore/core/src/firebase/firestore/util/log.h"
 #include "Firestore/core/src/firebase/firestore/util/ordered_code.h"
 #include "Firestore/core/src/firebase/firestore/util/statusor.h"
 #include "Firestore/core/src/firebase/firestore/util/string_apple.h"
@@ -57,7 +60,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 namespace util = firebase::firestore::util;
-using firebase::firestore::FirestoreErrorCode;
+using firebase::firestore::Error;
 using firebase::firestore::auth::User;
 using firebase::firestore::core::DatabaseInfo;
 using firebase::firestore::local::ConvertStatus;
@@ -72,12 +75,13 @@ using firebase::firestore::local::LevelDbQueryCache;
 using firebase::firestore::local::LevelDbRemoteDocumentCache;
 using firebase::firestore::local::LevelDbTransaction;
 using firebase::firestore::local::ListenSequence;
+using firebase::firestore::local::LruGarbageCollector;
 using firebase::firestore::local::LruParams;
 using firebase::firestore::local::OrphanedDocumentCallback;
+using firebase::firestore::local::QueryData;
 using firebase::firestore::local::ReferenceSet;
 using firebase::firestore::local::RemoteDocumentCache;
 using firebase::firestore::local::TargetCallback;
-using firebase::firestore::model::DatabaseId;
 using firebase::firestore::model::DocumentKey;
 using firebase::firestore::model::ListenSequenceNumber;
 using firebase::firestore::model::ResourcePath;
@@ -96,7 +100,7 @@ static const char *kReservedPathComponent = "firestore";
 
 @interface FSTLevelDB ()
 
-- (size_t)byteSize;
+- (int64_t)byteSize;
 
 @property(nonatomic, assign, getter=isStarted) BOOL started;
 
@@ -123,7 +127,8 @@ static const char *kReservedPathComponent = "firestore";
 @end
 
 @implementation FSTLevelDBLRUDelegate {
-  FSTLRUGarbageCollector *_gc;
+  local::LruDelegateBridge _delegateBridge;
+  std::unique_ptr<LruGarbageCollector> _gc;
   // This delegate should have the same lifetime as the persistence layer, but mark as
   // weak to avoid retain cycle.
   __weak FSTLevelDB *_db;
@@ -135,9 +140,10 @@ static const char *kReservedPathComponent = "firestore";
 
 - (instancetype)initWithPersistence:(FSTLevelDB *)persistence lruParams:(LruParams)lruParams {
   if (self = [super init]) {
-    _gc = [[FSTLRUGarbageCollector alloc] initWithDelegate:self params:lruParams];
+    _delegateBridge = local::LruDelegateBridge(self);
+    _gc = absl::make_unique<LruGarbageCollector>(&_delegateBridge, lruParams);
     _db = persistence;
-    _currentSequenceNumber = kFSTListenSequenceNumberInvalid;
+    _currentSequenceNumber = local::kListenSequenceNumberInvalid;
   }
   return self;
 }
@@ -148,17 +154,17 @@ static const char *kReservedPathComponent = "firestore";
 }
 
 - (void)transactionWillStart {
-  HARD_ASSERT(_currentSequenceNumber == kFSTListenSequenceNumberInvalid,
+  HARD_ASSERT(_currentSequenceNumber == local::kListenSequenceNumberInvalid,
               "Previous sequence number is still in effect");
   _currentSequenceNumber = _listenSequence->Next();
 }
 
 - (void)transactionWillCommit {
-  _currentSequenceNumber = kFSTListenSequenceNumberInvalid;
+  _currentSequenceNumber = local::kListenSequenceNumberInvalid;
 }
 
 - (ListenSequenceNumber)currentSequenceNumber {
-  HARD_ASSERT(_currentSequenceNumber != kFSTListenSequenceNumberInvalid,
+  HARD_ASSERT(_currentSequenceNumber != local::kListenSequenceNumberInvalid,
               "Asking for a sequence number outside of a transaction");
   return _currentSequenceNumber;
 }
@@ -169,12 +175,10 @@ static const char *kReservedPathComponent = "firestore";
   _additionalReferences = set;
 }
 
-- (void)removeTarget:(FSTQueryData *)queryData {
-  FSTQueryData *updated =
-      [queryData queryDataByReplacingSnapshotVersion:queryData.snapshotVersion
-                                         resumeToken:queryData.resumeToken
-                                      sequenceNumber:[self currentSequenceNumber]];
-  _db.queryCache->UpdateTarget(updated);
+- (void)removeTarget:(const QueryData &)queryData {
+  QueryData updated = queryData.Copy(queryData.snapshot_version(), queryData.resume_token(),
+                                     [self currentSequenceNumber]);
+  _db.queryCache->UpdateTarget(std::move(updated));
 }
 
 - (void)addReference:(const DocumentKey &)key {
@@ -240,8 +244,8 @@ static const char *kReservedPathComponent = "firestore";
 }
 
 - (int)removeTargetsThroughSequenceNumber:(ListenSequenceNumber)sequenceNumber
-                              liveQueries:(const std::unordered_map<TargetId, FSTQueryData *> &)
-                                              liveQueries {
+                              liveQueries:
+                                  (const std::unordered_map<TargetId, QueryData> &)liveQueries {
   return _db.queryCache->RemoveTargets(sequenceNumber, liveQueries);
 }
 
@@ -254,8 +258,8 @@ static const char *kReservedPathComponent = "firestore";
   return totalCount;
 }
 
-- (FSTLRUGarbageCollector *)gc {
-  return _gc;
+- (local::LruGarbageCollector *)gc {
+  return _gc.get();
 }
 
 - (void)writeSentinelForKey:(const DocumentKey &)key {
@@ -273,7 +277,7 @@ static const char *kReservedPathComponent = "firestore";
   [self writeSentinelForKey:key];
 }
 
-- (size_t)byteSize {
+- (int64_t)byteSize {
   return [_db byteSize];
 }
 
@@ -345,6 +349,13 @@ static const char *kReservedPathComponent = "firestore";
   return Status::OK();
 }
 
++ (Status)clearPersistence:(const DatabaseInfo &)databaseInfo {
+  Path levelDBDir = [FSTLevelDB storageDirectoryForDatabaseInfo:databaseInfo
+                                             documentsDirectory:[FSTLevelDB documentsDirectory]];
+  LOG_DEBUG("Clearing persistence for path: %s", levelDBDir.ToUtf8String());
+  return util::RecursivelyDelete(levelDBDir);
+}
+
 - (instancetype)initWithLevelDB:(std::unique_ptr<leveldb::DB>)db
                           users:(std::set<std::string>)users
                       directory:(firebase::firestore::util::Path)directory
@@ -369,7 +380,7 @@ static const char *kReservedPathComponent = "firestore";
   return self;
 }
 
-- (size_t)byteSize {
+- (int64_t)byteSize {
   int64_t count = 0;
   auto iter = util::DirectoryIterator::Create(_directory);
   for (; iter->Valid(); iter->Next()) {
@@ -378,8 +389,9 @@ static const char *kReservedPathComponent = "firestore";
   }
   HARD_ASSERT(iter->status().ok(), "Failed to iterate leveldb directory: %s",
               iter->status().error_message().c_str());
-  HARD_ASSERT(count >= 0 && count <= SIZE_MAX, "Overflowed counting bytes cached");
-  return static_cast<size_t>(count);
+  HARD_ASSERT(count >= 0 && count <= std::numeric_limits<int64_t>::max(),
+              "Overflowed counting bytes cached");
+  return count;
 }
 
 - (const std::set<std::string> &)users {
@@ -395,9 +407,14 @@ static const char *kReservedPathComponent = "firestore";
 }
 
 + (Path)documentsDirectory {
-#if TARGET_OS_IPHONE
+#if TARGET_OS_IOS
   NSArray<NSString *> *directories =
       NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+  return Path::FromNSString(directories[0]).AppendUtf8(kReservedPathComponent);
+
+#elif TARGET_OS_TV
+  NSArray<NSString *> *directories =
+      NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
   return Path::FromNSString(directories[0]).AppendUtf8(kReservedPathComponent);
 
 #elif TARGET_OS_OSX
@@ -405,9 +422,7 @@ static const char *kReservedPathComponent = "firestore";
   return Path::FromNSString(NSHomeDirectory()).AppendUtf8(dotPrefixed);
 
 #else
-#error "local storage on tvOS"
-  // TODO(mcg): Writing to NSDocumentsDirectory on tvOS will fail; we need to write to Caches
-  // https://developer.apple.com/library/content/documentation/General/Conceptual/AppleTV_PG/
+#error "Don't know where to store documents on this platform."
 
 #endif
 }
@@ -436,15 +451,13 @@ static const char *kReservedPathComponent = "firestore";
 + (Status)ensureDirectory:(const Path &)directory {
   Status status = util::RecursivelyCreateDir(directory);
   if (!status.ok()) {
-    return Status{FirestoreErrorCode::Internal, "Failed to create persistence directory"}.CausedBy(
-        status);
+    return Status{Error::Internal, "Failed to create persistence directory"}.CausedBy(status);
   }
 
   NSURL *dirURL = [NSURL fileURLWithPath:directory.ToNSString()];
   NSError *localError = nil;
   if (![dirURL setResourceValue:@YES forKey:NSURLIsExcludedFromBackupKey error:&localError]) {
-    return Status{FirestoreErrorCode::Internal,
-                  "Failed to mark persistence directory as excluded from backups"}
+    return Status{Error::Internal, "Failed to mark persistence directory as excluded from backups"}
         .CausedBy(Status::FromNSError(localError));
   }
 
@@ -459,7 +472,7 @@ static const char *kReservedPathComponent = "firestore";
   DB *database = nullptr;
   leveldb::Status status = DB::Open(options, directory.ToUtf8String(), &database);
   if (!status.ok()) {
-    return Status{FirestoreErrorCode::Internal,
+    return Status{Error::Internal,
                   StringFormat("Failed to open LevelDB database at %s", directory.ToUtf8String())}
         .CausedBy(ConvertStatus(status));
   }

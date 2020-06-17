@@ -8,12 +8,16 @@ target 'Flavors' do
   pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
   # Pods for Flavors
   # Required by RNFirebase
-  pod 'Firebase/Core', '~> 5.20.1'
-  pod 'Firebase/Auth', '~> 5.20.1'
-  pod 'Firebase/Database', '~> 5.20.1'
-  pod 'Firebase/Firestore', '~> 5.20.1'
-  pod 'Firebase/Storage', '~> 5.20.1'
+  pod 'Firebase/Core', '~> 6.8.1'
+  pod 'Firebase/Auth', '~> 6.8.1'
+  pod 'Firebase/Database', '~> 6.8.1'
+  pod 'Firebase/Firestore', '~> 6.8.1'
+  pod 'Firebase/Storage', '~> 6.8.1'
 
+  pod 'FBSDKCoreKit'
+  pod 'FBSDKLoginKit'
+  pod 'FBSDKShareKit'
+  pod 'FBSDKPlacesKit'
   # pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
   # pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler/'
   # pod 'RNVectorIcons.', :path => '../node_modules/react-native-vector-icons'
@@ -27,6 +31,8 @@ target 'Flavors' do
   # pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
   
   pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+  # pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+
   post_install do |installer|
     installer.pods_project.targets.each do |target|
       if target.name == "React"
@@ -34,14 +40,25 @@ target 'Flavors' do
       end
     end
   end
+
+  # post_install do |installer|
+  react_project = Xcodeproj::Project.open("../node_modules/react-native/React/React.xcodeproj")
+  react_project.main_group["React/Views"].files.each do |file|   
+    if file.path.match(/^RCTWebView/) 
+      file.remove_from_project
+    end   
+  end   
+  react_project.save
+  # end
+
 end
 
-post_install do |installer|
-  react_project = Xcodeproj::Project.open("../node_modules/react-native/React/React.xcodeproj")
-    react_project.main_group["React/Views"].files.each do |file|   
-      if file.path.match(/^RCTWebView/) 
-        file.remove_from_project
-      end   
-    end   
-  react_project.save
-end
+# post_install do |installer|
+#   react_project = Xcodeproj::Project.open("../node_modules/react-native/React/React.xcodeproj")
+#     react_project.main_group["React/Views"].files.each do |file|   
+#       if file.path.match(/^RCTWebView/) 
+#         file.remove_from_project
+#       end   
+#     end   
+#   react_project.save
+# end

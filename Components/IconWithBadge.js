@@ -12,14 +12,15 @@ constructor(props){
   this.state = {
     messages: 0
   } 
-  this.userID = firebase.auth().currentUser.uid
-  this.ref = firebase.firestore().collection('Users').doc(this.userID)
-  this.phone = firebase.firestore().collection('Users').doc(this.userID).collection('Phone')
+  // this.userID = firebase.auth().currentUser.uid
+  // this.ref = firebase.firestore().collection('Users').doc(this.userID)
+  // this.phone = firebase.firestore().collection('Users').doc(this.userID).collection('Phone')
 }
 componentDidMount(){
   this.mounted = false
-  // const phone = this.phone.get()
-  // phone.
+  this.userID = firebase.auth().currentUser.uid
+  this.ref = firebase.firestore().collection('Users').doc(this.userID)
+  this.phone = firebase.firestore().collection('Users').doc(this.userID).collection('Phone')
   if(this.phone > 0){
     this.ref.onSnapshot(unread => {
     // let data = unread._data.Messages

@@ -7,7 +7,8 @@ import { View,
   Dimensions,
   TouchableOpacity,
   ScrollView,
-  ActivityIndicator
+  ActivityIndicator,
+  Platform
 } from 'react-native' 
 import firebase from 'react-native-firebase' 
 import { Card, Button, Avatar, ListItem, Input, Icon } from 'react-native-elements'
@@ -175,6 +176,7 @@ static navigationOptions =  {
                 title='Log Out'
                 onPress={()=>this.logOut()}
                 style={styles.buttons}
+                containerStyle={Platform.OS === 'android' ? styles.buttons : null}
               />
             </ScrollView>
         </SafeAreaView>
@@ -198,9 +200,10 @@ const styles = StyleSheet.create({
       margin:20
     },
     buttons: {
-      margin: 10,
+      margin: 10, //10
       height: 50,
-      width: sectionWidth / 1.1
+      width: sectionWidth / 1.1,
+      marginTop: 10
     },
     cards: {
     display: 'flex',
