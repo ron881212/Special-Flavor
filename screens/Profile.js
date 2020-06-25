@@ -23,7 +23,8 @@ class Profile extends React.Component {
       password: null,
       phone: null,
       address: null,
-      avatar: null
+      avatar: null,
+      anon: false
     }
     const userID = firebase.auth().currentUser.uid
     this.ref = firebase.firestore().collection('Users').doc(userID)
@@ -37,6 +38,9 @@ static navigationOptions =  {
     const email = firebase.auth().currentUser.email  
     userID = firebase.auth().currentUser.uid
     this.ref = firebase.firestore().collection('Users').doc(userID)
+
+    !firebase.auth().currentUser.isAnonymous ?
+
     this.ref.onSnapshot(userInfo => {
       this.setState({
         name: userInfo._data.Name,
@@ -45,6 +49,15 @@ static navigationOptions =  {
         address: userInfo._data.Address,
       })
     })
+    :
+    this.setState({
+      name: 'guest',
+      email: 'guest',
+      phone: 'guest',
+      address: 'guest',
+      anon: true
+    })
+
     var avatarRef = firebase.storage().ref(`${userID}/images`)
     avatarRef.getDownloadURL().then( url => {
     this.setState({
@@ -77,7 +90,10 @@ static navigationOptions =  {
 
               {/* NAME */}
               <TouchableOpacity
-              onPress={()=>this.props.navigation.navigate('EditName')}
+              onPress={
+                !this.state.anon ?
+                ()=>this.props.navigation.navigate('EditName')
+                : null}
               >
               <Card containerStyle={styles.cards}>
                 <ListItem
@@ -97,8 +113,10 @@ static navigationOptions =  {
               <TouchableOpacity
               // Also check email == old email and reauthenicate( getProvider() ) 
               onPress={
-                // ()=>console.log(firebase.auth().currentUser.updateEmail())
+                !this.state.anon ?
                 ()=>this.props.navigation.navigate('ChangeEmail')
+                :
+                null
               }
               >
               <Card containerStyle={styles.cards}>
@@ -119,8 +137,9 @@ static navigationOptions =  {
               <TouchableOpacity
               // Also call reauthenicate( getProvider() ) 
               onPress={
-                // ()=>console.log(firebase.auth().currentUser.updatePassword())
+                !this.state.anon ?
                 ()=>this.props.navigation.navigate('ChangePassword')
+                : null
               }
               >
               <Card containerStyle={styles.cards}>
@@ -139,7 +158,12 @@ static navigationOptions =  {
 
               {/* PHONE */}
               <TouchableOpacity
-              onPress={()=>this.props.navigation.navigate('EditPhone')}
+                onPress={
+                  !this.state.anon ?
+                  ()=>this.props.navigation.navigate('EditPhone')
+                  :
+                  null
+                }
               >
               <Card containerStyle={styles.cards}>
                 <ListItem
@@ -156,7 +180,12 @@ static navigationOptions =  {
 
               {/* ADDRESS */}
               <TouchableOpacity
-              onPress={()=>this.props.navigation.navigate('EditAddress')}
+              onPress={
+                !this.state.anon ?
+                ()=>this.props.navigation.navigate('EditAddress')
+                :
+                null
+              }
               >
               <Card containerStyle={styles.cards}>
                 <ListItem

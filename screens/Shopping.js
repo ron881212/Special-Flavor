@@ -31,7 +31,8 @@ class ShopScreen extends React.Component {
       order: [{_id:1,text:'first order'}],
       userName: '',
       avatar: null,
-      uid: null
+      uid: null,
+      anon: false
     }
     const email = firebase.auth().currentUser.email 
     const uid = firebase.auth().currentUser.uid
@@ -41,6 +42,8 @@ class ShopScreen extends React.Component {
   componentDidMount() {
     this.mount = false
     const uid = firebase.auth().currentUser.uid 
+    !firebase.auth().currentUser.isAnonymous ?
+
     this.ref.onSnapshot(userInfo => {
       if(!this.mounted){
         this.setState({
@@ -50,6 +53,14 @@ class ShopScreen extends React.Component {
         })
       } 
     })
+    :
+    this.setState({
+      name: 'guest',
+      phone: 'your phone',
+      address: 'your address',
+      anon: true
+    })
+    
     if(!this.mounted) this.setState({uid: uid})
     this.updateGrandTotal()
 
@@ -184,8 +195,11 @@ render(){
       <Button 
         title={`Place your order: ${"$" + this.props.store.cartTotal.total + ".00" || total}`}
         buttonStyle={styles.payment}
-        onPress={()=>
-          this.sendOrder(this.state.uid, this.cb)
+        onPress={
+          !this.state.anon ?
+          ()=> this.sendOrder(this.state.uid, this.cb)
+          : 
+          null
         }
       />
       </>
@@ -197,8 +211,11 @@ render(){
       <Text style={{marginBottom:'10%'}}>Your shopping cart is empty</Text>
       <Button
         buttonStyle={{borderRadius:50}}
-        onPress={()=>
-          this.props.navigation.navigate('Customer')
+        onPress={
+          !this.state.anon ?
+          ()=> this.props.navigation.navigate('Customer')
+          :
+          null
         }
         icon={
           <Icon

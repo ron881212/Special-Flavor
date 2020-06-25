@@ -12,6 +12,7 @@ const FlavorScreen = props => {
     let task = false
     const start = async (a) => {
       Fire.customUid = firebase.auth().currentUser.uid
+      // Fire.customUid = firebase.auth().currentUser.isAnonymous
       const getFlavors = await firebase.firestore().collection('Flavors').get()
       if(!task){
         getFlavors.docs.forEach( doc => {

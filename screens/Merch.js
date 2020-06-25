@@ -14,7 +14,8 @@ class MerchScreen extends React.Component {
     this.state = {
       messages: [],
       userName: '',
-      avatar: null
+      avatar: null,
+      anon: false
     }
   }
 
@@ -25,6 +26,8 @@ class MerchScreen extends React.Component {
     const userID = firebase.auth().currentUser.uid 
     this.ref = firebase.firestore().collection('Users').doc(userID)
     var avatarRef = firebase.storage().ref(`${userID}/images`)
+
+    !firebase.auth().currentUser.isAnonymous ?
 
       avatarRef.getDownloadURL().then( url => {
         if(!this.mounted){
@@ -37,12 +40,18 @@ class MerchScreen extends React.Component {
             avatar: 'https://placeimg.com/140/140/any'
           })
         })
+      :
+      this.setState({
+        avatar: 'https://placeimg.com/140/140/any',
+        anon: true
+      })
 
       this.emailRef.onSnapshot(userInfo => {
         if(!this.mounted){
-          this.setState({
-            userName: userInfo._data.userName || 'anonymous',
-          })
+          !this.state.anon ?
+          this.setState({userName: userInfo._data.userName}) 
+          :
+          this.setState({ userName: 'guest'})
         }
       })
 
@@ -83,6 +92,15 @@ class MerchScreen extends React.Component {
     }
   }
 
+  get anonUser(){
+    return {
+      // avatar will be here and is pulled from profile
+      name: 'guest',
+      _id: '10',
+      avatar: this.state.avatar
+    }
+  }
+  
   render() {
 
   return (
@@ -94,7 +112,7 @@ class MerchScreen extends React.Component {
       <GiftedChat
         messages={this.state.messages}
         onSend={Fire.shared.send}
-        user={this.user}
+        user={!this.state.anon ? this.user: this.anonUser}
         showUserAvatar={true}
         showAvatarForEveryMessage={true}
         minInputToolbarHeight={-5}

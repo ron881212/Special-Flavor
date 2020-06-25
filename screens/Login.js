@@ -6,7 +6,9 @@ import {
   View,
   Alert,
   KeyboardAvoidingView,
-  Platform
+  Platform,
+  Dimensions,
+  Text
 } from 'react-native'
 import { 
   createAppContainer,
@@ -38,7 +40,21 @@ static navigationOptions = {
       // console.log(err)
     )
   }
-  
+
+  guestLogIn = () => {
+    firebase
+    .auth()
+    .signInAnonymously()
+    .then(() => {
+      console.tron.log('User signed in anonymously');
+    })
+    .catch(error => {
+      if (error.code === 'auth/operation-not-allowed') {
+        console.log('Enable anonymous in your firebase console.');
+      }
+      console.tron.error(error);
+    });
+  }
   
   render() {
     
@@ -85,6 +101,19 @@ static navigationOptions = {
             />
           }
         />
+          <Button
+          buttonStyle={styles.guest}
+          onPress={()=>this.guestLogIn()}
+          icon={
+          <Icon
+            name="user-x"
+            size={15}
+            color="white"
+            style={{marginRight:5}}
+          />
+          }
+          title="Guest Pass"
+          />
         <View style={styles.container2}>
           <Button
           buttonStyle={styles.buttons}
@@ -114,11 +143,14 @@ static navigationOptions = {
           />          
         </View>
       </KeyboardAvoidingView>
+
       </ImageBackground>
       </SafeAreaView>
     )
   }
 }
+
+const sectionWidth = Dimensions.get('window').width
 
 const styles = StyleSheet.create({
   container: {
@@ -146,6 +178,15 @@ const styles = StyleSheet.create({
     height: 50,
     borderColor: '#d6d7da',
     backgroundColor: 'rgba(200, 200, 200,0.7)'
+  },
+  guest: {
+    borderRadius: 50,
+    borderWidth: 1,
+    margin: 10,
+    height: 50,
+    borderColor: '#d6d7da',
+    width: sectionWidth / 1.1,
+    // backgroundColor: 'purple'
   },
   buttons: {
     borderRadius: 50,
