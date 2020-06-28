@@ -8,6 +8,7 @@ import FlavorScreen from '../screens/Flavors'
 import AdultScreen from '../screens/Adults'
 import MerchScreen from '../screens/Merch'
 import ProfileScreen from '../screens/Profile'
+import Verification from '../screens/Verification'
 import ShopScreen from '../screens/Shopping'
 import EditAddress from '../screens/EditAddress'
 import EditName from '../screens/EditName'
@@ -145,11 +146,19 @@ class BottomNav extends React.Component {
   constructor() {
     super() 
     this.state = {
-      admin:false
+      admin:false,
+      verification: false,
+      anon: false
     } 
   }
   componentDidMount() {
     this.mounted = false
+    if(firebase.auth().currentUser.emailVerified){
+      this.setState({verification:true})
+    }
+    if(firebase.auth().currentUser.isAnonymous){
+      this.setState({anon:true})
+    }
     firebase.auth().currentUser.getIdTokenResult()
     .then((idTokenResult) => {
       if(!this.mounted){
@@ -170,6 +179,9 @@ class BottomNav extends React.Component {
     if(this.state.admin){
       return <Admin />
     } 
+    else if(!this.state.verification && !this.state.anon){
+      return <Verification />
+    }
     else return <Nav />
   }
 }

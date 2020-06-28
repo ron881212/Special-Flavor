@@ -205,6 +205,6 @@ export default createAppContainer(
     },
     SignUp: { 
       screen: SignUpScreen
-     }
+    }
   })
 )

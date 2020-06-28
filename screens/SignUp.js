@@ -26,11 +26,12 @@ static navigationOptions = {
         setEmail: null,
         setPassword: null,
         confirmPassword: null,
+        redeem: null
       }
-    }
+    } 
     //add sendEmailVerification(ActionCodeSettings actionCodeSettings)
     userSignUp = () => {
-      const { setEmail, setPassword, confirmPassword, setUserName } = this.state  
+      const { setEmail, setPassword, confirmPassword, setUserName, redeem } = this.state  
       if(setPassword === confirmPassword){
         firebase.auth().createUserWithEmailAndPassword(setEmail, setPassword)
         .then(success => {
@@ -45,6 +46,10 @@ static navigationOptions = {
                 }
             })
           }
+        })
+        .then( send =>  firebase.auth().currentUser.sendEmailVerification() )
+        .catch(error => {
+          if(error) Alert.alert(error.code)
         })
       }
       else if(setPassword !== confirmPassword){
@@ -115,6 +120,21 @@ static navigationOptions = {
                 leftIcon={
                   <Icon
                     name='lock'
+                    size={24}
+                    color='black'
+                    style={{marginRight:10}}
+                  />
+                }
+              />
+              <Input
+                placeholder='Redeem Code'
+                autoCapitalize='characters'
+                secureTextEntry={true}
+                inputContainerStyle={styles.form2}
+                onChangeText={(text) => this.setState({redeem:text})}
+                leftIcon={
+                  <Icon
+                    name='box'
                     size={24}
                     color='black'
                     style={{marginRight:10}}

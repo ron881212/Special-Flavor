@@ -31,9 +31,9 @@ class App extends React.Component {
     // this.userInfo = firebase.firestore().collection('userInfo').doc('personal')
     this.unsubscriber = null 
     this.state = {
-      user: null
+      user: null,
     } 
-  }
+  } 
 
   /**
    * Listen for any auth state changes and update component state
@@ -59,7 +59,7 @@ class App extends React.Component {
         <Provider store={store}>
             <BottomTab />
         </Provider>
-      )
+    )
   }
 }
 
