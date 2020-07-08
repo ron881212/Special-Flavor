@@ -28,18 +28,6 @@ class Verification extends React.Component {
         if(!firebase.auth().currentUser.emailVerified && !firebase.auth().currentUser.isAnonymous){
             Alert.alert("Go to your email and click on the verification link before logging in")
         }
-        // this.unsubscriber = firebase.auth().onUserChanged((user) => {
-            // const checkStatus = setInterval(this.logIn,3000) 
-            // console.tron.log("We are listening")
-            // while(!firebase.auth().currentUser.emailVerified){
-            //     setTimeout(firebase.auth().currentUser.reload, 3000)
-            //     console.tron.log('Should run every 3 seconds')
-                // if(firebase.auth().currentUser.emailVerified){
-                //     console.tron.log("We have verification")
-                //     this.setState({ verification: true })
-                // }
-            // }
-        // })
     }
     componentWillUnmount() {
         if (this.unsubscriber) {
@@ -54,20 +42,7 @@ class Verification extends React.Component {
                 this.setState({ verification: true })  
             }
         })
-        
-        // if(user.emailVerified){
-        //     this.setState({ verification: true }) 
-        // console.tron.log("Run every 3 seconds")
-        // console.tron.log("Am I verified", firebase.auth().currentUser.emailVerified)
-        // firebase.auth().currentUser.reload()
-        // this.verification()
-    //     }
     }
-    // verification(){
-    //     if(firebase.auth().currentUser.emailVerified){
-    //         this.setState({verification:true})
-    //     }
-    // }
     render() {
       if (this.state.verification) {
           return <BottomNav /> 
